@@ -3,9 +3,9 @@ const router = express.Router();
 
 /////controller///////////////////////
 const readerController = require('../controller/readerController');
-const adminController = require('../controller/adminController');
 
 //////User Routes///////////////////
 router.post('/signup', readerController.readerSignup);
+router.post('/login', readerController.readerLogin);
 
 module.exports = router;

@@ -11,9 +11,10 @@ module.exports = {
     readerSignup: async (req, res) => {
         try {
             let userEmail = req.body.email
-            const exist = await ReaderModel.findOne({ email: userEmail });
-            if (exist) {
-                res.json({ status: false, message: 'you are Already a Member' });
+            console.log(userEmail);
+            const emailExist = await ReaderModel.findOne({ email: userEmail });
+            if (emailExist) {
+                res.json({ status: false, message: 'You Are Already A Member' });
             } else {
                 const securePassword = await bcrypt.hash(req.body.password, 10);
                 const userCreate = ReaderModel.create({
@@ -22,8 +23,31 @@ module.exports = {
                     phone: req.body.phone,
                     password: securePassword
                 })
-
                 res.json({ status: true, message: 'Your Signup is Success ' });
+            }
+        } catch (error) {
+            res.json({ status: false, message: "oops catch error" });
+            console.log(error + 'error in reader signup');
+        }
+    },
+    /////////////////////////
+    readerLogin: async (req, res) => {
+        try {
+            const emailExist = await ReaderModel.findOne({ email: req.body.email });
+            if (!emailExist) {
+                res.json({ status: false, message: 'Email Not Found' })
+            } else {
+                const checkPassword = await bcrypt.compare(req.body.password, emailExist.password);
+                if (!checkPassword) {
+                    res.json({ status: false, message: "Wrong Password" })
+                } else {
+                    const token = jwt.sign({
+                        userName: emailExist.userName,
+                        email: emailExist.email,
+                        id: emailExist._id
+                    }, "secret123", { expiresIn: '7d' });
+                    res.json({ status: true, message: 'Your Login is Success', token });
+                }
             }
         } catch (error) {
             res.json({ status: false, message: "oops catch error" });

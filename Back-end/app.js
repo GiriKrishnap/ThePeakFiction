@@ -14,9 +14,11 @@ app.use(express.static(path.join(__dirname, 'novelCovers')));
 mongoose.connect(process.env.CONNECTION_STRING);
 
 const userRoute = require('./route/userRoute');
+const adminRoute = require('./route/adminRoute');
 
 //Routes
 app.use('/', userRoute);
+app.use('/admin', adminRoute);
 
 
 app.listen(4000, () => {
