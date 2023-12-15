@@ -2,23 +2,23 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2';
 import axios from '../../util/axios'
-import { adminDashboard, adminGetAllUsers, adminLoginPost } from '../../util/constants';
+import { adminDashboard, adminGetAllAuthors } from '../../util/constants';
 
-export default function UserManagement() {
+export default function AuthorManagement() {
 
-    const [users, setUsers] = useState([]);
+    const [authors, setAuthors] = useState([]);
 
 
     useEffect(() => {
-        getUsersList();
+        getAuthorsList();
     }, [])
 
-    const getUsersList = () => {
+    const getAuthorsList = () => {
         try {
-            axios.get(adminGetAllUsers).then((re) => {
+            axios.get(adminGetAllAuthors).then((re) => {
                 if (re.data.status) {
-                    setUsers(re.data.users);
-                    console.log(re.data.users)
+                    setAuthors(re.data.authors);
+                    console.log(re.data.authors)
                 } else { alert('there is problem') }
 
             });
@@ -30,10 +30,10 @@ export default function UserManagement() {
 
     return (
         <div className='ml-80 m-10'>
-            <h1 className='m-10 font-mono font-extrabold text-sm md:text-3xl'>UserManagement</h1>
+            <h1 className='m-10 font-mono font-extrabold text-sm md:text-3xl'>Author Management</h1>
             <br />
             {
-                users.length > 0 ? <div className="relative overflow-x-auto rounded-xl">
+                authors.length > 0 ? <div className="relative overflow-x-auto rounded-xl">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
@@ -41,7 +41,7 @@ export default function UserManagement() {
                                     No
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    userName & _id
+                                    Pen Name & _id
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Email
@@ -55,8 +55,9 @@ export default function UserManagement() {
                             </tr>
                         </thead>
                         <tbody>
+
                             {
-                                users.map((user, index) => (
+                                authors.map((user, index) => (
 
                                     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -82,7 +83,7 @@ export default function UserManagement() {
 
                         </tbody>
                     </table>
-                </div> : <p className='text-2xl rounded-lg text-white font-bold font-mono bg-blue-300'>There is no users</p>
+                </div> : <p className='text-2xl rounded-lg text-white font-bold font-mono bg-blue-300'>There is no authors</p>
             }
 
         </div>

@@ -6,16 +6,16 @@ export default function footer() {
 
 
     return (
-        < footer class="bg-white shadow dark:bg-gray-800 mb-1" >
-            <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
-                <div class="sm:flex sm:items-center sm:justify-between">
-                    <p class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
-                        <img src="../assets/logo/webLogo.png" class="h-12 mt-3" alt="ThePeakFiction Logo" />
-                        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">ThePeakFiction</span>
+        < footer className="bg-white shadow dark:bg-gray-800" >
+            <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+                <div className="sm:flex sm:items-center sm:justify-between">
+                    <p className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
+                        <img src="../assets/logo/webLogo.png" className="h-12 mt-3" alt="ThePeakFiction Logo" />
+                        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">ThePeakFiction</span>
                     </p>
-                    <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
+                    <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
                         <li>
-                            <p class="hover:underline cursor-pointer me-4 md:me-6" onClick={() => document.getElementById('my_modal_1').showModal()}>About</p>
+                            <p className="hover:underline cursor-pointer me-4 md:me-6" onClick={() => document.getElementById('my_modal_1').showModal()}>About</p>
                             <dialog id="my_modal_1" className="modal rounded-2xl w-1/2">
                                 <div className="modal-box p-5 bg-gray-600">
                                     <h1 className="font-bold text-2xl text-white">About</h1>
@@ -34,7 +34,7 @@ export default function footer() {
                         </li>
 
                         <li>
-                            <p class="hover:underline cursor-pointer me-4 md:me-6" onClick={() => document.getElementById('my_modal_2').showModal()}>Privacy Policy</p>
+                            <p className="hover:underline cursor-pointer me-4 md:me-6" onClick={() => document.getElementById('my_modal_2').showModal()}>Privacy Policy</p>
                             <dialog id="my_modal_2" className="modal rounded-2xl w-1/2">
                                 <div className="modal-box p-5 bg-gray-600">
                                     <h1 className="font-bold text-2xl text-white">Privacy Policy</h1>
@@ -59,12 +59,12 @@ export default function footer() {
 
                         </li>
                         <li>
-                            <p class="hover:underline cursor-pointer">Contact</p>
+                            <p className="hover:underline cursor-pointer">Contact</p>
                         </li>
                     </ul>
                 </div>
-                <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-                <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 Made By an Crazy Reader.</span>
+                <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+                <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 Made By an Crazy Reader.</span>
             </div>
         </footer >
 

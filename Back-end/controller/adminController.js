@@ -28,6 +28,7 @@ module.exports = {
     },
     getAllUsers: async (req, res) => {
         try {
+
             let users = await ReaderModel.find();
             if (users) {
                 res.json({ status: true, users })
@@ -37,6 +38,22 @@ module.exports = {
             }
         } catch (error) {
             res.json({ status: false, message: 'admin catch error server side :: getAllUsers' });
+            console.log(error);
+        }
+
+    },
+    getAllAuthors: async (req, res) => {
+        try {
+
+            let authors = await AuthorModel.find();
+            if (authors) {
+                res.json({ status: true, authors })
+            } else {
+                res.json({ status: false })
+                console.log('error on get authors');
+            }
+        } catch (error) {
+            res.json({ status: false, message: 'admin catch error server side :: getAllAuthors' });
             console.log(error);
         }
 

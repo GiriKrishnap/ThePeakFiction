@@ -1,13 +1,13 @@
 import React from 'react'
 import AdminHeaderComponent from '../../components/AdminComponents/AdminHeader'
-import AdminUserManagementComponent from '../../components/AdminComponents/UserManagement'
+import AdminAuthorManagementComponent from '../../components/AdminComponents/AuthorManagement'
 
 
-export default function AdminUserPage() {
+export default function AdminAuthorPage() {
     return (
         <>
             <AdminHeaderComponent />
-            <AdminUserManagementComponent />
+            <AdminAuthorManagementComponent />
         </>
     )
 }

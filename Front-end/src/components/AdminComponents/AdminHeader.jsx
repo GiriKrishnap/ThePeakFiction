@@ -50,7 +50,7 @@ export default function AdminHeader() {
         <>
             <span
                 className="absolute text-white text-4xl top-5 left-4 cursor-pointer"
-                onclick="openSidebar()"
+
             >
                 <i className="bi bi-filter-left px-2 bg-gray-900 rounded-md"></i>
             </span>
@@ -63,7 +63,7 @@ export default function AdminHeader() {
                         <h1 className="font-bold text-gray-200 text-[15px] ml-3">ThePeakFiction - Admin</h1>
                         <i
                             className="bi bi-x cursor-pointer ml-28 lg:hidden"
-                            onclick="openSidebar()"
+
                         ></i>
                     </div>
                     <div className="my-2 bg-gray-600 h-[1px]"></div>
@@ -71,11 +71,17 @@ export default function AdminHeader() {
 
                 {
                     sideBar.map((item) => (
-                        <Link to={item.link}><div className="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 
-                        cursor-pointer hover:bg-blue-600 text-white">
-                            <i className="bi bi-house-door-fill"></i>
-                            <span className="text-[15px] ml-4 text-gray-200 font-bold">{item.name}</span>
-                        </div></Link>
+
+                        <Link to={item.link} key={item.name}>
+                            <div
+                                className="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 
+                        cursor-pointer hover:bg-blue-600 text-white"
+
+                            >
+                                <i className="bi bi-house-door-fill"></i>
+                                <span className="text-[15px] ml-4 text-gray-200 font-bold">{item.name}</span>
+                            </div></Link>
+
                     ))
                 }
 

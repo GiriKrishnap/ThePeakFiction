@@ -1,10 +1,10 @@
-import { Fragment, useEffect } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useDispatch } from 'react-redux';
-import { Login, verifyUserToken } from '../../util/constants';
+import { Login, authorHome, verifyUserToken } from '../../util/constants';
 
 const navigation = [
     { name: 'Home', link: 'home', current: true },
@@ -23,6 +23,7 @@ function classNames(...classes) {
 export default function Header() {
 
     const navigate = useNavigate();
+    const [isAuthor, setIsAuthor] = useState(false);
 
 
     const handleLogout = (e) => {
@@ -46,8 +47,11 @@ export default function Header() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-
-        if (!token) {
+        const AuthorToken = localStorage.getItem('authorToken');
+        if (AuthorToken) {
+            setIsAuthor(true);
+        }
+        if (!token && !AuthorToken) {
             navigate(Login);
         }
     }, [])
@@ -56,7 +60,7 @@ export default function Header() {
         <Disclosure as="nav" className="bg-gray-800">
             {({ open }) => (
                 <>
-                    <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 m-1">
+                    <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                         <div className="relative flex h-16 items-center justify-between">
                             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                                 {/* Mobile menu button*/}
@@ -104,7 +108,7 @@ export default function Header() {
                                         <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm ">
                                             <span className="absolute -inset-1.5" />
                                             <span className="sr-only">Open user menu</span>
-                                            <i class="fa-regular fa-user fa-xl text-white"></i>
+                                            <i className="fa-regular fa-user fa-xl text-white"></i>
                                         </Menu.Button>
                                     </div>
                                     <Transition
@@ -120,13 +124,25 @@ export default function Header() {
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <Link
-                                                        href="#"
                                                         className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                     >
                                                         Your Profile
                                                     </Link>
                                                 )}
                                             </Menu.Item>
+                                            {
+                                                isAuthor ? <Menu.Item>
+                                                    {({ active }) => (
+                                                        <Link to={authorHome}
+                                                            className={classNames(active ? 'bg-gray-100' : '',
+                                                                'block px-4 py-2 text-sm text-gray-700')}
+                                                        >
+                                                            WorkShop
+                                                        </Link>
+                                                    )}
+                                                </Menu.Item> : ''
+                                            }
+
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <p

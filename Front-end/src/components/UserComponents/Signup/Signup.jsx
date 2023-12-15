@@ -11,6 +11,7 @@ export default function Signup() {
     const [email, setEmail] = useState('');
     const [password, SetPassword] = useState('');
     const [confirmPassword, SetConfirmPassword] = useState('');
+    const [isAuthor, setIsAuthor] = useState(false);
 
     const navigate = useNavigate();
     ///
@@ -29,7 +30,8 @@ export default function Signup() {
         const body = JSON.stringify({
             userName,
             email,
-            password
+            password,
+            isAuthor
         });
 
         let response = await axios.post(signupPost, body, { headers: { "Content-Type": "application/json" } });
@@ -54,8 +56,9 @@ export default function Signup() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+        const authorToken = localStorage.getItem('authorToken');
 
-        if (token) {
+        if (token || authorToken) {
             navigate(readerHome);
         }
     }, []);
@@ -78,6 +81,12 @@ export default function Signup() {
                                         onChange={e => SetPassword(e.target.value)} value={password} required />
                                     <input type="password" name="ConfirmPassword" className='input-login d-block' placeholder='Confirm Password'
                                         onChange={e => SetConfirmPassword(e.target.value)} value={confirmPassword} required />
+                                    <div className='flex flex-row'>
+                                        <input type="checkbox" className='mb-3 ml-3 cursor-pointer w-4'
+                                            onClick={() => isAuthor ? setIsAuthor(false) : setIsAuthor(true)}
+                                        />
+                                        <label className='mb-3 ml-2 font-mono'>Are You An Author?</label>
+                                    </div>
                                     <button type='submit' className='button-login mb-3'>Signup Now</button>
                                 </form>
                                 <Link to={Login}> <p className='aTag-login'>You Have Account?</p> </Link>
@@ -90,7 +99,6 @@ export default function Signup() {
                             <h1 className='text-white handwrite-font text-3xl'>ThePeakFiction</h1>
                             <p className='text-white dancing-font mb-6'>"Unlock worlds, one page at a time."</p>
                         </div>
-
                     </div>
                 </div>
             </div>

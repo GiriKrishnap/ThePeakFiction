@@ -9,6 +9,8 @@ export default function Login() {
 
     const [email, setEmail] = useState('');
     const [password, SetPassword] = useState('');
+    const [isAuthor, setIsAuthor] = useState(false);
+    console.log(isAuthor)
 
     const navigate = useNavigate();
 
@@ -17,15 +19,18 @@ export default function Login() {
             e.preventDefault();
             const body = JSON.stringify({
                 email,
-                password
+                password,
+                isAuthor
             });
 
             const response = await axios.post(loginPost, body, { headers: { "Content-Type": "application/json" } });
             if (response.data.token) {
                 localStorage.setItem('token', response.data.token);
+                navigate(readerHome)
 
-                if (response.data.Author) { navigate(authorHome) }
-                else { navigate(readerHome) }
+            } else if (response.data.authorToken) {
+                localStorage.setItem('authorToken', response.data.token);
+                navigate(readerHome)
 
             } else {
                 Swal.fire({
@@ -44,8 +49,9 @@ export default function Login() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+        const authorToken = localStorage.getItem('authorToken');
 
-        if (token) {
+        if (token || authorToken) {
             navigate(readerHome);
         }
     }, [])
@@ -72,6 +78,12 @@ export default function Login() {
                                         onChange={e => setEmail(e.target.value)} value={email} />
                                     <input type="password" name="password" className='input-login d-block' placeholder='Password'
                                         onChange={e => SetPassword(e.target.value)} value={password} />
+                                    <div className='flex flex-row'>
+                                        <input type="checkbox" className='mb-3 ml-3 cursor-pointer w-4'
+                                            onClick={() => isAuthor ? setIsAuthor(false) : setIsAuthor(true)}
+                                        />
+                                        <label className='mb-3 ml-2 font-mono'>Are You An Author?</label>
+                                    </div>
                                     <button type='submit' className='button-login mb-3'>Login Now</button>
                                 </form>
                                 <Link to={Signup}> <p className='aTag-login'>No Account?</p> </Link>

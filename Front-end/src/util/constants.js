@@ -11,7 +11,10 @@ export const loginPost = '/login'
 export const verifyUserToken = '/verifyUserToken'
 
 ////Author
-export const authorHome = '/admin/Home'
+export const authorHome = '/author'
+export const authorNovels = '/author/Novels'
+export const authorCreate = '/author/create'
+export const authorNovelDetailed = '/author/Novels/'
 
 //POST
 
