@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const path = require('path')
 
 const ReaderModel = require('../model/readerModel');
 const AuthorModel = require('../model/authorModel');
@@ -97,4 +98,17 @@ module.exports = {
         }
 
     },
+    getImage: async (req, res) => {
+        console.log("here");
+        const { id } = req.params;
+        console.log(id);
+        const novel = await NovelModel.findOne({ _id: id });
+        if (novel) {
+            const imagePath = path.join(__dirname, '..', novel.cover);
+            res.contentType('image/jpeg');
+            res.sendFile(imagePath);
+        }
+    }
 }
+
+

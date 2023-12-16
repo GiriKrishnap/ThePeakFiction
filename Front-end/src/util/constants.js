@@ -20,7 +20,7 @@ export const authorCreate = '/author/create'
 export const authorNovelDetailed = '/author/Novels/'
 
 //post
-
+export const authorCreatePost = '/author/create'
 
 ////////////////////////////////////////////////////////////////////////
 //ADMIN SIDE URLS ====>
@@ -34,8 +34,14 @@ export const adminGenreManagement = '/admin/genres'
 //POST
 export const adminLoginPost = '/admin/login'
 export const adminDashboardPost = '/admin/dashboard'
+export const adminGenresPost = '/admin/addGenre'
+export const adminLogout = '/adminLogout'
+
+//GET
 export const adminGetAllUsers = '/admin/getAllUsers'
 export const adminGetAllAuthors = '/admin/getAllAuthors'
 export const adminGetAllGenres = '/admin/getAllGenres'
-export const adminGenresPost = '/admin/addGenre'
-export const adminLogout = '/adminLogout'
+
+
+
+export const getNovelCover = '/admin/image/:id'

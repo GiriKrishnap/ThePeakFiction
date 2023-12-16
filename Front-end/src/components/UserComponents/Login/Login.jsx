@@ -58,7 +58,7 @@ export default function Login() {
 
     return (
         <>
-            <div className='outerDiv-login'>
+            <div className='outerDiv-login md:flex md:flex-col md:mt-16'>
                 <div className='mainBody-login'>
                     <div className="flex flex-col md:flex-row">
 

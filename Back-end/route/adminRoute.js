@@ -10,5 +10,6 @@ router.get('/getAllUsers', adminController.getAllUsers);
 router.get('/getAllAuthors', adminController.getAllAuthors);
 router.get('/getAllGenres', adminController.getAllGenres);
 router.post('/addGenre', adminController.addGenre);
+router.get('/image/:id', adminController.getImage);
 
 module.exports = router;

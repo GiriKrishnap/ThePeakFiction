@@ -15,18 +15,19 @@ const novelSchema = mongoose.Schema({
         type: String,
         require: true,
     },
-    genre: {
+    genre: [{
+
         type: ObjectId,
         ref: "Genre",
-        require: true
-    },
+
+    }],
     status: {
         type: String,
         require: true,
         default: "pending"
     },
     publish_date: {
-        type: Date,
+        type: String,
         require: true
     },
     rate: {
@@ -56,4 +57,4 @@ const novelSchema = mongoose.Schema({
     }]
 })
 
-module.exports = mongoose.model('Novels', novelSchema);
+module.exports = mongoose.model('NovelsData', novelSchema);
