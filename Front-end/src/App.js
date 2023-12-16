@@ -17,11 +17,13 @@ import AdminDashboardPage from './pages/AdminPages/adminDashboardPage';
 import AdminUserManagement from './pages/AdminPages/adminUsersPage';
 import AdminAuthorManagement from './pages/AdminPages/adminAuthorPage';
 import AdminGenrePage from './pages/AdminPages/adminGenrePage';
+import AdminNovelPage from './pages/AdminPages/adminNovelsPage';
 
 
 //LINKS---------------------------------------------------------------------
 import {
   Login, Signup, adminAuthorManagement, adminDashboard, adminGenreManagement, adminLogin,
+  adminNovelManagement,
   adminUserManagement, authorCreate, authorHome, readerHome
 } from './util/constants';
 
@@ -48,6 +50,7 @@ function App() {
           <Route exact path={adminUserManagement} element={<AdminUserManagement />} />
           <Route exact path={adminAuthorManagement} element={<AdminAuthorManagement />} />
           <Route exact path={adminGenreManagement} element={<AdminGenrePage />} />
+          <Route exact path={adminNovelManagement} element={<AdminNovelPage />} />
 
         </Routes>
       </Router>

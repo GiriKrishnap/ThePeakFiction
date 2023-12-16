@@ -8,6 +8,7 @@ require('dotenv/config');
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'novelCovers')));
@@ -15,7 +16,7 @@ mongoose.connect(process.env.CONNECTION_STRING);
 
 const userRoute = require('./route/userRoute');
 const adminRoute = require('./route/adminRoute');
-const authorRoute = require('./route/authorRoute');
+const authorRoute = require('./route/AuthorRoute');
 
 //Routes
 app.use('/', userRoute);

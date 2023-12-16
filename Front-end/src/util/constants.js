@@ -20,7 +20,7 @@ export const authorCreate = '/author/create'
 export const authorNovelDetailed = '/author/Novels/'
 
 //post
-export const authorCreatePost = '/author/create'
+export const authorCreatePost = '/author/create/'
 
 ////////////////////////////////////////////////////////////////////////
 //ADMIN SIDE URLS ====>
@@ -44,4 +44,4 @@ export const adminGetAllGenres = '/admin/getAllGenres'
 
 
 
-export const getNovelCover = '/admin/image/:id'
+export const getNovelCover = '/admin/image/'

@@ -6,6 +6,10 @@ const novelSchema = mongoose.Schema({
     cover: {
         type: String,
     },
+    author_id: {
+        type: ObjectId,
+        ref: 'AuthorData'
+    },
     title: {
         type: String,
         require: true,
@@ -18,7 +22,7 @@ const novelSchema = mongoose.Schema({
     genre: [{
 
         type: ObjectId,
-        ref: "Genre",
+        ref: "GenreData",
 
     }],
     status: {

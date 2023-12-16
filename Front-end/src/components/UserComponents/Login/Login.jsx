@@ -10,7 +10,6 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, SetPassword] = useState('');
     const [isAuthor, setIsAuthor] = useState(false);
-    console.log(isAuthor)
 
     const navigate = useNavigate();
 
@@ -29,7 +28,7 @@ export default function Login() {
                 navigate(readerHome)
 
             } else if (response.data.authorToken) {
-                localStorage.setItem('authorToken', response.data.token);
+                localStorage.setItem('authorToken', response.data.authorToken);
                 navigate(readerHome)
 
             } else {

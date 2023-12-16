@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2';
 import axios from '../../util/axios'
 import { adminDashboard, adminLoginPost } from '../../util/constants';
@@ -74,7 +74,6 @@ export default function AdminLogin() {
                                 onChange={e => setPassword(e.target.value)}
                                 required
                             />
-                            <Link><p className='text-sm'>Forget Password?</p></Link>
 
                             <button
                                 className="bg-blue-500 text-white rounded-md

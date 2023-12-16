@@ -99,9 +99,8 @@ module.exports = {
 
     },
     getImage: async (req, res) => {
-        console.log("here");
+
         const { id } = req.params;
-        console.log(id);
         const novel = await NovelModel.findOne({ _id: id });
         if (novel) {
             const imagePath = path.join(__dirname, '..', novel.cover);

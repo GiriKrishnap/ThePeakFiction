@@ -13,7 +13,7 @@ export default function AuthorCreate() {
     const [cover, setCover] = useState(null);
     const [coverPreview, setCoverPreview] = useState(null);
     const [allGenre, setAllGenre] = useState([]);
-    console.log(cover);
+    const [token, setToken] = useState('');
 
 
     useEffect(() => {
@@ -65,15 +65,15 @@ export default function AuthorCreate() {
                 selectedGenres.push(checkboxes[i].value);
             }
         }
-        console.log(selectedGenres)
 
         const formData = new FormData();
         formData.append('title', title);
         formData.append('description', description);
         formData.append('photo', cover);
         formData.append('genre', selectedGenres);
+        formData.append('token', token);
         try {
-            const response = await axios.post(authorCreatePost, formData)
+            const response = await axios.post(`${authorCreatePost}${title}`, formData)
             if (response.data.status) {
                 Swal.fire({
                     position: 'center',
@@ -90,6 +90,7 @@ export default function AuthorCreate() {
                     showConfirmButton: false,
                     timer: 1500
                 })
+                console.log(response.data.message)
             }
         } catch (error) {
             console.error('Error uploading Novel:', error);
@@ -101,6 +102,8 @@ export default function AuthorCreate() {
 
         if (!authorToken) {
             navigate(Signup);
+        } else {
+            setToken(authorToken);
         }
     }, []);
 
