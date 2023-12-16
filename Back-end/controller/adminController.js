@@ -3,7 +3,9 @@ const bcrypt = require('bcrypt');
 
 const ReaderModel = require('../model/readerModel');
 const AuthorModel = require('../model/authorModel');
+const GenreModel = require('../model/genreModel');
 const NovelModel = require('../model/novelModel');
+
 require('dotenv/config');
 module.exports = {
 
@@ -46,6 +48,7 @@ module.exports = {
         try {
 
             let authors = await AuthorModel.find();
+
             if (authors) {
                 res.json({ status: true, authors })
             } else {
@@ -54,6 +57,42 @@ module.exports = {
             }
         } catch (error) {
             res.json({ status: false, message: 'admin catch error server side :: getAllAuthors' });
+            console.log(error);
+        }
+
+    },
+    getAllGenres: async (req, res) => {
+        try {
+
+            let genres = await GenreModel.find();
+            if (genres) {
+                res.json({ status: true, genres })
+            } else {
+                res.json({ status: false })
+                console.log('error on get genres');
+            }
+        } catch (error) {
+            res.json({ status: false, message: 'admin catch error server side :: getAllGenres' });
+            console.log(error);
+        }
+
+    },
+    addGenre: async (req, res) => {
+        try {
+
+            let genres = await GenreModel.findOne({ name: req.body.genreName });
+
+            if (genres) {
+                res.json({ status: false, message: 'already added' })
+            } else {
+                const genreAdd = GenreModel.create({
+                    name: req.body.genreName,
+                    description: req.body.genreDescription,
+                })
+                res.json({ status: true, message: 'Added' });
+            }
+        } catch (error) {
+            res.json({ status: false, message: 'admin catch error server side :: addGenres' });
             console.log(error);
         }
 

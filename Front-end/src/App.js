@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
-//Pages-------------------
+//Pages-------------------------------------------------------------------
 //reader pages
 import LoginPage from './pages/UserPages/LoginPage'
 import SignupPage from './pages/UserPages/SignupPage';
@@ -16,11 +16,12 @@ import AdminLoginPage from './pages/AdminPages/adminLoginPage';
 import AdminDashboardPage from './pages/AdminPages/adminDashboardPage';
 import AdminUserManagement from './pages/AdminPages/adminUsersPage';
 import AdminAuthorManagement from './pages/AdminPages/adminAuthorPage';
+import AdminGenrePage from './pages/AdminPages/adminGenrePage';
 
 
-//LINKS----------------------
+//LINKS---------------------------------------------------------------------
 import {
-  Login, Signup, adminAuthorManagement, adminDashboard, adminLogin,
+  Login, Signup, adminAuthorManagement, adminDashboard, adminGenreManagement, adminLogin,
   adminUserManagement, authorCreate, authorHome, readerHome
 } from './util/constants';
 
@@ -30,7 +31,7 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          {/* userPart */}
+          {/* UserPart */}
           <Route exact path={Login} element={<LoginPage />} />
           <Route exact path={Signup} element={<SignupPage />} />
           <Route exact path={readerHome} element={<ReaderHomePage />} />
@@ -41,10 +42,12 @@ function App() {
           <Route exact path={authorCreate} element={<AuthorCreatePage />} />
 
 
+          {/* AdminPart */}
           <Route exact path={adminLogin} element={<AdminLoginPage />} />
           <Route exact path={adminDashboard} element={<AdminDashboardPage />} />
           <Route exact path={adminUserManagement} element={<AdminUserManagement />} />
           <Route exact path={adminAuthorManagement} element={<AdminAuthorManagement />} />
+          <Route exact path={adminGenreManagement} element={<AdminGenrePage />} />
 
         </Routes>
       </Router>

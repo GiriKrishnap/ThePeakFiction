@@ -8,5 +8,7 @@ const adminController = require('../controller/adminController');
 router.post('/login', adminController.adminLogin);
 router.get('/getAllUsers', adminController.getAllUsers);
 router.get('/getAllAuthors', adminController.getAllAuthors);
+router.get('/getAllGenres', adminController.getAllGenres);
+router.post('/addGenre', adminController.addGenre);
 
 module.exports = router;

@@ -47,13 +47,13 @@ export default function AdminLogin() {
 
     return (
         <>
-            <div class="flex items-center justify-center h-screen bg-blue-950">
-                <div class="bg-gray-200 rounded-2xl border hover:shadow-sm p-10 max-w-lg">
-                    <div class="flex flex-col items-center space-y-4">
-                        <h1 class="font-bold text-2xl text-gray-700 w-4/6 text-center">
+            <div className="flex items-center justify-center h-screen bg-blue-950">
+                <div className="bg-gray-200 rounded-2xl border hover:shadow-sm p-10 max-w-lg">
+                    <div className="flex flex-col items-center space-y-4">
+                        <h1 className="font-bold text-2xl text-gray-700 w-4/6 text-center">
                             Welcome Back Boss!
                         </h1>
-                        <p class="text-sm text-gray-500 text-center w-5/6">
+                        <p className="text-sm text-gray-500 text-center w-5/6">
                             we glad you come back
                         </p>
 
@@ -62,7 +62,7 @@ export default function AdminLogin() {
                             <input
                                 type="email"
                                 placeholder="Email"
-                                class="border-2 rounded-lg w-full h-12 px-4"
+                                className="border-2 rounded-lg w-full h-12 px-4"
                                 onChange={e => setEmail(e.target.value)}
                                 required
                             />
@@ -70,14 +70,14 @@ export default function AdminLogin() {
                             <input
                                 type="password"
                                 placeholder="Password"
-                                class="border-2 rounded-lg w-full h-12 px-4"
+                                className="border-2 rounded-lg w-full h-12 px-4"
                                 onChange={e => setPassword(e.target.value)}
                                 required
                             />
                             <Link><p className='text-sm'>Forget Password?</p></Link>
 
                             <button
-                                class="bg-blue-500 text-white rounded-md
+                                className="bg-blue-500 text-white rounded-md
                              hover:bg-red-500 font-semibold px-4 py-3 w-full"
                                 type='submit'
                             > Login Now </button>

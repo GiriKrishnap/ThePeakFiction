@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from '../../util/axios'
-import { loginPost, authorHome, readerHome, Signup, authorCreate, authorNovels } from '../../util/constants';
+import { loginPost, authorHome, readerHome, Signup, authorCreate, authorNovels, adminGetAllGenres } from '../../util/constants';
 
 
 export default function AuthorCreate() {
@@ -10,8 +10,26 @@ export default function AuthorCreate() {
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [allGenre, setAllGenre] = useState(['action', 'adventure', 'adult', 'bl', 'comedy']);
+    const [allGenre, setAllGenre] = useState([]);
 
+    useEffect(() => {
+        getAllGenres();
+    }, [])
+
+    const getAllGenres = () => {
+        try {
+            axios.get(adminGetAllGenres).then((response) => {
+                if (response.data.status) {
+                    setAllGenre(response.data.genres)
+                    console.log(allGenre)
+                } else { alert('there is problem') }
+
+            });
+
+        } catch (error) {
+            console.log("error in getGenres function client side");
+        }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -62,13 +80,13 @@ export default function AuthorCreate() {
                             allGenre.map((item, index) => (
 
                                 <div className="flex items-center mb-4 " key={index + 1}>
-                                    <input id={item} type="checkbox" value={item} name='genres'
+                                    <input id={item.id} type="checkbox" value={item.name} name='genres'
                                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-md focus:ring-blue-500
                                          dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                                     />
 
                                     <label className="ms-2 text-sm font-medium text-gray-900 
-                                     dark:text-gray-300" >{item}</label>
+                                     dark:text-gray-300" >{item.name}</label>
                                 </div>
                             ))
                         }
@@ -89,7 +107,6 @@ export default function AuthorCreate() {
                       focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5
                       py-2.5 text-center">Cancel</Link>
                 </form>
-
 
             </div >
         </>
