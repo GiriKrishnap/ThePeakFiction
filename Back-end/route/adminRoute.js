@@ -11,5 +11,6 @@ router.get('/getAllAuthors', adminController.getAllAuthors);
 router.get('/getAllGenres', adminController.getAllGenres);
 router.post('/addGenre', adminController.addGenre);
 router.get('/image/:id', adminController.getImage);
+router.get('/getAllNovels', adminController.getAllNovels);
 
 module.exports = router;

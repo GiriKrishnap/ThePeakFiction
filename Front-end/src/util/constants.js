@@ -41,6 +41,7 @@ export const adminLogout = '/adminLogout'
 export const adminGetAllUsers = '/admin/getAllUsers'
 export const adminGetAllAuthors = '/admin/getAllAuthors'
 export const adminGetAllGenres = '/admin/getAllGenres'
+export const AdminGetAllNovels = '/admin/getAllNovels'
 
 
 

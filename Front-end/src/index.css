@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap');
 
 body {
   margin: 0;
@@ -9,6 +11,14 @@ body {
 
 .handwrite-font {
   font-family: 'Pacifico', cursive !important;
+}
+
+.bold-text {
+  font-family: 'Oswald', sans-serif;
+}
+
+.poppins {
+  font-family: 'Oswald', sans-serif;
 }
 
 .dancing-font {

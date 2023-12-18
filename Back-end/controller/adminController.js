@@ -29,6 +29,7 @@ module.exports = {
             console.log(error);
         }
     },
+    ///---------------------------
     getAllUsers: async (req, res) => {
         try {
 
@@ -45,6 +46,7 @@ module.exports = {
         }
 
     },
+    ///---------------------------
     getAllAuthors: async (req, res) => {
         try {
 
@@ -62,6 +64,7 @@ module.exports = {
         }
 
     },
+    ///---------------------------
     getAllGenres: async (req, res) => {
         try {
 
@@ -78,6 +81,7 @@ module.exports = {
         }
 
     },
+    ///---------------------------
     addGenre: async (req, res) => {
         try {
 
@@ -98,6 +102,7 @@ module.exports = {
         }
 
     },
+    ///---------------------------
     getImage: async (req, res) => {
 
         const { id } = req.params;
@@ -107,7 +112,31 @@ module.exports = {
             res.contentType('image/jpeg');
             res.sendFile(imagePath);
         }
+    },
+    ///---------------------------
+    getAllNovels: async (req, res) => {
+        try {
+
+            let novels = await NovelModel.find().populate('author_id').populate('genre');
+
+            if (novels) {
+                res.json({ status: true, novels })
+            } else {
+                res.json({ status: false });
+                console.og('novels is empty or there is error :: getAllNovels')
+            }
+        } catch (error) {
+            res.json({ status: false, message: 'admin catch error server side :: getAllNovels' });
+            console.log(error);
+        }
+
     }
+    ///---------------------------
+    ///---------------------------
+    ///---------------------------
+    ///---------------------------
+    ///---------------------------
+    ///---------------------------
 }
 
 
