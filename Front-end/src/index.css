@@ -5,6 +5,7 @@
 
 body {
   margin: 0;
+  background-color: rgb(41, 41, 41) !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

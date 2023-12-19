@@ -8,4 +8,8 @@ const readerController = require('../controller/readerController');
 router.post('/signup', readerController.readerSignup);
 router.post('/login', readerController.readerLogin);
 
+router.get('/getMostViewed', readerController.getMostViewed);
+router.get('/getTrending', readerController.getTrending);
+router.get('/getRandom', readerController.getRandom); 
+
 module.exports = router;

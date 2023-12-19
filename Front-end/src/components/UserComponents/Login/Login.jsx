@@ -3,7 +3,7 @@ import './Login.css'
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from '../../../util/axios'
-import { loginPost, authorHome, readerHome, Signup } from '../../../util/constants';
+import { loginPost, readerHome, Signup } from '../../../util/constants';
 
 export default function Login() {
 

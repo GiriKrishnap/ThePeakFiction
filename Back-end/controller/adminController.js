@@ -104,13 +104,21 @@ module.exports = {
     },
     ///---------------------------
     getImage: async (req, res) => {
-
-        const { id } = req.params;
-        const novel = await NovelModel.findOne({ _id: id });
-        if (novel) {
-            const imagePath = path.join(__dirname, '..', novel.cover);
-            res.contentType('image/jpeg');
-            res.sendFile(imagePath);
+        try {
+            const { id } = req.params;
+            console.log(id);
+            if (typeof id !== undefined) {
+                const novel = await NovelModel.findById(id);
+                if (novel) {
+                    const imagePath = path.join(__dirname, '..', novel.cover);
+                    res.contentType('image/jpeg');
+                    res.sendFile(imagePath);
+                }
+            } else {
+                res.json({ status: false })
+            }
+        } catch (error) {
+            console.log('catch error on :: getImage ' + error.message);
         }
     },
     ///---------------------------
@@ -130,8 +138,23 @@ module.exports = {
             console.log(error);
         }
 
+    },
+    ///--------------------------- 
+    giveApprove: async (req, res) => {
+        try {
+
+            const novel = await NovelModel.updateOne({ _id: req.body.novelId }, { $set: { status: 'ongoing' } });
+
+            if (novel) {
+                res.json({ status: true, message: 'Approved' });
+            } else {
+                res.json({ status: false, message: 'Can\'t Approve' });
+            }
+        } catch (error) {
+            res.json({ status: false, message: 'admin catch error server side :: giveApprove' });
+            console.log(error);
+        }
     }
-    ///---------------------------
     ///---------------------------
     ///---------------------------
     ///---------------------------

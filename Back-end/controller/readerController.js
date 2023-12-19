@@ -96,5 +96,63 @@ module.exports = {
             console.log(error + 'error in reader LOGIN');
         }
     },
+    //---------------------------------------------------------
+    getMostViewed: async (req, res) => {
+        try {
+            const most = await NovelModel.find().sort({ 'view': 1 }).limit(6);
+            if (most) {
+                res.json({ status: true, most });
+            }
+        } catch (error) {
+            res.json({ status: false, message: 'catch Error :: getMostViewed' })
+            console.log('catch Error :: getMostViewed ');
+        }
+    },
+
+    //---------------------------------------------------------
+    getTrending: async (req, res) => {
+        try {
+            const novels = await NovelModel.find({ status: { $ne: "pending" } }).sort({ 'in_library': 1 }).limit(6);
+            if (novels) {
+                res.json({ status: true, novels });
+            }
+        } catch (error) {
+            res.json({ status: false, message: 'catch Error :: getMostViewed' })
+            console.log('catch Error :: getMostViewed ');
+        }
+    },
+
+    //--------------------------------------------------------- 
+    getRandom: async (req, res) => {
+        try {
+            // const random = await NovelModel.find().sort({ 'in_library': 1 }).limit(1).populate('author_id')
+            // const random = await NovelModel.find().skip(2).limit(1).populate('author_id');
+
+            const random = await NovelModel.aggregate([
+                { $sample: { size: 1 } },
+                {
+                    $lookup: {
+                        from: 'authordatas', // Replace 'authors' with the actual name of your authors collection
+                        localField: 'author_id',
+                        foreignField: '_id',
+                        as: 'author',
+                    },
+                },
+                { $unwind: '$author' },
+            ]);
+
+            console.log("random - " + random);
+            if (random) {
+                console.log(random);
+                res.json({ status: true, random });
+            }
+        } catch (error) {
+            res.json({ status: false, message: 'catch Error :: getMostViewed' })
+            console.log('catch Error :: getMostViewed ');
+        }
+    },
+    //---------------------------------------------------------
+
+    //---------------------------------------------------------
 
 }

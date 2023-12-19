@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2';
 import axios from '../../util/axios'
-import { AdminGetAllNovels, adminDashboard } from '../../util/constants';
+import { AdminGetAllNovels, CoverUrl, adminDashboard, adminNovelApprove } from '../../util/constants';
 
 export default function NovelManagement() {
 
@@ -26,6 +26,35 @@ export default function NovelManagement() {
         } catch (error) {
             console.log("error in getUsersList function client side");
         }
+    }
+
+    const handleApprove = async (novelId) => {
+        console.log('Novel id --- > ' + novelId);
+        const body = JSON.stringify({
+            novelId
+        })
+        axios.post(adminNovelApprove, body, { headers: { "Content-Type": "application/json" } }).then((response) => {
+            if (response.status) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: response.data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                getAllNovels();
+
+            } else {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: response.data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
+        })
+
     }
 
     return (
@@ -73,7 +102,7 @@ export default function NovelManagement() {
                                         <td className="px-6 py-4">
                                             {novel.publish_date}
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-4 text-center">
                                             <button className='bg-blue-500 hover:bg-blue-700
                                              text-white font-bold py-2 px-4 rounded'
                                                 onClick={() => document.getElementById(`my_modal_${index}`).showModal()}>
@@ -81,9 +110,10 @@ export default function NovelManagement() {
                                             </button>
                                             {/* Open the modal using document.getElementById('ID').showModal() method */}
 
-                                            <dialog id={`my_modal_${index}`} className="modal p-6 bg-slate-700 rounded-xl text-white w-2/5">
+                                            <dialog id={`my_modal_${index}`} className="modal p-6 bg-slate-700 rounded-xl
+                                             text-white w-2/5 text-left">
                                                 <div className="modal-box ">
-                                                    <img src={`http://localhost:4000/admin/image/${novel._id}`}
+                                                    <img src={`${CoverUrl}/${novel._id}`}
                                                         alt="" className='h-52 rounded-lg m-2 drop-shadow-md' />
 
                                                     <h3 className="font-bold tracking-wide mb-2 poppins text-4xl">{novel.title}</h3>
@@ -133,7 +163,8 @@ export default function NovelManagement() {
                                             </dialog>
 
                                             {novel.status === 'pending' ? <button className='bg-green-500 hover:bg-green-700
-                                             text-white font-bold py-2 px-4 rounded ml-2'>
+                                             text-white font-bold py-2 px-4 rounded ml-2'
+                                                onClick={() => handleApprove(novel._id)}>
                                                 Approve <i class="fa-solid fa-check"></i>
                                             </button> : ''}
 
