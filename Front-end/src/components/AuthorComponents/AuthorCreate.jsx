@@ -27,7 +27,6 @@ export default function AuthorCreate() {
                 if (response.data.status) {
                     setAllGenre(response.data.genres)
                     allGenre.sort()
-                    console.log(allGenre)
                 } else { alert('there is problem') }
 
             });

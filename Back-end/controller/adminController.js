@@ -77,7 +77,7 @@ module.exports = {
             }
         } catch (error) {
             res.json({ status: false, message: 'admin catch error server side :: getAllGenres' });
-            console.log(error);
+            console.log("catch error getAllGenre " + error.message);
         }
 
     },
@@ -98,7 +98,7 @@ module.exports = {
             }
         } catch (error) {
             res.json({ status: false, message: 'admin catch error server side :: addGenres' });
-            console.log(error);
+            console.log("catch error addGenre " + error.message);
         }
 
     },
@@ -106,7 +106,6 @@ module.exports = {
     getImage: async (req, res) => {
         try {
             const { id } = req.params;
-            console.log(id);
             if (typeof id !== undefined) {
                 const novel = await NovelModel.findById(id);
                 if (novel) {
@@ -135,7 +134,7 @@ module.exports = {
             }
         } catch (error) {
             res.json({ status: false, message: 'admin catch error server side :: getAllNovels' });
-            console.log(error);
+            console.log('catch error ::giveAllNovels Admin controller ' + error.message);
         }
 
     },
@@ -152,7 +151,7 @@ module.exports = {
             }
         } catch (error) {
             res.json({ status: false, message: 'admin catch error server side :: giveApprove' });
-            console.log(error);
+            console.log('catch error at :: giveApprove adminController ' + error.message);
         }
     }
     ///---------------------------

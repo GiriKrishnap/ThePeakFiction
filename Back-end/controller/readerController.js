@@ -43,7 +43,7 @@ module.exports = {
             }
         } catch (error) {
             res.json({ status: false, message: "oops catch error" });
-            console.log(error + 'error in reader signup');
+            console.log(error + 'error in reader signup' + error.message);
         }
     },
     /////////////////////////
@@ -93,19 +93,19 @@ module.exports = {
 
         } catch (error) {
             res.json({ status: false, message: "oops catch error" });
-            console.log(error + 'error in reader LOGIN');
+            console.log(error + 'error in reader LOGIN' + error.message);
         }
     },
     //---------------------------------------------------------
     getMostViewed: async (req, res) => {
         try {
-            const most = await NovelModel.find().sort({ 'view': 1 }).limit(6);
+            const most = await NovelModel.find({ status: { $ne: "pending" } }).sort({ 'views': -1 }).limit(6);
             if (most) {
                 res.json({ status: true, most });
             }
         } catch (error) {
             res.json({ status: false, message: 'catch Error :: getMostViewed' })
-            console.log('catch Error :: getMostViewed ');
+            console.log('catch Error :: getMostViewed ' + error.message);
         }
     },
 
@@ -118,7 +118,7 @@ module.exports = {
             }
         } catch (error) {
             res.json({ status: false, message: 'catch Error :: getMostViewed' })
-            console.log('catch Error :: getMostViewed ');
+            console.log('catch Error :: getMostViewed ' + error.message);
         }
     },
 
@@ -132,7 +132,7 @@ module.exports = {
                 { $sample: { size: 1 } },
                 {
                     $lookup: {
-                        from: 'authordatas', // Replace 'authors' with the actual name of your authors collection
+                        from: 'authordatas',
                         localField: 'author_id',
                         foreignField: '_id',
                         as: 'author',
@@ -141,18 +141,54 @@ module.exports = {
                 { $unwind: '$author' },
             ]);
 
-            console.log("random - " + random);
+
             if (random) {
-                console.log(random);
+
                 res.json({ status: true, random });
             }
         } catch (error) {
             res.json({ status: false, message: 'catch Error :: getMostViewed' })
-            console.log('catch Error :: getMostViewed ');
+            console.log('catch Error :: getMostViewed ' + error.message);
         }
     },
     //---------------------------------------------------------
+    getAllNovels: async (req, res) => {
+        try {
+            const novels = await NovelModel.find({ status: { $ne: "pending" } }).sort({ 'publish_date': -1 }).populate('genre').populate('author_id');
+            if (novels) {
+                console.log("hai");
+                res.json({ status: true, novels });
+            } else {
+                res.json({ status: false });
+            }
 
+        } catch (error) {
+            res.json({ status: false, message: 'catch error :: getALlNovels' })
+            console.log('catch error :: getAllNovels - readerController ' + error.message)
+        }
+    },
+    //---------------------------------------------------------
+    filterNovel: async (req, res) => {
+        try {
+
+            const filter = {}
+            filter.genre = req.body.selectedGenres
+            console.log(filter);
+
+            const novels = await NovelModel.find(filter).populate('genre').populate('author_id');
+            console.log(novels);
+
+            // if (novels) {
+            //     res.json({ status: true, novels });
+            // } else {
+            //     res.json({ status: false });
+            // }
+
+        } catch (error) {
+            res.json({ status: false, message: 'catch error :: filterNovels' })
+            console.log('catch error :: filterNovels - readerController ' + error.message)
+        }
+    },
     //---------------------------------------------------------
 
 }

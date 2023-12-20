@@ -31,7 +31,11 @@ const novelSchema = mongoose.Schema({
         default: "pending"
     },
     publish_date: {
-        type: String,
+        type: Date,
+        require: true
+    },
+    updated_date: {
+        type: Date,
         require: true
     },
     rate: {

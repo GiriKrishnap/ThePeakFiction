@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import LoginPage from './pages/UserPages/LoginPage'
 import SignupPage from './pages/UserPages/SignupPage';
 import ReaderHomePage from './pages/UserPages/HomePage';
+import FilterNovelsPage from './pages/UserPages/FilterPage';
 
 //author
 import AuthorHomePage from './pages/AuthorPages/AuthorHome';
@@ -24,7 +25,7 @@ import AdminNovelPage from './pages/AdminPages/adminNovelsPage';
 import {
   Login, Signup, adminAuthorManagement, adminDashboard, adminGenreManagement, adminLogin,
   adminNovelManagement,
-  adminUserManagement, authorCreate, authorHome, readerHome
+  adminUserManagement, authorCreate, authorHome, filter, readerHome
 } from './util/constants';
 
 
@@ -37,6 +38,7 @@ function App() {
           <Route exact path={Login} element={<LoginPage />} />
           <Route exact path={Signup} element={<SignupPage />} />
           <Route exact path={readerHome} element={<ReaderHomePage />} />
+          <Route exact path={filter} element={<FilterNovelsPage />} />
 
 
           {/* AuthorPart */}

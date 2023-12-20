@@ -4,27 +4,25 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useDispatch } from 'react-redux';
-import { Login, authorHome, verifyUserToken } from '../../util/constants';
+import { Login, authorHome, filter, verifyUserToken } from '../../util/constants';
 
-const navigation = [
-    { name: 'Home', link: 'home', current: true },
-    { name: 'Updated', link: 'updated', current: false },
-    { name: 'New Release', link: 'newRelease', current: false },
-    { name: 'My Library', link: 'myLibrary', current: false },
-    { name: 'Random', link: 'Random', current: false }
+const navigationObj = [
+    { name: 'Home', link: '/home', current: false },
+    { name: 'Updated', link: '/updated', current: false },
+    { name: 'New Release', link: '/newRelease', current: false },
+    { name: 'My Library', link: '/myLibrary', current: false },
+    { name: 'Random', link: '/Random', current: false }
 ]
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
-
-
-
+//-----------------------------------------------------------
 export default function Header() {
 
-    const navigate = useNavigate();
     const [isAuthor, setIsAuthor] = useState(false);
 
+    const navigate = useNavigate();
 
     const handleLogout = (e) => {
         e.preventDefault();
@@ -45,7 +43,9 @@ export default function Header() {
         })
     }
 
+
     useEffect(() => {
+
         const token = localStorage.getItem('token');
         const AuthorToken = localStorage.getItem('authorToken');
         if (AuthorToken) {
@@ -54,6 +54,7 @@ export default function Header() {
         if (!token && !AuthorToken) {
             navigate(Login);
         }
+
     }, [])
 
     return (
@@ -85,10 +86,10 @@ export default function Header() {
                                 </div>
                                 <div className="hidden sm:ml-6 sm:block">
                                     <div className="flex space-x-5 mt-1">
-                                        {navigation.map((item) => (
+                                        {navigationObj.map((item) => (
                                             <Link
                                                 key={item.name}
-                                                href={item.href}
+                                                to={item.link}
                                                 className={classNames(
                                                     item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                                                     'rounded-md px-3 py-2 text-sm font-medium'
@@ -101,6 +102,16 @@ export default function Header() {
                                     </div>
                                 </div>
                             </div>
+
+
+                            <Link to={filter}>
+                                <button className='text-white btn bg-blue-500 pl-4 pr-4 p-1 rounded-lg
+                                hover:bg-blue-700'>
+                                    <i className="fa-solid fa-circle-nodes"></i> Filter
+                                </button>
+                            </Link>
+
+
                             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                                 {/* Profile dropdown */}
                                 <Menu as="div" className="relative ml-3">
@@ -161,11 +172,11 @@ export default function Header() {
 
                     <Disclosure.Panel className="sm:hidden">
                         <div className="space-y-1 px-2 pb-3 pt-2">
-                            {navigation.map((item) => (
+                            {navigationObj.map((item) => (
                                 <Disclosure.Button
                                     key={item.name}
                                     as="Link"
-                                    href={item.href}
+                                    onClick={() => navigate(item.link)}
                                     className={classNames(
                                         item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                                         'block rounded-md px-3 py-2 text-base font-medium'

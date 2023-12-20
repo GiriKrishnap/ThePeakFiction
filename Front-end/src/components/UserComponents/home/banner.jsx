@@ -25,11 +25,11 @@ export default function Banner() {
     return (
         <>
 
-            <div className='md:h-72 h-56 m-2 rounded-lg grid md:grid-cols-3 grid-cols-2'
+            <div className='md:h-72 h-56 m-2 rounded-lg grid md:grid-cols-3 grid-cols-2 overflow-hidden'
                 style={novel._id ? { backgroundImage: `url(${CoverUrl}/${novel._id})`, backgroundSize: 'cover' } : {}}
             >
                 {/* //////////////// */}
-                <div className='h-full pl-5 flex flex-col place-items-start text-left bg-gradient-to-r
+                <div className=' pl-5 flex flex-col place-items-start text-left bg-gradient-to-r
                  from-gray-800 from-50% to-transparent to-95% rounded-lg p-4'>
 
                     <p className='md:text-7xl text-4xl m-1  md:mt-8 mt-8 font-medium 
@@ -61,17 +61,17 @@ export default function Banner() {
                 {/* //////////////// */}
                 <div className='p-10 hidden lg:block mt-10 '>
 
-                    <p className='flex text-blue-400 poppins drop-shadow-sm font-bold text-2xl tracking-wider'>Author: {novel.author?.userName} </p>
-                    <p className='flex text-blue-400 poppins drop-shadow-sm font-bold text-2xl tracking-wider'>Publish Date: {novel.publish_date}</p>
-                    <p className='flex text-blue-400 poppins drop-shadow-sm font-bold text-2xl tracking-wider'>Rating: {novel.rate}</p>
+                    <p className='flex text-red-400 poppins drop-shadow-lg font-bold text-2xl tracking-wider'>Author: {novel.author?.userName} </p>
+                    <p className='flex text-blue-100 poppins drop-shadow-md font-bold text-2xl tracking-wider'>Publish Date: {novel.publish_date}</p>
+                    <p className='flex text-blue-100 poppins drop-shadow-md font-bold text-2xl tracking-wider'>Rating: {novel.rate}</p>
 
                     <br />
 
                     <div className='flex mt-3'>
                         <button className=' bg-red-500 h-10 p-2 w-52 rounded-full text-white 
-                        font-medium mr-2 drop-shadow-lg hover:scale-105 hover:ml-1 hover:bg-red-600 duration-500'>Read Now</button>
+                        font-medium mr-2 drop-shadow-lg hover:scale-105 hover:ml-1 hover:bg-red-600 duration-500'><i class="fa-solid fa-book-open"></i> Read Now</button>
                         <button className=' bg-blue-500 h-10 p-2 w-52 rounded-full
-                         text-white font-medium drop-shadow-lg hover:scale-105 hover:ml-1 hover:bg-blue-600 duration-500'>Add to library</button>
+                         text-white font-medium drop-shadow-lg hover:scale-105 hover:ml-1 hover:bg-blue-600 duration-500'><i class="fa-solid fa-circle-plus"></i> Add to library</button>
                         <i className="fa-solid fa-retweet text-white fa-xl mt-5 cursor-pointer m-2" onClick={changeBanner}></i>
                     </div>
                 </div>

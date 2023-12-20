@@ -7,16 +7,21 @@ export const CoverUrl = "http://localhost:4000/admin/image";
 export const Signup = '/signup';
 export const Login = '/'
 export const readerHome = '/Home'
+export const filter = '/filter'
 
 //post
 export const signupPost = '/signup';
 export const loginPost = '/login'
 export const verifyUserToken = '/verifyUserToken'
-
 //homePage
 export const getMostViewed = '/getMostViewed'
 export const getTrending = '/getTrending'
 export const getRandom = '/getRandom'
+
+//filter
+export const getFilteredNovelsUsers = '/filterNovels-user'
+export const getAllNovelsUsers = '/getAllNovels-user'
+
 
 
 ////AUTHOR--------------------------------------
