@@ -16,7 +16,6 @@ export default function Banner() {
 
     const [novels, setNovels] = useState([]);
     const [allGenre, setAllGenre] = useState([]);
-    console.log(allGenre)
 
     useEffect(() => {
         getAllGenres();
@@ -29,7 +28,6 @@ export default function Banner() {
             const response = await axios.get(getAllNovelsUsers)
             if (response.data.status) {
                 setNovels(response.data.novels)
-                console.log(response.data.novels)
             }
         } catch (error) {
             console.log(error)
@@ -62,15 +60,24 @@ export default function Banner() {
                 }
             }
 
+            const selectedStatus = document.getElementById("status").value;
+            const selectedYear = document.getElementById("year").value;
+            const selectedSort = document.getElementById("sort").value;
 
             const body = JSON.stringify({
-                selectedGenres
+                selectedGenres,
+                selectedStatus,
+                selectedYear,
+                selectedSort
             })
 
             const response = await axios.post(getFilteredNovelsUsers, body, { headers: { "Content-Type": "application/json" } })
             if (response.data.status) {
                 setNovels(response.data.novels);
             }
+
+
+
 
         } catch (error) {
             console.log('catch error client :: handleFilter');
@@ -95,8 +102,9 @@ export default function Banner() {
                         {/* ----------------------GENRES----------------------------------------- */}
                         {
                             allGenre.map((item) => (
-                                <div className="flex items-center mb-4 ">
-                                    <input id={item.id} type="checkbox" value={item._id} name='genres'
+                                <div key={item._id}
+                                    className="flex items-center mb-4 ">
+                                    <input id={item._id} type="checkbox" value={item._id} name='genres'
                                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300" />
 
                                     <label className="ms-1.5 text-sm font-medium text-gray-900 
@@ -119,7 +127,7 @@ export default function Banner() {
                              text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
                                 p-2 w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
                                dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value={null}>Status</option>
+                                <option value={''}>Status</option>
                                 <option value={'completed'}>Completed</option>
                                 <option value={'ongoing'}>Ongoing</option>
                                 <option value={'canceled'}>Canceled</option>
@@ -131,7 +139,7 @@ export default function Banner() {
                              text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
                                 p-2 w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
                                dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value={null}>Year</option>
+                                <option value={''}>Year</option>
                                 <option value={2023}>2023</option>
                                 <option value={2022}>2022</option>
                                 <option value={2021}>2021</option>
@@ -143,11 +151,10 @@ export default function Banner() {
                              text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
                                 p-2 w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
                                dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value={null}>Sort</option>
+                                <option value={"views"}>Most viewed</option>
                                 <option value={"title"}>Name A-Z</option>
                                 <option value={"updated_date"}>Recently updated</option>
                                 <option value={"publish-date"}>Recently added</option>
-                                <option value={"views"}>Most viewed</option>
                                 <option value={"in_library"}>Trending</option>
                             </select>
                         </div>
@@ -160,7 +167,7 @@ export default function Banner() {
                             </button>
                             <button className='bg-red-500 p-1.5 text-white rounded-md pr-2 font-sans md:w-24 w-full'
                                 onClick={getAllNovels}>
-                                <i class="fa-solid fa-retweet mr-1"></i>
+                                <i className="fa-solid fa-retweet mr-1"></i>
                                 Get All
                             </button>
                         </div>
@@ -175,7 +182,7 @@ export default function Banner() {
                 {/* THREE_____________ */}
                 {novels.length > 0 ? '' :
                     < h1 className='font-mono text-5xl text-white text-center mt-10 mb-4'>
-                        - There is No Novels <i class="fa-regular fa-face-sad-tear "></i> -
+                        - There is No Novels <i className="fa-regular fa-face-sad-tear "></i> -
                     </h1>
                 }
                 <div className='grid md:grid-cols-2 grid-cols-1 p-5 gap-2'>
@@ -183,9 +190,10 @@ export default function Banner() {
                     {
                         novels.map((item, index) => (
 
-                            <>
+                            <div key={item._id}>
                                 {/* -------------------NOVEL CARD---------------------------- */}
-                                <div className='__CARD__  bg-gray-700 hover:bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))]
+                                <div
+                                    className='__CARD__  bg-gray-700 hover:bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))]
                                  from-gray-600 via-gray-700 to-gray-800 lg:h-64 h-80 rounded-lg flex overflow-hidden
                                  '>
 
@@ -216,7 +224,8 @@ export default function Banner() {
                                             {
                                                 item.genre.map((genre) => (
 
-                                                    <small className='bg-blue-500 pr-2 pl-2 p-0.5 text-gray-200 
+                                                    <small key={genre.name}
+                                                        className='bg-blue-500 pr-2 pl-2 p-0.5 text-gray-200 
                                                     rounded-xl cursor-default'> {genre.name} </small>
                                                 ))
                                             }
@@ -257,7 +266,7 @@ export default function Banner() {
 
                                 </div>
                                 {/* -------------------NOVEL CARD END---------------------------- */}
-                            </>
+                            </div>
 
                         ))
                     }

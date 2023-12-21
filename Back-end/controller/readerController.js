@@ -172,12 +172,31 @@ module.exports = {
         try {
 
             const genre = req.body.selectedGenres
+            const sort = req.body.selectedSort
+            const year = req.body.selectedYear
+            const status = req.body.selectedStatus
 
-            const novels = await NovelModel.find(
-                genre.length > 0 ? { genre: { $all: genre } } : {}
-            ).populate('genre').populate('author_id')
 
-            // console.log(novels);
+            const sortObject = {};
+            sortObject[sort] = -1;
+
+            const startDate = year ? new Date(`${year}-01-01`) : null;
+            const endDate = year ? new Date(`${Number(year) + 1}-01-01`) : null;
+
+            const query = {
+                $and: [
+                    genre.length > 0 ? { genre: { $all: genre } } : {},
+                    year ? { publish_date: { $gte: startDate, $lt: endDate } } : {},
+                    status ? { status: status } : {}
+                ]
+            };
+
+
+            const novels = await NovelModel.find(query)
+                .sort(sortObject)
+                .populate('genre')
+                .populate('author_id')
+
 
             res.json({ status: true, novels });
 
