@@ -61,15 +61,16 @@ export default function Banner() {
                     selectedGenres.push(checkboxes[i].value);
                 }
             }
+
+
             const body = JSON.stringify({
                 selectedGenres
             })
 
             const response = await axios.post(getFilteredNovelsUsers, body, { headers: { "Content-Type": "application/json" } })
-            // if (response.data.status) {
-            //     setNovels(response.data.novels);
-            //     console.log(response.data.novels)
-            // }
+            if (response.data.status) {
+                setNovels(response.data.novels);
+            }
 
         } catch (error) {
             console.log('catch error client :: handleFilter');
@@ -172,6 +173,11 @@ export default function Banner() {
 
 
                 {/* THREE_____________ */}
+                {novels.length > 0 ? '' :
+                    < h1 className='font-mono text-5xl text-white text-center mt-10 mb-4'>
+                        - There is No Novels <i class="fa-regular fa-face-sad-tear "></i> -
+                    </h1>
+                }
                 <div className='grid md:grid-cols-2 grid-cols-1 p-5 gap-2'>
 
                     {

@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const ReaderModel = require('../model/readerModel');
 const AuthorModel = require('../model/authorModel');
 const NovelModel = require('../model/novelModel');
+const GenreModel = require('../model/genreModel');
 
 module.exports = {
 
@@ -156,7 +157,6 @@ module.exports = {
         try {
             const novels = await NovelModel.find({ status: { $ne: "pending" } }).sort({ 'publish_date': -1 }).populate('genre').populate('author_id');
             if (novels) {
-                console.log("hai");
                 res.json({ status: true, novels });
             } else {
                 res.json({ status: false });
@@ -171,18 +171,16 @@ module.exports = {
     filterNovel: async (req, res) => {
         try {
 
-            const filter = {}
-            filter.genre = req.body.selectedGenres
-            console.log(filter);
+            const genre = req.body.selectedGenres
 
-            const novels = await NovelModel.find(filter).populate('genre').populate('author_id');
-            console.log(novels);
+            const novels = await NovelModel.find(
+                genre.length > 0 ? { genre: { $all: genre } } : {}
+            ).populate('genre').populate('author_id')
 
-            // if (novels) {
-            //     res.json({ status: true, novels });
-            // } else {
-            //     res.json({ status: false });
-            // }
+            // console.log(novels);
+
+            res.json({ status: true, novels });
+
 
         } catch (error) {
             res.json({ status: false, message: 'catch error :: filterNovels' })
