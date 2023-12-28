@@ -48,7 +48,7 @@ export default function RowPost() {
                                     </div>
 
                                     <p className='text-white poppins text-lg
-                                     drop-shadow-md mt-28'
+                                     drop-shadow-md mt-28 text-center'
                                     >{novel.title}</p>
                                 </div>
                             </div>

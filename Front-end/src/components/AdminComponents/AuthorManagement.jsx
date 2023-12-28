@@ -18,7 +18,7 @@ export default function AuthorManagement() {
             axios.get(adminGetAllAuthors).then((re) => {
                 if (re.data.status) {
                     setAuthors(re.data.authors);
-                    console.log(re.data.authors)
+            
                 } else { alert('there is problem') }
 
             });

@@ -1,98 +1,106 @@
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const bcrypt = require('bcrypt');
+const generateToken = require('../util/generateToken')
 
+//-MODELS---------------------------------------------------
 const ReaderModel = require('../model/readerModel');
 const AuthorModel = require('../model/authorModel');
 const NovelModel = require('../model/novelModel');
 const GenreModel = require('../model/genreModel');
+//----------------------------------------------------------
 
 module.exports = {
 
     readerSignup: async (req, res) => {
         try {
+
             let isAuthor = req.body.isAuthor;
+            let emailExist = await ReaderModel.findOne({ email: req.body.email });
+            let emailExistAuthor = await AuthorModel.findOne({ email: req.body.email });
 
-            if (!isAuthor) {
+            if (emailExist || emailExistAuthor) {
 
-                const emailExist = await ReaderModel.findOne({ email: req.body.email });
-                if (emailExist) {
-                    res.json({ status: false, message: 'You Are Already A Member' });
-                } else {
-                    const securePassword = await bcrypt.hash(req.body.password, 10);
-                    const userCreate = ReaderModel.create({
-                        userName: req.body.userName,
-                        email: req.body.email,
-                        password: securePassword
-                    })
-                    res.json({ status: true, message: 'Your Signup is Success ' });
-                }
+                res.status(400).json("User Already Exists")
 
             } else {
-                const emailExist = await AuthorModel.findOne({ email: req.body.email });
-                if (emailExist) {
-                    res.json({ status: false, message: 'You Are Already A Account' });
-                } else {
-                    const securePassword = await bcrypt.hash(req.body.password, 10);
+
+                const securePassword = await bcrypt.hash(req.body.password, 10);
+                if (isAuthor) {
+
                     const authorCreate = AuthorModel.create({
                         userName: req.body.userName,
                         email: req.body.email,
                         password: securePassword
                     })
-                    res.json({ status: true, message: 'Your Signup is Success ' });
+
+                } else {
+
+                    const userCreate = ReaderModel.create({
+                        userName: req.body.userName,
+                        email: req.body.email,
+                        password: securePassword
+
+                    })
                 }
+
+                let details = {
+                    firstName: req.body.userName,
+                    email: req.body.email,
+                }
+
+                res.status(201).json(details)
             }
+
         } catch (error) {
-            res.json({ status: false, message: "oops catch error" });
+            res.json(error.message);
             console.log(error + 'error in reader signup' + error.message);
         }
     },
-    /////////////////////////
+    //---------------------------------------------------------
     readerLogin: async (req, res) => {
         try {
 
+            let emailExist = ''
+
             if (req.body.isAuthor) {
 
-                const emailExist = await AuthorModel.findOne({ email: req.body.email });
-
-                if (!emailExist) {
-                    res.json({ status: false, message: 'Email Not Found! Are you really author?' })
-                } else {
-                    const checkPassword = await bcrypt.compare(req.body.password, emailExist.password);
-                    if (!checkPassword) {
-                        res.json({ status: false, message: "Wrong Password" })
-                    } else {
-                        const authorToken = jwt.sign({
-                            userName: emailExist.userName,
-                            email: emailExist.email,
-                            id: emailExist._id,
-                            isAuthor: true
-                        }, "secret123", { expiresIn: '7d' });
-                        res.json({ status: true, message: 'Your Login is Success', authorToken });
-                    }
-                }
+                emailExist = await AuthorModel.findOne({ email: req.body.email });
 
             } else {
-                const emailExist = await ReaderModel.findOne({ email: req.body.email });
-                if (!emailExist) {
-                    res.json({ status: false, message: 'Email Not Found' })
+
+                emailExist = await ReaderModel.findOne({ email: req.body.email })
+            }
+
+            if (!emailExist) {
+
+                res.status(400).json("User Does Not Exist")
+
+            } else {
+
+                const checkPassword = await bcrypt.compare(req.body.password, emailExist.password);
+
+                if (!checkPassword) {
+
+                    res.json({ status: false, message: "Wrong Password" })
+
                 } else {
-                    const checkPassword = await bcrypt.compare(req.body.password, emailExist.password);
-                    if (!checkPassword) {
-                        res.json({ status: false, message: "Wrong Password" })
-                    } else {
-                        const token = jwt.sign({
-                            userName: emailExist.userName,
-                            email: emailExist.email,
-                            id: emailExist._id,
-                            isAuthor: false
-                        }, "secret123", { expiresIn: '7d' });
-                        res.json({ status: true, message: 'Your Login is Success', token });
+
+                    const details = {
+
+                        id: emailExist._id,
+                        userName: emailExist.userName,
+                        email: emailExist.email,
+                        token: generateToken(emailExist._id, req.body.isAuthor),
+                        isAuthor: req.body.isAuthor
                     }
+
+                    res.status(200).json(details);
                 }
             }
 
         } catch (error) {
+
             res.json({ status: false, message: "oops catch error" });
             console.log(error + 'error in reader LOGIN' + error.message);
         }
@@ -100,11 +108,15 @@ module.exports = {
     //---------------------------------------------------------
     getMostViewed: async (req, res) => {
         try {
+
             const most = await NovelModel.find({ status: { $ne: "pending" } }).sort({ 'views': -1 }).limit(6);
+
             if (most) {
+
                 res.json({ status: true, most });
             }
         } catch (error) {
+
             res.json({ status: false, message: 'catch Error :: getMostViewed' })
             console.log('catch Error :: getMostViewed ' + error.message);
         }
@@ -114,10 +126,13 @@ module.exports = {
     getTrending: async (req, res) => {
         try {
             const novels = await NovelModel.find({ status: { $ne: "pending" } }).sort({ 'in_library': 1 }).limit(6);
+
             if (novels) {
+
                 res.json({ status: true, novels });
             }
         } catch (error) {
+
             res.json({ status: false, message: 'catch Error :: getMostViewed' })
             console.log('catch Error :: getMostViewed ' + error.message);
         }
@@ -126,10 +141,10 @@ module.exports = {
     //--------------------------------------------------------- 
     getRandom: async (req, res) => {
         try {
-            // const random = await NovelModel.find().sort({ 'in_library': 1 }).limit(1).populate('author_id')
-            // const random = await NovelModel.find().skip(2).limit(1).populate('author_id');
 
             const random = await NovelModel.aggregate([
+                { $match: { status: { $ne: "pending" } } },
+                { $match: { status: { $ne: "hide" } } },
                 { $sample: { size: 1 } },
                 {
                     $lookup: {
@@ -155,14 +170,22 @@ module.exports = {
     //---------------------------------------------------------
     getAllNovels: async (req, res) => {
         try {
-            const novels = await NovelModel.find({ status: { $ne: "pending" } }).sort({ 'publish_date': -1 }).populate('genre').populate('author_id');
+
+            const novels = await NovelModel.find({ status: { $ne: "pending" } })
+                .sort({ 'publish_date': -1 })
+                .populate('genre')
+                .populate('author_id');
+
             if (novels) {
+
                 res.json({ status: true, novels });
             } else {
+
                 res.json({ status: false });
             }
 
         } catch (error) {
+
             res.json({ status: false, message: 'catch error :: getALlNovels' })
             console.log('catch error :: getAllNovels - readerController ' + error.message)
         }
@@ -175,10 +198,15 @@ module.exports = {
             const sort = req.body.selectedSort
             const year = req.body.selectedYear
             const status = req.body.selectedStatus
+            const search = req.body.search
 
 
             const sortObject = {};
-            sortObject[sort] = -1;
+            if (sort === 'title') {
+                sortObject[sort] = 1;
+            } else {
+                sortObject[sort] = -1;
+            }
 
             const startDate = year ? new Date(`${year}-01-01`) : null;
             const endDate = year ? new Date(`${Number(year) + 1}-01-01`) : null;
@@ -187,7 +215,8 @@ module.exports = {
                 $and: [
                     genre.length > 0 ? { genre: { $all: genre } } : {},
                     year ? { publish_date: { $gte: startDate, $lt: endDate } } : {},
-                    status ? { status: status } : {}
+                    status ? { status: status } : {},
+                    search ? { title: { $regex: new RegExp(search, 'i') } } : {}
                 ]
             };
 
@@ -203,9 +232,30 @@ module.exports = {
 
         } catch (error) {
             res.json({ status: false, message: 'catch error :: filterNovels' })
-            console.log('catch error :: filterNovels - readerController ' + error.message)
+            console.log('catch error :: filterNovels - readerController ', error.message)
         }
     },
     //---------------------------------------------------------
+    getNovelWithId: async (req, res) => {
+        try {
 
+            const novelId = req.params.novelId
+            if (novelId) {
+
+                NovelModel.findOne({ _id: novelId })
+                    .populate('author_id')
+                    .populate('genre')
+                    .then((response) => {
+                        res.json({ novel: response });
+                    })
+
+            } else {
+                res.status(400)
+            }
+
+        } catch (error) {
+            res.json({ status: false, message: 'catch error ::getNovelWithId server-side' })
+            console.log('catch error ::getNovelWithId - ', error.message)
+        }
+    }
 }

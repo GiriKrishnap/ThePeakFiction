@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './Login.css'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import axios from '../../../util/axios'
-import { loginPost, readerHome, Signup } from '../../../util/constants';
+import { Signup, readerHome } from '../../../util/constants';
+import { userLogin } from '../../../redux/Actions/userActions/loginActions';
 
 export default function Login() {
 
@@ -12,48 +13,27 @@ export default function Login() {
     const [isAuthor, setIsAuthor] = useState(false);
 
     const navigate = useNavigate();
+    const dispatch = useDispatch()
+
+    const userLoginData = useSelector(state => state.userLogin)
+    let { error, loading, userLoginDetails } = userLoginData
+
 
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
-            const body = JSON.stringify({
-                email,
-                password,
-                isAuthor
-            });
-
-            const response = await axios.post(loginPost, body, { headers: { "Content-Type": "application/json" } });
-            if (response.data.token) {
-                localStorage.setItem('token', response.data.token);
-                navigate(readerHome)
-
-            } else if (response.data.authorToken) {
-                localStorage.setItem('authorToken', response.data.authorToken);
-                navigate(readerHome)
-
-            } else {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: response.data.message,
-                    showConfirmButton: false,
-                    timer: 1500
+            if (email || password) {
+                dispatch(userLogin(email, password, isAuthor)).then(() => {
+                    navigate(readerHome)
                 })
+            } else {
+                error = 'Fill the Form correctly'
             }
 
         } catch (error) {
             console.log(error)
         }
     }
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        const authorToken = localStorage.getItem('authorToken');
-
-        if (token || authorToken) {
-            navigate(readerHome);
-        }
-    }, [])
 
     return (
         <>
@@ -74,9 +54,9 @@ export default function Login() {
                                 <h1 className='font-sans text-4xl font-medium mb-3'>Login</h1>
                                 <form action="" onSubmit={handleSubmit}>
                                     <input type="email" name="email" className='input-login d-block' placeholder='Email'
-                                        onChange={e => setEmail(e.target.value)} value={email} />
+                                        onChange={e => setEmail(e.target.value)} value={email} required />
                                     <input type="password" name="password" className='input-login d-block' placeholder='Password'
-                                        onChange={e => SetPassword(e.target.value)} value={password} />
+                                        onChange={e => SetPassword(e.target.value)} value={password} required />
                                     <div className='flex flex-row'>
                                         <input type="checkbox" className='mb-3 ml-3 cursor-pointer w-4'
                                             onClick={() => isAuthor ? setIsAuthor(false) : setIsAuthor(true)}
@@ -86,6 +66,7 @@ export default function Login() {
                                     <button type='submit' className='button-login mb-3'>Login Now</button>
                                 </form>
                                 <Link to={Signup}> <p className='aTag-login'>No Account?</p> </Link>
+                                {error ? <p className='text-red-500'>{error}</p> : " "}
                             </div>
                         </div>
                     </div>

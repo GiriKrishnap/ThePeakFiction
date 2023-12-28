@@ -6,16 +6,31 @@ const adminController = require('../controller/adminController');
 
 //////User Routes///////////////////
 
-//get----------------------------------------------
+//------------------{LOGIN}--------------------------------
+router.post('/login', adminController.adminLogin);
+
+//------------------{USERS}--------------------------------
+//get--
 router.get('/getAllUsers', adminController.getAllUsers);
+
+//------------------{AUTHORS}--------------------------------
+//get--
 router.get('/getAllAuthors', adminController.getAllAuthors);
+
+//------------------{GENRE}--------------------------------
+//get--
 router.get('/getAllGenres', adminController.getAllGenres);
+//post--
+router.post('/addGenre', adminController.addGenre);
+
+//------------------{NOVELS}--------------------------------
+//get--
 router.get('/image/:id', adminController.getImage);
 router.get('/getAllNovels', adminController.getAllNovels);
-
-//post----------------------------------------------
-router.post('/login', adminController.adminLogin);
-router.post('/addGenre', adminController.addGenre);
+//post--
 router.post('/approve', adminController.giveApprove);
+router.post('/hideNovel', adminController.hideNovel);
+
+
 
 module.exports = router;

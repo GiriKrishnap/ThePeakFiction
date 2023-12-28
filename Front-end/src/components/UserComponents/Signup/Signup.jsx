@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import './Signup.css'
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from '../../../util/axios'
 import { Login, readerHome, signupPost } from '../../../util/constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { userSignup } from '../../../redux/Actions/userActions/signupActions';
 
 export default function Signup() {
 
@@ -14,54 +15,26 @@ export default function Signup() {
     const [isAuthor, setIsAuthor] = useState(false);
 
     const navigate = useNavigate();
-    ///
+    const dispatch = useDispatch()
+
+    const signup = useSelector(state => state.userSignup)
+    let { loading, error, userInfo } = signup
+
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (password !== confirmPassword) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Fill the Password correctly!',
-                showConfirmButton: false,
-                timer: 1500
-            })
+        if (!userName || !email || !password || !confirmPassword || password !== confirmPassword) {
+            error = 'Fill the Form correctly'
         }
-        const body = JSON.stringify({
-            userName,
-            email,
-            password,
-            isAuthor
-        });
 
-        let response = await axios.post(signupPost, body, { headers: { "Content-Type": "application/json" } });
-        if (response.data.status === true) {
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: response.data.message,
-                showConfirmButton: false,
-                timer: 1500
-            }).then(() => navigate('/'))
-        } else {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: response.data.message,
-                showConfirmButton: false,
-                timer: 1500
-            })
-        }
+        dispatch(userSignup(userName, email, password, isAuthor)).then(() => {
+
+            if (userInfo) {
+                navigate(Login);
+            }
+        })
     }
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        const authorToken = localStorage.getItem('authorToken');
-
-        if (token || authorToken) {
-            navigate(readerHome);
-        }
-    }, []);
 
     return (
         <>
@@ -90,6 +63,7 @@ export default function Signup() {
                                     <button type='submit' className='button-login mb-3'>Signup Now</button>
                                 </form>
                                 <Link to={Login}> <p className='aTag-login'>You Have Account?</p> </Link>
+                                {error ? <p className='text-red-500'>{error}</p> : " "}
                             </div>
                         </div>
 

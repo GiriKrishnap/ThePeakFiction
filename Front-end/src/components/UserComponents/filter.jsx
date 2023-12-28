@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import axios from '../../util/axios'
-import { CoverUrl, adminGetAllGenres, filter, getAllNovelsUsers, getFilteredNovelsUsers } from '../../util/constants';
-
+import { CoverUrl, adminGetAllGenres, getAllNovelsUsers, getFilteredNovelsUsers } from '../../util/constants';
+//////////////////////////////
 
 
 function classNames(...classes) {
@@ -12,10 +9,12 @@ function classNames(...classes) {
 }
 
 
+///////////////////////
 export default function Banner() {
 
     const [novels, setNovels] = useState([]);
     const [allGenre, setAllGenre] = useState([]);
+    const [search, setSearch] = useState('');
 
     useEffect(() => {
         getAllGenres();
@@ -68,7 +67,8 @@ export default function Banner() {
                 selectedGenres,
                 selectedStatus,
                 selectedYear,
-                selectedSort
+                selectedSort,
+                search
             })
 
             const response = await axios.post(getFilteredNovelsUsers, body, { headers: { "Content-Type": "application/json" } })
@@ -84,19 +84,22 @@ export default function Banner() {
         }
     }
 
+    //////////////////////////
     return (
         <>
 
-            <div className='m-1 bg-gray-800 overflow-hidden flex flex-col rounded-lg pb-5'>
+            <div className='m-1 bg-gray-800 overflow-hidden flex flex-col rounded-lg pb-5 text-center'>
 
                 {/* ONE_____________ */}
                 <div className='p-5 w-full'>
                     <h1 className='mt-5 mb-2 text-4xl drop-shadow-md
                      text-white bold-text'>Filter The Novels</h1>
+                    <small className='text-gray-400'>Effortlessly discover and savor captivating novels
+                        with ease through efficient filtering, enabling a delightful reading experience.</small>
                 </div>
 
                 {/* TWO_____________ */}
-                <div className='w-full p-2'>
+                <div className='w-full p-2 mt-3'>
 
                     <div className='flex flex-row gap-4 justify-center'>
                         {/* ----------------------GENRES----------------------------------------- */}
@@ -157,6 +160,12 @@ export default function Banner() {
                                 <option value={"publish-date"}>Recently added</option>
                                 <option value={"in_library"}>Trending</option>
                             </select>
+                        </div>
+                        {/* ---------------------------SEARCH NOVELS------------------------ */}
+                        <div>
+                            <input type='text' className="bg-gray-500 border-0 text-white
+                             text-sm rounded-lg block p-2 pl-3 w-full" placeholder='Search'
+                                onChange={(e) => setSearch(e.target.value)} />
                         </div>
                         {/* --------------------------FILTER BUTTON------------------------- */}
                         <div className='flex gap-2'>

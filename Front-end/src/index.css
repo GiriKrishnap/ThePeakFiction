@@ -2,6 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+
 
 body {
   margin: 0;
@@ -26,6 +29,18 @@ body {
   font-family: 'Dancing Script', cursive;
 }
 
+.poppins2 {
+  font-family: 'Poppins', sans-serif;
+}
+
+.bgColor {
+  background-color: #182335;
+}
+
+.novelFont {
+  font-family: 'Lora', serif;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -33,5 +48,19 @@ code {
 
 .hover-scale:hover {
   transform: scale(1.01);
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: rgba(0, 0, 0, 0) 0px 1px 1px;
+}
+
+div::-webkit-scrollbar {
+  width: 10px;
+}
+
+div::-webkit-scrollbar-track {
+  background-color: RGB(55, 65, 81);
+  border-radius: 15px;
+}
+
+div::-webkit-scrollbar-thumb {
+  background: #3B82F6;
+  border-radius: 15px;
 }

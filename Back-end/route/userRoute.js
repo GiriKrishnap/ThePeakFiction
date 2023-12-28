@@ -17,4 +17,7 @@ router.get('/getRandom', readerController.getRandom);
 router.post('/filterNovels-user', readerController.filterNovel);
 router.get('/getAllNovels-user', readerController.getAllNovels);
 
+//novelDetails----------
+router.get('/novelWithId/:novelId', readerController.getNovelWithId);
+
 module.exports = router;

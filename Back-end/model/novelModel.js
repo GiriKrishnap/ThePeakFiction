@@ -52,6 +52,10 @@ const novelSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
+    is_hide: {
+        type: Boolean,
+        default: false
+    },
     chapters: [{
         number: {
             type: Number

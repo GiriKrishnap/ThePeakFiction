@@ -6,6 +6,7 @@ const ReaderModel = require('../model/readerModel');
 const AuthorModel = require('../model/authorModel');
 const GenreModel = require('../model/genreModel');
 const NovelModel = require('../model/novelModel');
+const { log } = require('console');
 
 require('dotenv/config');
 module.exports = {
@@ -153,8 +154,28 @@ module.exports = {
             res.json({ status: false, message: 'admin catch error server side :: giveApprove' });
             console.log('catch error at :: giveApprove adminController ' + error.message);
         }
-    }
+    },
     ///---------------------------
+    hideNovel: async (req, res) => {
+        try {
+            const id = req.query.id
+            let isHide = req.query.isHide
+            console.log("isHide - ", isHide);
+
+            if (id) {
+                if (isHide !== false) {
+
+                    await NovelModel.updateOne({ _id: id }, { $set: { is_hide: false } })
+                } else {
+                    await NovelModel.updateOne({ _id: id }, { $set: { is_hide: true } })
+                }
+            }
+
+        } catch (error) {
+            res.json({ status: false, message: 'admin catch error server side :: hideNovel' });
+            console.log('catch error at :: hideNovel adminController - ' + error.message)
+        }
+    },
     ///---------------------------
     ///---------------------------
     ///---------------------------

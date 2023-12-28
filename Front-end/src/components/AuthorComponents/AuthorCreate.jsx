@@ -13,11 +13,20 @@ export default function AuthorCreate() {
     const [cover, setCover] = useState(null);
     const [coverPreview, setCoverPreview] = useState(null);
     const [allGenre, setAllGenre] = useState([]);
-    const [token, setToken] = useState('');
+    const [authorId, setAuthorId] = useState('');
 
 
     useEffect(() => {
-        getAllGenres();
+
+        const user = JSON.parse(localStorage.getItem('user-login'))
+
+        if (!user?.isAuthor) {
+            navigate(Signup);
+        } else {
+            setAuthorId(user?.id)
+            getAllGenres();
+        }
+
     }, [])
 
 
@@ -70,7 +79,7 @@ export default function AuthorCreate() {
         formData.append('description', description);
         formData.append('photo', cover);
         formData.append('genre', selectedGenres);
-        formData.append('token', token);
+        formData.append('authorId', authorId);
         try {
             const response = await axios.post(`${authorCreatePost}${title}`, formData)
             if (response.data.status) {
@@ -95,16 +104,6 @@ export default function AuthorCreate() {
             console.error('Error uploading Novel:', error);
         }
     }
-
-    useEffect(() => {
-        const authorToken = localStorage.getItem('authorToken');
-
-        if (!authorToken) {
-            navigate(Signup);
-        } else {
-            setToken(authorToken);
-        }
-    }, []);
 
     return (
         <>

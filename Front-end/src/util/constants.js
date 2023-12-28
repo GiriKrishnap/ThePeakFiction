@@ -8,6 +8,7 @@ export const Signup = '/signup';
 export const Login = '/'
 export const readerHome = '/Home'
 export const filter = '/filter'
+export const novelDetailedView = '/novelDetailed'
 
 //post
 export const signupPost = '/signup';
@@ -28,10 +29,14 @@ export const getAllNovelsUsers = '/getAllNovels-user'
 export const authorHome = '/author'
 export const authorNovels = '/author/Novels'
 export const authorCreate = '/author/create'
-export const authorNovelDetailed = '/author/Novels/'
+export const authorNovelDetailed = '/author/Novels/detail'
+export const AuthorNovelDetails = '/author/Novels/detail'
+export const AuthorAddChapter = '/author/Novels/addChapter'
 
 //post
 export const authorCreatePost = '/author/create/'
+export const getAuthorNovels = '/author/getAuthorNovels'
+export const AuthorAddChapterPost = '/author/addChapter'
 
 ////////////////////////////////////////////////////////////////////////
 //ADMIN SIDE URLS ====>
@@ -44,10 +49,11 @@ export const adminGenreManagement = '/admin/genres'
 
 //POST
 export const adminLoginPost = '/admin/login'
+export const adminLogout = '/adminLogout'
 export const adminDashboardPost = '/admin/dashboard'
 export const adminGenresPost = '/admin/addGenre'
-export const adminLogout = '/adminLogout'
 export const adminNovelApprove = '/admin/approve'
+export const adminNovelHide = '/admin/hideNovel'
 
 //GET
 export const adminGetAllUsers = '/admin/getAllUsers'
@@ -58,3 +64,4 @@ export const AdminGetAllNovels = '/admin/getAllNovels'
 
 
 export const getNovelCover = '/admin/image/'
+export const getNovelDetailsWithId = '/novelWithId'

@@ -3,8 +3,9 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Login, authorHome, filter, verifyUserToken } from '../../util/constants';
+import { userLogout } from '../../redux/Actions/userActions/loginActions';
 
 const navigationObj = [
     { name: 'Home', link: '/home', current: false },
@@ -23,6 +24,7 @@ export default function Header() {
     const [isAuthor, setIsAuthor] = useState(false);
 
     const navigate = useNavigate();
+    const dispatch = useDispatch()
 
     const handleLogout = (e) => {
         e.preventDefault();
@@ -36,25 +38,19 @@ export default function Header() {
             confirmButtonText: 'Logout'
         }).then((result) => {
             if (result.isConfirmed) {
-                localStorage.clear();
-                // dispatch({ type: 'logout' })
+                dispatch(userLogout())
                 navigate('/');
             }
         })
     }
 
-
     useEffect(() => {
-
-        const token = localStorage.getItem('token');
-        const AuthorToken = localStorage.getItem('authorToken');
-        if (AuthorToken) {
-            setIsAuthor(true);
+        const user = JSON.parse(localStorage.getItem('user-login'))
+        if (!user) {
+            navigate(Login)
+        } else {
+            setIsAuthor(user.isAuthor)
         }
-        if (!token && !AuthorToken) {
-            navigate(Login);
-        }
-
     }, [])
 
     return (

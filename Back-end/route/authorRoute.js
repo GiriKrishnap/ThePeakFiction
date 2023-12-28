@@ -6,8 +6,12 @@ const novelExistChecker = require('../middlewares/novelCreateMiddleware');
 const authorController = require('../controller/AuthorController');
 
 
-//////User Routes///////////////////
+//get.....................................
+router.get('/getAuthorNovels/:id', authorController.getAllAuthorNovels);
+
+//Post.....................................
 router.post('/create/:title', novelExistChecker, multer.single('photo'), authorController.authorCreate);
+router.post('/addChapter', authorController.addChapter);
 
 
 module.exports = router;

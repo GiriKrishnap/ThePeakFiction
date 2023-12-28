@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2';
 import axios from '../../util/axios'
-import { AdminGetAllNovels, CoverUrl, adminDashboard, adminNovelApprove } from '../../util/constants';
+import { AdminGetAllNovels, CoverUrl, adminDashboard, adminNovelApprove, adminNovelHide } from '../../util/constants';
 
 export default function NovelManagement() {
 
@@ -18,7 +18,6 @@ export default function NovelManagement() {
             axios.get(AdminGetAllNovels).then((re) => {
                 if (re.data.status) {
                     setNovels(re.data.novels);
-                    console.log(re.data.novels)
                 }
 
             });
@@ -29,7 +28,6 @@ export default function NovelManagement() {
     }
 
     const handleApprove = async (novelId) => {
-        console.log('Novel id --- > ' + novelId);
         const body = JSON.stringify({
             novelId
         })
@@ -55,6 +53,15 @@ export default function NovelManagement() {
             }
         })
 
+    }
+
+    const handleNovelHide = async (novelId, isHide) => {
+        try {
+            axios.post(`${adminNovelHide}?id=${novelId}&isHide=${isHide}`)
+            getAllNovels();
+        } catch (error) {
+            console.log('catch error in :: handleNovelHide on clint side');
+        }
     }
 
     return (
@@ -106,7 +113,7 @@ export default function NovelManagement() {
                                             <button className='bg-blue-500 hover:bg-blue-700
                                              text-white font-bold py-2 px-4 rounded'
                                                 onClick={() => document.getElementById(`my_modal_${index}`).showModal()}>
-                                                More <i class="fa-solid fa-circle-info"></i>
+                                                More <i className="fa-solid fa-circle-info"></i>
                                             </button>
                                             {/* Open the modal using document.getElementById('ID').showModal() method */}
 
@@ -165,12 +172,17 @@ export default function NovelManagement() {
                                             {novel.status === 'pending' ? <button className='bg-green-500 hover:bg-green-700
                                              text-white font-bold py-2 px-4 rounded ml-2'
                                                 onClick={() => handleApprove(novel._id)}>
-                                                Approve <i class="fa-solid fa-check"></i>
+                                                Approve <i className="fa-solid fa-check"></i>
                                             </button> : ''}
 
                                             <button className='bg-red-500 hover:bg-red-700
-                                             text-white font-bold py-2 px-4 rounded ml-2'>
-                                                Hide <i class="fa-solid fa-eye-slash"></i>
+                                             text-white font-bold py-2 px-4 rounded ml-2'
+                                                onClick={() => handleNovelHide(novel._id, novel.is_hide)}>
+                                                {
+                                                    novel.is_hide ?
+                                                        <>unHide < i className="fa-solid fa-eye"></i></> :
+                                                        <>Hide < i className="fa-solid fa-eye-slash"></i></>
+                                                }
                                             </button>
                                         </td>
                                     </tr>
@@ -183,6 +195,6 @@ export default function NovelManagement() {
                 </div> : <p className='text-2xl rounded-lg text-white font-bold font-mono bg-blue-300'>There is no Novels</p>
             }
 
-        </div>
+        </div >
     )
 }
