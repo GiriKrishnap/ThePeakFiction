@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2';
 import axios from '../../util/axios'
-import { adminDashboard, adminGetAllUsers, adminLoginPost } from '../../util/constants';
+import { adminGetAllUsers } from '../../util/constants';
+//.........................................................................
+
 
 export default function UserManagement() {
 
+    //.........................................................................
+
     const [users, setUsers] = useState([]);
 
+    //.........................................................................
 
     useEffect(() => {
         getUsersList();
     }, [])
+
+    //.........................................................................
 
     const getUsersList = () => {
         try {
@@ -27,6 +32,8 @@ export default function UserManagement() {
             console.log("error in getUsersList function client side");
         }
     }
+
+    //.........................................................................
 
     return (
         <div className='ml-80 m-10'>
@@ -88,3 +95,5 @@ export default function UserManagement() {
         </div>
     )
 }
+//.........................................................................
+

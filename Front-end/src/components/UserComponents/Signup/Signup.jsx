@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import axios from '../../../util/axios'
-import { Login, readerHome, signupPost } from '../../../util/constants';
+import { Login } from '../../../util/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { userSignup } from '../../../redux/Actions/userActions/signupActions';
+//.........................................................................
 
 export default function Signup() {
+
+    //.........................................................................
 
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
@@ -14,13 +16,19 @@ export default function Signup() {
     const [confirmPassword, SetConfirmPassword] = useState('');
     const [isAuthor, setIsAuthor] = useState(false);
 
+    //.........................................................................
+
     const navigate = useNavigate();
     const dispatch = useDispatch()
+
+    //.........................................................................
 
     const signup = useSelector(state => state.userSignup)
     let { loading, error, userInfo } = signup
 
-    
+    //.........................................................................
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!userName || !email || !password || !confirmPassword || password !== confirmPassword) {
@@ -34,6 +42,8 @@ export default function Signup() {
             }
         })
     }
+
+    //.........................................................................
 
 
     return (
@@ -79,4 +89,4 @@ export default function Signup() {
         </>
     )
 }
-
+//.........................................................................

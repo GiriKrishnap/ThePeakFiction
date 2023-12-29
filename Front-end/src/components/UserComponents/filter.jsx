@@ -1,26 +1,31 @@
-import { useEffect, useState } from 'react'
 import axios from '../../util/axios'
-import { CoverUrl, adminGetAllGenres, getAllNovelsUsers, getFilteredNovelsUsers } from '../../util/constants';
-//////////////////////////////
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { CoverUrl, adminGetAllGenres, getAllNovelsUsers, getFilteredNovelsUsers, novelDetailedView } from '../../util/constants';
+//.........................................................................
 
 
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
-
-
-///////////////////////
 export default function Banner() {
+
+
+    //.........................................................................
+
+    const navigate = useNavigate();
+
+    //.........................................................................
 
     const [novels, setNovels] = useState([]);
     const [allGenre, setAllGenre] = useState([]);
     const [search, setSearch] = useState('');
+
+    //.........................................................................
 
     useEffect(() => {
         getAllGenres();
         getAllNovels();
     }, [])
 
+    //.........................................................................
 
     const getAllNovels = async () => {
         try {
@@ -32,6 +37,8 @@ export default function Banner() {
             console.log(error)
         }
     }
+
+    //.........................................................................
 
     const getAllGenres = () => {
         try {
@@ -47,6 +54,8 @@ export default function Banner() {
             console.log("error in getGenres function client side");
         }
     }
+
+    //.........................................................................
 
     const handleFilter = async () => {
         try {
@@ -84,7 +93,16 @@ export default function Banner() {
         }
     }
 
-    //////////////////////////
+    //.........................................................................
+
+    const handleClick = async (novelId) => {
+
+        navigate(`${novelDetailedView}?NovelId=${novelId}`, { replace: true });
+
+    }
+
+    //.........................................................................
+
     return (
         <>
 
@@ -203,8 +221,8 @@ export default function Banner() {
                                 {/* -------------------NOVEL CARD---------------------------- */}
                                 <div
                                     className='__CARD__  bg-gray-700 hover:bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))]
-                                 from-gray-600 via-gray-700 to-gray-800 lg:h-64 h-80 rounded-lg flex overflow-hidden
-                                 '>
+                                 from-gray-600 via-gray-700 to-gray-800 lg:h-64 h-80 rounded-lg flex overflow-hidden'
+                                    onClick={() => handleClick(item._id)}>
 
                                     <div className='w-1/2 hover:scale-105 duration-500'
                                         style={{
@@ -294,3 +312,5 @@ export default function Banner() {
         </>
     )
 }
+//.........................................................................
+

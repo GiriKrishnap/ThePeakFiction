@@ -1,8 +1,8 @@
-//........................................................................
+//..............................................................................................
 import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
-//LINKS..................................................................
+//LINKS.........................................................................................
 import {
   AuthorAddChapter,
   AuthorNovelDetails,
@@ -12,7 +12,7 @@ import {
 } from './util/constants';
 
 
-//Pages.................................................................
+//Pages.........................................................................................
 
 //reader pages
 const LoginPage = lazy(() => import('./pages/UserPages/LoginPage'));
@@ -36,12 +36,12 @@ const AdminAuthorManagement = lazy(() => import('./pages/AdminPages/adminAuthorP
 const AdminGenrePage = lazy(() => import('./pages/AdminPages/adminGenrePage'))
 const AdminNovelPage = lazy(() => import('./pages/AdminPages/adminNovelsPage'))
 
-
+//404 notFound
 const NotFound404 = lazy(() => import('./pages/404-Page'))
 
 
 
-////////////////////////////////////////////////////////
+//........................................................................................
 function App() {
 
 
@@ -101,4 +101,5 @@ function App() {
 
 }
 
+//...............................................................................................
 export default App;

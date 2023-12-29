@@ -57,6 +57,7 @@ module.exports = {
             console.log(error + 'error in reader signup' + error.message);
         }
     },
+
     //---------------------------------------------------------
     readerLogin: async (req, res) => {
         try {
@@ -105,6 +106,7 @@ module.exports = {
             console.log(error + 'error in reader LOGIN' + error.message);
         }
     },
+
     //---------------------------------------------------------
     getMostViewed: async (req, res) => {
         try {
@@ -167,6 +169,7 @@ module.exports = {
             console.log('catch Error :: getMostViewed ' + error.message);
         }
     },
+
     //---------------------------------------------------------
     getAllNovels: async (req, res) => {
         try {
@@ -190,6 +193,7 @@ module.exports = {
             console.log('catch error :: getAllNovels - readerController ' + error.message)
         }
     },
+
     //---------------------------------------------------------
     filterNovel: async (req, res) => {
         try {
@@ -235,11 +239,13 @@ module.exports = {
             console.log('catch error :: filterNovels - readerController ', error.message)
         }
     },
+
     //---------------------------------------------------------
     getNovelWithId: async (req, res) => {
         try {
 
             const novelId = req.params.novelId
+
             if (novelId) {
 
                 NovelModel.findOne({ _id: novelId })

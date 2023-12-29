@@ -75,7 +75,7 @@ export default function Header() {
                                 <div className="flex flex-shrink-0 items-center">
                                     <img
                                         className="h-12 w-auto"
-                                        src="../assets/logo/webLogo.png"
+                                        src="/assets/logo/webLogo.png"
                                         alt="ThePeakFiction"
                                     />
                                     <p className='text-white mx-3 font-medium'>ThePeakFiction</p>

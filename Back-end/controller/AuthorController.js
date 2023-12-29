@@ -54,10 +54,23 @@ module.exports = {
             console.log(error + ' error in AuthorGetNovels ' + error.message);
         }
     },
+
     //--------------------------------------------------
     addChapter: async (req, res) => {
         try {
-            const { title, content } = req.body;
+            const { NovelId, title, content, gcoin, chapterNumber } = req.body;
+
+            const obj = {
+                number: chapterNumber,
+                title,
+                content,
+                publish_date: new Date(),
+                gcoin: gcoin || 0
+            }
+
+            NovelModel.updateOne({ _id: NovelId }, { $push: { chapters: obj }, $inc: { chapter_count: chapterNumber } }).then(() => {
+                res.json({ status: true, message: 'created' })
+            })
 
         } catch (error) {
             res.json({ status: false, message: "oops catch error ::addChapter serverSide" });
@@ -65,6 +78,5 @@ module.exports = {
         }
     },
 
-    ///////////////////////////////////////////////////////////////////////////////////
-
+    //--------------------------------------------------
 }

@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2';
 import axios from '../../util/axios'
-import { AdminGetAllNovels, CoverUrl, adminDashboard, adminNovelApprove, adminNovelHide } from '../../util/constants';
+import { AdminGetAllNovels, CoverUrl, adminNovelApprove, adminNovelHide } from '../../util/constants';
+//.........................................................................
+
 
 export default function NovelManagement() {
 
+    //.........................................................................
+
     const [novels, setNovels] = useState([]);
 
+    //.........................................................................
 
     useEffect(() => {
         getAllNovels();
     }, [])
+
+    //.........................................................................
 
     const getAllNovels = () => {
         try {
@@ -26,6 +32,8 @@ export default function NovelManagement() {
             console.log("error in getUsersList function client side");
         }
     }
+
+    //.........................................................................
 
     const handleApprove = async (novelId) => {
         const body = JSON.stringify({
@@ -55,6 +63,8 @@ export default function NovelManagement() {
 
     }
 
+    //.........................................................................
+
     const handleNovelHide = async (novelId, isHide) => {
         try {
             axios.post(`${adminNovelHide}?id=${novelId}&isHide=${isHide}`)
@@ -63,6 +73,8 @@ export default function NovelManagement() {
             console.log('catch error in :: handleNovelHide on clint side');
         }
     }
+
+    //.........................................................................
 
     return (
         <div className='ml-80 m-10'>
@@ -107,7 +119,7 @@ export default function NovelManagement() {
                                             {novel.author_id.userName}
                                         </td>
                                         <td className="px-6 py-4">
-                                            {novel.publish_date}
+                                            {new Date(novel.publish_date).toLocaleDateString("en-GB")}
                                         </td>
                                         <td className="px-6 py-4 text-center">
                                             <button className='bg-blue-500 hover:bg-blue-700
@@ -146,7 +158,7 @@ export default function NovelManagement() {
 
                                                     <p className="py-4 inline text-md font-medium
                                                      text-blue-400 poppins">
-                                                        Publish Date:</p> {novel.publish_date} <br />
+                                                        Publish Date:</p> {new Date(novel.publish_date).toLocaleDateString("en-GB")} <br />
 
                                                     <p className="py-4 inline text-md font-medium
                                                      text-blue-400 poppins">

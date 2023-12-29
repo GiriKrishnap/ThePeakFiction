@@ -6,10 +6,12 @@ import { useNavigate } from 'react-router-dom'
 
 export default function AuthorNovels() {
 
-    const [novels, setNovels] = useState([]);
-
     const navigate = useNavigate();
 
+    const [novels, setNovels] = useState([]);
+    
+    //.........................................................................
+    
     useEffect(() => {
 
         const user = JSON.parse(localStorage.getItem('user-login'))
@@ -21,17 +23,23 @@ export default function AuthorNovels() {
         }
 
     }, [])
-
+    //.........................................................................
+    
     const handleClick = async (novelId) => {
+
         navigate(`${authorNovelDetailed}?NovelId=${novelId}`, { replace: true });
+
     }
+    
+    //.........................................................................
 
     const getAllNovels = async () => {
         try {
 
             const userData = JSON.parse(localStorage.getItem('user-login'))
-
+            
             const response = await axios.get(`${getAuthorNovels}/${userData.id}`);
+
             if (response.data.status) {
                 setNovels(response.data.novels)
             }
@@ -39,6 +47,8 @@ export default function AuthorNovels() {
             console.log(error.message)
         }
     }
+
+    //.........................................................................
 
     return (
         <>
@@ -107,32 +117,80 @@ export default function AuthorNovels() {
                                         {/* -------CHAPTERS----------------------- */}
                                         <div className='w-full flex flex-col gap-2 mt-6'>
 
-                                            <div className='bg-gray-600 pr-3 pl-3 text-gray-300 
-                                rounded-full cursor-default grid grid-cols-2'>
-                                                <p className='text-start'>chapter 9</p>
-                                                <p className='text-end'>23/09/44</p>
-                                            </div>
+                                            {
+                                                item.chapters[item.chapters.length - 1]?.title ?
+                                                    < div className='bg-gray-600 pr-3 pl-3 text-gray-300 
+                                                rounded-full cursor-default grid grid-cols-2'>
+                                                        <p className='text-start'>
+                                                            chapter {item.chapters[item.chapters.length - 1]?.number}
+                                                        </p>
+                                                        <p className='text-end'>
+                                                            {new Date(item.chapters[item.chapters.length - 1]?.publish_date)
+                                                                .toLocaleDateString("en-GB")}
+                                                        </p>
+                                                    </div> : ''
 
-                                            <div className='bg-gray-600 pr-3 pl-3 text-gray-300 
-                                rounded-full cursor-default grid grid-cols-2'>
-                                                <p className='text-start'>chapter 8</p>
-                                                <p className='text-end'>07/06/44</p>
-                                            </div>
+                                            }
 
-                                            <div className='bg-gray-600 pr-3 pl-3 text-gray-300 
-                                rounded-full cursor-default grid grid-cols-2'>
-                                                <p className='text-start'>chapter 7</p>
-                                                <p className='text-end'>02/05/44</p>
-                                            </div>
+                                            {
+                                                item.chapters[item.chapters.length - 2]?.title ?
+                                                    < div className='bg-gray-600 pr-3 pl-3 text-gray-300 
+                                                rounded-full cursor-default grid grid-cols-2'>
+                                                        <p className='text-start'>
+                                                            chapter {item.chapters[item.chapters.length - 2]?.number}
+                                                        </p>
+                                                        <p className='text-end'>
+                                                            {new Date(item.chapters[item.chapters.length - 2]?.publish_date)
+                                                                .toLocaleDateString("en-GB")}
+                                                        </p>
+                                                    </div> : ''
 
-                                            <div className='bg-gray-600 pr-3 pl-3 text-gray-300 
-                                rounded-full cursor-default grid grid-cols-2'>
-                                                <p className='text-start'>chapter 6</p>
-                                                <p className='text-end'>23/03/43</p>
-                                            </div>
+                                            }
+
+                                            {
+                                                item.chapters[item.chapters.length - 3]?.title ?
+                                                    < div className='bg-gray-600 pr-3 pl-3 text-gray-300 
+                                                rounded-full cursor-default grid grid-cols-2'>
+                                                        <p className='text-start'>
+                                                            chapter {item.chapters[item.chapters.length - 3]?.number}
+                                                        </p>
+                                                        <p className='text-end'>
+                                                            {new Date(item.chapters[item.chapters.length - 3]?.publish_date)
+                                                                .toLocaleDateString("en-GB")}
+                                                        </p>
+                                                    </div> : ''
+
+                                            }
+
+                                            {
+                                                item.chapters[item.chapters.length - 4]?.title ?
+                                                    < div className='bg-gray-600 pr-3 pl-3 text-gray-300 
+                                                rounded-full cursor-default grid grid-cols-2'>
+                                                        <p className='text-start'>
+                                                            chapter {item.chapters[item.chapters.length - 4]?.number}
+                                                        </p>
+                                                        <p className='text-end'>
+                                                            {new Date(item.chapters[item.chapters.length - 4]?.publish_date)
+                                                                .toLocaleDateString("en-GB")}
+                                                        </p>
+                                                    </div> : ''
+
+                                            }
+
+
 
                                         </div>
 
+                                        {
+                                            item.chapters.length <= 0 ?
+                                                < div className='bg-gray-600 text-gray-300 
+                                                rounded-3xl cursor-default font-mono h-full p-10'>
+                                                    <p className='text-center'>
+                                                        no chapters yet..
+                                                    </p>
+                                                </div> : ''
+
+                                        }
                                     </div>
 
                                 </div>

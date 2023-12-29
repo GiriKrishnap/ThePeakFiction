@@ -5,19 +5,28 @@ import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { Signup, readerHome } from '../../../util/constants';
 import { userLogin } from '../../../redux/Actions/userActions/loginActions';
+//.........................................................................
+
 
 export default function Login() {
+
+    //.........................................................................
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
+
+    //.........................................................................
 
     const [email, setEmail] = useState('');
     const [password, SetPassword] = useState('');
     const [isAuthor, setIsAuthor] = useState(false);
 
-    const navigate = useNavigate();
-    const dispatch = useDispatch()
+    //.........................................................................
 
     const userLoginData = useSelector(state => state.userLogin)
     let { error, loading, userLoginDetails } = userLoginData
 
+    //.........................................................................
 
     const handleSubmit = async (e) => {
         try {
@@ -34,6 +43,8 @@ export default function Login() {
             console.log(error)
         }
     }
+
+    //.........................................................................
 
     return (
         <>
@@ -75,3 +86,4 @@ export default function Login() {
         </>
     )
 }
+//.........................................................................

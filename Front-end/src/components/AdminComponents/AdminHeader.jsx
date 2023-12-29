@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { adminLogin } from '../../util/constants';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+//.........................................................................
 
 
-
-
+//.........................................................................
 
 const sideBar = [
     { name: 'Dashboard', link: '/admin/dashboard' },
@@ -14,6 +14,8 @@ const sideBar = [
     { name: 'Novels', link: '/admin/novels' },
     { name: 'Genres', link: '/admin/genres' }
 ]
+
+//.........................................................................
 
 export default function AdminHeader() {
 
@@ -38,6 +40,8 @@ export default function AdminHeader() {
         })
     }
 
+    //.........................................................................
+
     useEffect(() => {
         const adminToken = localStorage.getItem('adminToken');
 
@@ -45,6 +49,8 @@ export default function AdminHeader() {
             navigate(adminLogin);
         }
     }, [])
+
+    //.........................................................................
 
     return (
         <>

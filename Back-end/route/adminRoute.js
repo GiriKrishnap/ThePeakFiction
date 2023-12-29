@@ -1,33 +1,35 @@
 const express = require('express');
 const router = express.Router();
 
+
 /////controller///////////////////////
 const adminController = require('../controller/adminController');
 
-//////User Routes///////////////////
 
-//------------------{LOGIN}--------------------------------
+/////////////{LOGIN}...................................
 router.post('/login', adminController.adminLogin);
 
-//------------------{USERS}--------------------------------
-//get--
+/////////////{USERS}...................................
+//get
 router.get('/getAllUsers', adminController.getAllUsers);
 
-//------------------{AUTHORS}--------------------------------
-//get--
+/////////////{AUTHORS}...................................
+//get
 router.get('/getAllAuthors', adminController.getAllAuthors);
 
-//------------------{GENRE}--------------------------------
-//get--
+/////////////{GENRE}...................................
+//get
 router.get('/getAllGenres', adminController.getAllGenres);
-//post--
+
+//post
 router.post('/addGenre', adminController.addGenre);
 
-//------------------{NOVELS}--------------------------------
-//get--
+/////////////{NOVELS}...................................
+//get
 router.get('/image/:id', adminController.getImage);
 router.get('/getAllNovels', adminController.getAllNovels);
-//post--
+
+//post
 router.post('/approve', adminController.giveApprove);
 router.post('/hideNovel', adminController.hideNovel);
 

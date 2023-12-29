@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2';
 import axios from '../../util/axios'
-import { adminDashboard, adminGenresPost, adminGetAllGenres, adminGetAllUsers, adminLoginPost } from '../../util/constants';
+import { adminGenresPost, adminGetAllGenres, } from '../../util/constants';
+//.........................................................................
+
 
 export default function UserManagement() {
+
+    //.........................................................................
 
     const [genre, setGenre] = useState([]);
     const [genreName, setGenreName] = useState('');
     const [genreDescription, setGenreDescription] = useState('');
 
+    //.........................................................................
 
     useEffect(() => {
         getGenres();
     }, [])
+
+    //.........................................................................
 
     const getGenres = () => {
         try {
@@ -28,6 +34,8 @@ export default function UserManagement() {
             console.log("error in getGenres function client side");
         }
     }
+
+    //.........................................................................
 
     const handleAddGenre = async () => {
         if (!genreName || !genreDescription) {
@@ -66,6 +74,8 @@ export default function UserManagement() {
             }
         }
     }
+
+    //.........................................................................
 
 
     return (
@@ -163,3 +173,4 @@ export default function UserManagement() {
         </div >
     )
 }
+//.........................................................................

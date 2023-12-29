@@ -1,16 +1,28 @@
-import { useEffect, useState } from 'react'
 import axios from '../../../util/axios'
-import { CoverUrl, getMostViewed } from '../../../util/constants';
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { CoverUrl, authorNovelDetailed, getMostViewed, novelDetailedView } from '../../../util/constants';
+//.........................................................................
 
 
 export default function RowPost() {
 
+    //.........................................................................
+
+    const navigate = useNavigate();
+
+    //.........................................................................
+
     const [novels, setNovels] = useState([]);
+
+    //.........................................................................
 
     useEffect(() => {
         getMostViewedNovels()
 
     }, [])
+
+    //.........................................................................
 
     const getMostViewedNovels = async () => {
         axios.get(getMostViewed).then((response) => {
@@ -19,6 +31,16 @@ export default function RowPost() {
             }
         }).catch(err => console.log('error on getMostViewedNovels => ' + err))
     }
+
+    //.........................................................................
+
+    const handleClick = async (novelId) => {
+
+        navigate(`${novelDetailedView}?NovelId=${novelId}`, { replace: true });
+
+    }
+
+    //.........................................................................
 
     return (
         <>
@@ -36,7 +58,8 @@ export default function RowPost() {
                                 style={{
                                     backgroundImage: `url(${CoverUrl}/${novel._id})`,
                                     backgroundSize: 'cover'
-                                }}>
+                                }}
+                                onClick={() => handleClick(novel._id)}>
 
                                 <div className=' w-full h-full p-2 bg-gradient-to-t from-gray-700 to-transparent
                                  to-90% rounded-md'>
@@ -60,3 +83,4 @@ export default function RowPost() {
         </>
     )
 }
+//.........................................................................

@@ -1,14 +1,24 @@
-import { useEffect, useState } from 'react'
 import axios from '../../../util/axios'
-import { CoverUrl, getMostViewed, getRandom } from '../../../util/constants';
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { CoverUrl, getRandom, novelDetailedView } from '../../../util/constants';
+//.........................................................................
 
 
 export default function Banner() {
+
+    //.........................................................................
+
+    const navigate = useNavigate();
+
+    //.........................................................................
 
     const [novel, setNovel] = useState([]);
     useEffect(() => {
         changeBanner()
     }, [])
+
+    //.........................................................................
 
     const changeBanner = async () => {
         try {
@@ -20,6 +30,16 @@ export default function Banner() {
             console.log(error)
         }
     }
+
+    //.........................................................................
+
+    const handleClick = async (novelId) => {
+
+        navigate(`${novelDetailedView}?NovelId=${novelId}`, { replace: true });
+
+    }
+
+    //.........................................................................
 
     return (
         <>
@@ -41,7 +61,8 @@ export default function Banner() {
                     </p>
                     <div className='flex mt-3 md:hidden '>
                         <button className=' bg-red-500 h-8 text-center w-20 rounded-lg text-white 
-                        font-medium mr-2 drop-shadow-lg hover:scale-105 hover:bg-red-600 duration-500'>Read</button>
+                        font-medium mr-2 drop-shadow-lg hover:scale-105 hover:bg-red-600 duration-500'
+                            onClick={() => handleClick(novel._id)}>Read</button>
                         <button className=' bg-blue-500 h-8 w-20 rounded-lg
                          text-white font-medium drop-shadow-lg hover:scale-105
                          text-sm hover:bg-blue-600 duration-500'>+library</button>
@@ -61,7 +82,7 @@ export default function Banner() {
                 <div className='p-10 hidden lg:block mt-10 '>
 
                     <p className='flex text-red-400 poppins drop-shadow-lg font-bold text-2xl tracking-wider'>Author: {novel.author?.userName} </p>
-                    <p className='flex text-blue-100 poppins drop-shadow-md font-bold text-2xl tracking-wider'>Publish Date: {Date(novel.publish_date).slice(3, 15)}</p>
+                    <p className='flex text-blue-100 poppins drop-shadow-md font-bold text-2xl tracking-wider'>Publish Date: {new Date(novel.publish_date).toLocaleDateString("en-GB")}</p>
                     <p className='flex text-blue-100 poppins drop-shadow-md font-bold text-2xl tracking-wider'>Rating: {novel.rate}</p>
 
                     <br />
@@ -80,3 +101,4 @@ export default function Banner() {
         </>
     )
 }
+//.........................................................................

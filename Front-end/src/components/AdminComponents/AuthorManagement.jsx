@@ -1,24 +1,30 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2';
 import axios from '../../util/axios'
-import { adminDashboard, adminGetAllAuthors } from '../../util/constants';
+import { adminGetAllAuthors } from '../../util/constants';
+//.........................................................................
+
 
 export default function AuthorManagement() {
 
+    //.........................................................................
+
     const [authors, setAuthors] = useState([]);
+
+    //.........................................................................
 
 
     useEffect(() => {
         getAuthorsList();
     }, [])
 
+    //.........................................................................
+
     const getAuthorsList = () => {
         try {
             axios.get(adminGetAllAuthors).then((re) => {
                 if (re.data.status) {
                     setAuthors(re.data.authors);
-            
+
                 } else { alert('there is problem') }
 
             });
@@ -27,6 +33,8 @@ export default function AuthorManagement() {
             console.log("error in getUsersList function client side");
         }
     }
+
+    //.........................................................................
 
     return (
         <div className='ml-80 m-10'>
@@ -92,3 +100,5 @@ export default function AuthorManagement() {
         </div>
     )
 }
+//.........................................................................
+

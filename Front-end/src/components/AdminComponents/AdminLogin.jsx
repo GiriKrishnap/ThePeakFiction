@@ -5,11 +5,16 @@ import axios from '../../util/axios'
 import { adminDashboard, adminLoginPost } from '../../util/constants';
 
 export default function AdminLogin() {
+    //.........................................................................
+
+    const navigate = useNavigate();
+
+    //.........................................................................
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const navigate = useNavigate();
+    //.........................................................................
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -33,6 +38,8 @@ export default function AdminLogin() {
 
     }
 
+    //.........................................................................
+
     useEffect(() => {
         try {
             const adminToken = localStorage.getItem('adminToken');
@@ -44,6 +51,7 @@ export default function AdminLogin() {
         }
     }, []);
 
+    //.........................................................................
 
     return (
         <>
@@ -89,3 +97,4 @@ export default function AdminLogin() {
         </>
     )
 }
+//.........................................................................

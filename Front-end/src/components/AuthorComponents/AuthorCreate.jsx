@@ -2,12 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from '../../util/axios'
-import { loginPost, authorHome, readerHome, Signup, authorCreate, authorNovels, adminGetAllGenres, authorCreatePost } from '../../util/constants';
+import {
+    authorHome, Signup, authorNovels,
+    adminGetAllGenres, authorCreatePost
+} from '../../util/constants';
+//.........................................................................
 
 
 export default function AuthorCreate() {
 
+    //.........................................................................
+
     const navigate = useNavigate();
+
+    //.........................................................................
+
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [cover, setCover] = useState(null);
@@ -15,6 +24,7 @@ export default function AuthorCreate() {
     const [allGenre, setAllGenre] = useState([]);
     const [authorId, setAuthorId] = useState('');
 
+    //.........................................................................
 
     useEffect(() => {
 
@@ -28,6 +38,8 @@ export default function AuthorCreate() {
         }
 
     }, [])
+
+    //.........................................................................
 
 
     const getAllGenres = () => {
@@ -45,6 +57,8 @@ export default function AuthorCreate() {
         }
     }
 
+    //.........................................................................
+
     const handleCoverChange = (e) => {
 
         const selectedCover = e.target.files[0] ?? null
@@ -60,8 +74,7 @@ export default function AuthorCreate() {
 
     }
 
-
-
+    //.........................................................................
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -80,6 +93,7 @@ export default function AuthorCreate() {
         formData.append('photo', cover);
         formData.append('genre', selectedGenres);
         formData.append('authorId', authorId);
+
         try {
             const response = await axios.post(`${authorCreatePost}${title}`, formData)
             if (response.data.status) {
@@ -98,12 +112,13 @@ export default function AuthorCreate() {
                     showConfirmButton: false,
                     timer: 1500
                 })
-                console.log(response.data.message)
             }
         } catch (error) {
             console.error('Error uploading Novel:', error);
         }
     }
+
+    //.........................................................................
 
     return (
         <>
@@ -176,3 +191,5 @@ export default function AuthorCreate() {
         </>
     )
 }
+//.........................................................................
+

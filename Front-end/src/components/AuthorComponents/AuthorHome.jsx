@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import axios from '../../util/axios'
-import { loginPost, authorHome, readerHome, Signup, authorCreate, authorNovels } from '../../util/constants';
+import { Signup, authorCreate, authorNovels } from '../../util/constants';
+//.........................................................................
+
 
 export default function AuthorHome() {
 
+    //.........................................................................
+
     const navigate = useNavigate();
 
+    //.........................................................................
 
 
     useEffect(() => {
@@ -16,6 +19,8 @@ export default function AuthorHome() {
             navigate(Signup);
         }
     }, []);
+
+    //.........................................................................
 
     return (
         <>

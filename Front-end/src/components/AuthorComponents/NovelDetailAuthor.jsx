@@ -1,17 +1,22 @@
 import { useEffect, useState } from 'react'
 import axios from '../../util/axios'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AuthorAddChapter, CoverUrl, adminGetAllGenres, filter, getAllNovelsUsers, getFilteredNovelsUsers, getNovelDetailsWithId } from '../../util/constants';
-
-
-let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+import { AuthorAddChapter, CoverUrl, getNovelDetailsWithId } from '../../util/constants';
+//.........................................................................
 
 export default function NovelDetailAuthor() {
+
+    //.........................................................................
 
     const location = useLocation();
     const navigate = useNavigate();
 
+    //.........................................................................
+
     const [novel, setNovel] = useState([]);
+    const [chapterNumber, setChapterNumber] = useState('');
+
+    //.........................................................................
 
     useEffect(() => {
 
@@ -25,17 +30,22 @@ export default function NovelDetailAuthor() {
         }
     }, [])
 
+    //.........................................................................
+
     const getNovelWithId = async (novelId) => {
         try {
+
             axios.get(`${getNovelDetailsWithId}/${novelId}`).then((response) => {
                 setNovel([response.data.novel]);
-                console.log(response.data.novel);
+                setChapterNumber(response.data.novel.chapters.length + 1)
+
             })
         } catch (error) {
             console.log('catch error in ::getNovelWithId - ' + error.message)
         }
     }
 
+    //.........................................................................
 
     return (
 
@@ -57,7 +67,7 @@ export default function NovelDetailAuthor() {
                                 <div className='sm:w-2/6 h-full flex justify-center items-center'>
 
                                     <div className='h-80 w-60 bg-black rounded-lg text-white
-                        drop-shadow-lg hover:border-4 border-blue-600 hover:rotate-2 duration-200'
+                                      drop-shadow-lg hover:border-4 border-blue-600 hover:rotate-2 duration-200'
                                         style={{
                                             backgroundImage: `url(${CoverUrl}/${item._id})`,
                                             backgroundSize: 'cover'
@@ -76,7 +86,8 @@ export default function NovelDetailAuthor() {
 
                                         <button className='bg-blue-500 hover:bg-gray-500 poppins2 p-2
                                           text-white rounded-md pr-2 font-sans drop-shadow-lg'
-                                            onClick={() => navigate(`${AuthorAddChapter}?NovelId=${item._id}`, { replace: true })}>
+                                            onClick={() => navigate(`${AuthorAddChapter}?NovelId=${item._id}&number=${chapterNumber}`,
+                                                { replace: true })}>
                                             Add Chap
                                             <i class="fa-solid fa-square-plus m-1.5"></i>
                                         </button>
@@ -124,9 +135,9 @@ export default function NovelDetailAuthor() {
 
                             {/* ------------ NOVEL REVIEW AND DETAILS ------------- */}
                             <div className='sm:w-2/6 flex flex-col pl-12 justify-center
-                text-white text-left font-mono'>
+                                    text-white text-left font-mono'>
                                 <p><b className='font-sans'>Author:</b> {item.author_id.userName}</p>
-                                <p><b className='font-sans'>Publish Date:</b> 19/12/2044</p>
+                                <p><b className='font-sans'>Publish Date:</b>{new Date(item.publish_date).toLocaleDateString("en-GB")}</p>
                                 <p><b className='font-sans'>Genres:</b> {
                                     item.genre.map((genres) => (
                                         genres.name + ', '
@@ -166,29 +177,41 @@ export default function NovelDetailAuthor() {
                         {/*--------------------- NOVEL DETAILS END-----------------*/}
 
                         {/* -----------------------NOVEL CHAPTERS-------------------- */}
-                        <div className='w-full max-h-96 flex flex-col gap-3 p-5 mt-10 overflow-y-scroll scroll'>
+                        <div className='w-full max-h-96 flex flex-col-reverse gap-3 p-5 mt-10 overflow-y-scroll scroll'>
                             {
-                                arr.map((i) => (
+                                item.chapters?.length > 0 ?
+                                    item.chapters.map((chapter) => (
 
-                                    <div className='hover:bg-gray-500 bg-gray-600 w-full rounded-lg p-2 pl-5 pr-5 grid grid-cols-4
-                 font-medium poppins2 text-gray-400 hover:text-white hover:font-mono select-none cursor-pointer'>
-                                        <p className='text-left text-sm md:text-lg'>chapter {i}: the beginning</p>
-                                        <p className='text-center text-sm md:text-lg'>10 Gcoin to Unlock</p>
-                                        <p className='text-center text-sm md:text-lg'>20 days remaining to free</p>
-                                        <p className='text-right text-sm md:text-lg'>12/03/2034</p>
-                                    </div>
-                                ))
+                                        <div className={`hover:bg-gray-500 ${chapter.gcoin > 0 ? "bg-gray-900" : 'bg-gray-600'} w-full rounded-lg
+                                         p-2 pl-5 grid grid-cols-4 lg:grid-cols-5 font-medium poppins2 ${chapter.gcoin > 0 ? "text-white" : 'text-gray-400'}
+                                          hover:text-white gap-5 hover:font-mono select-none cursor-pointer`}>
+
+                                            <p className='text-left text-sm lg:text-lg lg:col-span-2'>chapter {chapter.number}: {chapter.title}</p>
+
+                                            {
+                                                <p className='text-center text-sm lg:text-lg'>{chapter.gcoin ?
+                                                    `${chapter.gcoin} Gcoin to unlock` : ''}</p>
+                                            }
+
+                                            <p className='text-right text-sm lg:text-lg'>{new Date(chapter.publish_date).toLocaleDateString("en-GB")}</p>
+
+                                            <div className='md:flex gap-5'>
+                                                <p className='hover:underline lg:text-xl text-gray-300'>Edit</p>
+                                                <p className='hover:underline lg:text-xl text-red-600'>Delete</p>
+                                            </div>
+
+                                        </div>
+
+                                    )) : <p className='text-white text-center bg-blue-500 p-2 
+                                            rounded font-mono'>There is Chapters</p>
                             }
 
                         </div>
                         {/* -----------------------NOVEL CHAPTERS END-------------------- */}
 
-
                         <div className='w-full max-h-96 flex flex-col gap-3 p-5 mt-10 overflow-y-scroll scroll'>
 
-
                         </div>
-
 
                     </div>
                 ))
@@ -197,3 +220,4 @@ export default function NovelDetailAuthor() {
         </>
     )
 }
+//.........................................................................
