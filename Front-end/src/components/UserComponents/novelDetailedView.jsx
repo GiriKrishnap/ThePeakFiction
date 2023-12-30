@@ -1,11 +1,9 @@
 import axios from '../../util/axios'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CoverUrl, getNovelDetailsWithId } from '../../util/constants';
+import { CoverUrl, getNovelDetailsWithId, readNovel } from '../../util/constants';
 //.........................................................................
 
-
-let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
 export default function NovelDetailedView() {
 
@@ -43,6 +41,12 @@ export default function NovelDetailedView() {
         } catch (error) {
             console.log('catch error in ::getNovelWithId - ' + error.message)
         }
+    }
+
+    //.........................................................................
+
+    const handleChapterClick = (novelId, number) => {
+        navigate(`${readNovel}?NovelId=${novelId}&number=${number}`)
     }
 
     //.........................................................................
@@ -86,7 +90,8 @@ export default function NovelDetailedView() {
                                 <div className='md:w-3/4 flex gap-2 mt-3 w-full'>
 
                                     <button className='bg-blue-500 hover:bg-gray-500 poppins2 p-1.5
-                             text-white rounded-md pr-2 font-sans w-full drop-shadow-lg'>
+                             text-white rounded-md pr-2 font-sans w-full drop-shadow-lg'
+                                        onClick={() => handleChapterClick(item._id, 1)}>
                                         Read Now
                                         <i class="fa-solid fa-caret-right m-1.5"></i>
                                     </button>
@@ -176,7 +181,8 @@ export default function NovelDetailedView() {
 
                                     <div className={`hover:bg-gray-500 ${chapter.gcoin > 0 ? "bg-gray-900" : 'bg-gray-600'} w-full rounded-lg
                                          p-2 pl-5 pr-5 grid grid-cols-3 lg:grid-cols-4 font-medium poppins2 ${chapter.gcoin > 0 ? "text-white" : 'text-gray-400'}
-                                          hover:text-white gap-5 hover:font-mono select-none cursor-pointer`}>
+                                          hover:text-white gap-5 hover:font-mono select-none cursor-pointer`}
+                                        onClick={() => handleChapterClick(item._id, chapter.number)}>
 
                                         <p className='text-left text-sm lg:text-lg lg:col-span-2'>chapter {chapter.number}: {chapter.title}</p>
 

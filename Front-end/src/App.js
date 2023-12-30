@@ -8,7 +8,7 @@ import {
   AuthorNovelDetails,
   Login, Signup, adminAuthorManagement, adminDashboard, adminGenreManagement, adminLogin,
   adminNovelManagement,
-  adminUserManagement, authorCreate, authorHome, authorNovels, filter, novelDetailedView, readerHome
+  adminUserManagement, authorCreate, authorHome, authorNovels, filter, novelDetailedView, readNovel, readerHome
 } from './util/constants';
 
 
@@ -20,6 +20,7 @@ const SignupPage = lazy(() => import('./pages/UserPages/SignupPage'))
 const ReaderHomePage = lazy(() => import('./pages/UserPages/HomePage'))
 const FilterNovelsPage = lazy(() => import('./pages/UserPages/FilterPage'))
 const NovelDetailedPage = lazy(() => import('./pages/UserPages/NovelDetailedView'))
+const ReadNovel = lazy(() => import('./pages/UserPages/ReadNovelPage'))
 
 //author
 const AuthorHomePage = lazy(() => import('./pages/AuthorPages/AuthorHome'))
@@ -69,6 +70,7 @@ function App() {
             <Route exact path={readerHome} element={<ReaderHomePage />} />
             <Route exact path={filter} element={<FilterNovelsPage />} />
             <Route exact path={novelDetailedView} element={<NovelDetailedPage />} />
+            <Route exact path={readNovel} element={<ReadNovel />} />
 
 
             {/* AuthorPart */}
