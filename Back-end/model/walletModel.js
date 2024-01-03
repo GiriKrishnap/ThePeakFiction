@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 
-const Reader = new mongoose.Schema({
+const Wallet = new mongoose.Schema({
     //..................................
-    userName: {
-        type: String,
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ReaderData",
         require: true
     },
     //..................................
@@ -21,14 +22,10 @@ const Reader = new mongoose.Schema({
     is_Block: {
         type: Boolean,
         default: false
-    },
-    //..................................
-    is_Author: {
-        type: Boolean,
-        default: false
     }
+    //..................................
 });
 
-const model = mongoose.model('ReaderData', Reader);
+const model = mongoose.model('WalletData', Wallet);
 
 module.exports = model;

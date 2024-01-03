@@ -2,6 +2,7 @@ import axios from '../../util/axios'
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getNovelDetailsWithId, novelDetailedView, readNovel } from '../../util/constants';
+import Comments from '../../components/comments.jsx';
 //.........................................................................
 
 
@@ -40,6 +41,7 @@ export default function ReadNovel() {
         try {
 
             axios.get(`${getNovelDetailsWithId}/${novelId}`).then((response) => {
+
                 setNovel([response.data.novel]);
                 console.log(response.data.novel)
             })
@@ -56,13 +58,14 @@ export default function ReadNovel() {
     //.........................................................................
 
     const handleNextAndPrevious = async (novelId, chapter) => {
+
         navigate(`${readNovel}?NovelId=${novelId}&number=${chapter + 1}`)
         setChapterNumber(chapter)
 
         window.scrollTo({
             top: 0,
             left: 0,
-            behavior: 'smooth' // Ensure smooth scrolling
+            behavior: 'smooth'
         });
 
     }
@@ -70,6 +73,7 @@ export default function ReadNovel() {
     //.........................................................................
 
     const handleHomeBtn = async (novelId) => {
+
         navigate(`${novelDetailedView}?NovelId=${novelId}`)
     }
 
@@ -147,6 +151,11 @@ export default function ReadNovel() {
 
 
             </div >
+
+            <div className='bg-gray-700 p-5 mt-1 mb-1 text-white text-2xl font-mono'>
+                <Comments novelId={novel[0]?._id} chapterNo={chapterNumber + 1} />
+            </div>
+
         </>
     )
 }

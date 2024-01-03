@@ -2,7 +2,10 @@ import axios from '../../util/axios'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CoverUrl, getNovelDetailsWithId, readNovel } from '../../util/constants';
-//.........................................................................
+import Comments from '../../components/comments.jsx';
+
+
+//.............................................................................
 
 
 export default function NovelDetailedView() {
@@ -204,15 +207,30 @@ export default function NovelDetailedView() {
                     </div>
                     {/* -----------------------NOVEL CHAPTERS END-------------------- */}
 
-                    <div className='w-full max-h-96 flex flex-col gap-3 p-5 mt-10 overflow-y-scroll scroll'>
 
+
+
+
+
+
+                    <div className='bg-gray-700 p-5 mt-10 rounded-xl text-white text-2xl font-mono'>
+                        <Comments novelId={item._id} />
                     </div>
 
                 </div >
 
+
+
+
+
             ))
 
-        }</>
+
+
+
+        }
+
+        </>
     )
 }
 //.........................................................................

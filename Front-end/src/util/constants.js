@@ -10,6 +10,7 @@ export const readerHome = '/Home'
 export const filter = '/filter'
 export const novelDetailedView = '/novelDetailed'
 export const readNovel = '/novel/read'
+export const profileUrl = '/profile'
 
 //post
 export const signupPost = '/signup';

@@ -3,7 +3,8 @@ import HeaderComponents from '../../components/UserComponents/header.jsx';
 import FooterComponents from '../../components/UserComponents/footer.jsx';
 import NovelDetailedViewComponents from '../../components/UserComponents/novelDetailedView.jsx';
 
-function HomePage() {
+
+function NovelDetailPage() {
     return (
         <div>
             <HeaderComponents />
@@ -13,4 +14,4 @@ function HomePage() {
     )
 }
 
-export default HomePage;
+export default NovelDetailPage;
