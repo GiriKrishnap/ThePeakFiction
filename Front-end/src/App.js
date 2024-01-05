@@ -10,6 +10,7 @@ import {
   adminNovelManagement,
   adminUserManagement, authorCreate, authorHome, authorNovels, filter, novelDetailedView, profileUrl, readNovel, readerHome
 } from './util/constants';
+import { Toaster } from 'react-hot-toast';
 
 
 //Pages.........................................................................................
@@ -50,7 +51,7 @@ function App() {
   return (
 
     <div className="App">
-
+      <div><Toaster /></div>
       <Router>
 
         <Suspense fallback={<div className="flex items-center justify-center min-h-screen p-5 bg-blue-400 min-w-screen">

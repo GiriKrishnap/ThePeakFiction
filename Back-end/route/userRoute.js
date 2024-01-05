@@ -1,25 +1,30 @@
+////////////////////////////////////////
 const express = require('express');
 const router = express.Router();
-
 /////controller///////////////////////
-const readerController = require('../controller/readerController');
+const userController = require('../controller/userController');
+const paymentController = require('../controller/paymentController');
 
 
-//////User Routes///////////////////
-router.post('/signup', readerController.readerSignup);
-router.post('/login', readerController.readerLogin);
+//////User Routes///////////////////////////////////
+router.post('/signup', userController.readerSignup);
+router.post('/login', userController.readerLogin);
 
-//home------------------
-router.get('/getMostViewed', readerController.getMostViewed);
-router.get('/getTrending', readerController.getTrending);
-router.get('/getRandom', readerController.getRandom);
+//home..........................................................
+router.get('/getMostViewed', userController.getMostViewed);
+router.get('/getTrending', userController.getTrending);
+router.get('/getRandom', userController.getRandom);
 
-//filter----------------
-router.post('/filterNovels-user', readerController.filterNovel);
-router.get('/getAllNovels-user', readerController.getAllNovels);
+//filter...........................................................
+router.post('/filterNovels-user', userController.filterNovel);
+router.get('/getAllNovels-user', userController.getAllNovels);
 
-//novelDetails----------
-router.get('/novelWithId/:novelId', readerController.getNovelWithId);
+//novelDetails.....................................................
+router.get('/novelWithId/:novelId', userController.getNovelWithId);
+
+//PAYMENT..........................................................
+router.post('/create-payment-intent', paymentController.createPaymentIntent);
+router.post('/payment-confirm', paymentController.confirmPayment);
 
 
 ///---------------------------

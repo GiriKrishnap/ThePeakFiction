@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import './Signup.css'
+import Swal from 'sweetalert2';
 import axios from '../../../util/axios'
-import { Login } from '../../../util/constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { userSignup } from '../../../redux/Actions/userActions/signupActions';
+import React, { useState } from 'react'
+import { Login, signupPost } from '../../../util/constants';
+import { Link, useNavigate } from 'react-router-dom';
+
 //.........................................................................
 
 export default function Signup() {
@@ -19,12 +20,6 @@ export default function Signup() {
     //.........................................................................
 
     const navigate = useNavigate();
-    const dispatch = useDispatch()
-
-    //.........................................................................
-
-    const signup = useSelector(state => state.userSignup)
-    let { loading, error, userInfo } = signup
 
     //.........................................................................
 
@@ -32,15 +27,46 @@ export default function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!userName || !email || !password || !confirmPassword || password !== confirmPassword) {
-            error = 'Fill the Form correctly'
+
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Fill The Field Correctly!',
+                showConfirmButton: false,
+                timer: 1400
+            })
+
+        } else {
+
+            await axios.post(signupPost, { userName, email, password, isAuthor }, {
+                headers: { "Content-Type": "application/json" }
+            }).then((response) => {
+                if (response.data.status) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Success',
+                        showConfirmButton: false,
+                        timer: 1400
+                    }).then(() => {
+                        navigate(Login);
+                    })
+
+                } else {
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: response.data.message,
+                        showConfirmButton: false,
+                        timer: 1400
+                    })
+
+                }
+            })
         }
 
-        dispatch(userSignup(userName, email, password, isAuthor)).then(() => {
 
-            if (userInfo) {
-                navigate(Login);
-            }
-        })
     }
 
     //.........................................................................
@@ -73,7 +99,6 @@ export default function Signup() {
                                     <button type='submit' className='button-login mb-3'>Signup Now</button>
                                 </form>
                                 <Link to={Login}> <p className='aTag-login'>You Have Account?</p> </Link>
-                                {error ? <p className='text-red-500'>{error}</p> : " "}
                             </div>
                         </div>
 

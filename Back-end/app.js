@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'novelCovers')));
-mongoose.connect(process.env.CONNECTION_STRING);
+mongoose.connect(process.env.CONNECTION_STRING).catch(error => console.log("Error connecting to MongoDB", error.message));
 
 //................................................................
 

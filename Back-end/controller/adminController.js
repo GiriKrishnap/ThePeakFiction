@@ -1,10 +1,9 @@
+///---------------------------
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const path = require('path')
 require('dotenv/config');
 ///---------------------------
-const ReaderModel = require('../model/readerModel');
-const AuthorModel = require('../model/authorModel');
+const UserModel = require('../model/UserModel');
 const GenreModel = require('../model/genreModel');
 const NovelModel = require('../model/novelModel');
 ///---------------------------
@@ -34,7 +33,7 @@ module.exports = {
 
         } catch (error) {
             res.json({ status: false, message: 'admin catch error server side :: adminLogin' });
-            console.log(error);
+            console.log(error.message);
         }
     },
 
@@ -42,7 +41,7 @@ module.exports = {
     getAllUsers: async (req, res) => {
         try {
 
-            let users = await ReaderModel.find();
+            let users = await UserModel.find({ is_Author: false });
 
             if (users) {
 
@@ -56,7 +55,7 @@ module.exports = {
 
         } catch (error) {
             res.json({ status: false, message: 'admin catch error server side :: getAllUsers' });
-            console.log(error);
+            console.log(error.message);
         }
 
     },
@@ -65,7 +64,7 @@ module.exports = {
     getAllAuthors: async (req, res) => {
         try {
 
-            let authors = await AuthorModel.find();
+            let authors = await UserModel.find({ is_Author: false });
 
             if (authors) {
 
@@ -79,7 +78,7 @@ module.exports = {
             }
         } catch (error) {
             res.json({ status: false, message: 'admin catch error server side :: getAllAuthors' });
-            console.log(error);
+            console.log(error.message);
         }
 
     },

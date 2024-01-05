@@ -9,7 +9,7 @@ const novelSchema = mongoose.Schema({
     //..................................
     author_id: {
         type: ObjectId,
-        ref: 'AuthorData'
+        ref: 'UserData'
     },
     //..................................
     title: {

@@ -9,9 +9,9 @@ export default function AuthorNovels() {
     const navigate = useNavigate();
 
     const [novels, setNovels] = useState([]);
-    
+
     //.........................................................................
-    
+
     useEffect(() => {
 
         const user = JSON.parse(localStorage.getItem('user-login'))
@@ -24,20 +24,20 @@ export default function AuthorNovels() {
 
     }, [])
     //.........................................................................
-    
+
     const handleClick = async (novelId) => {
 
         navigate(`${authorNovelDetailed}?NovelId=${novelId}`, { replace: true });
 
     }
-    
+
     //.........................................................................
 
     const getAllNovels = async () => {
         try {
 
             const userData = JSON.parse(localStorage.getItem('user-login'))
-            
+
             const response = await axios.get(`${getAuthorNovels}/${userData.id}`);
 
             if (response.data.status) {
@@ -180,6 +180,8 @@ export default function AuthorNovels() {
 
 
                                         </div>
+                                        {/* -------CHAPTERS END----------------------- */}
+
 
                                         {
                                             item.chapters.length <= 0 ?

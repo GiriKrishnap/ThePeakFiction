@@ -3,8 +3,7 @@ const multer = require('multer');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 //-MODELS--------------------------------------------------
-const ReaderModel = require('../model/readerModel');
-const AuthorModel = require('../model/authorModel');
+const UserModel = require('../model/UserModel');
 const NovelModel = require('../model/novelModel')
 //---------------------------------------------------------
 module.exports = {

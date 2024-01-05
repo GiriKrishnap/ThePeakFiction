@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from '../../util/axios'
+import toast from 'react-hot-toast';
 import {
-    authorHome, Signup, authorNovels,
-    adminGetAllGenres, authorCreatePost
+    authorHome, authorNovels,
+    adminGetAllGenres, authorCreatePost, Login
 } from '../../util/constants';
 //.........................................................................
 
@@ -31,7 +32,7 @@ export default function AuthorCreate() {
         const user = JSON.parse(localStorage.getItem('user-login'))
 
         if (!user?.isAuthor) {
-            navigate(Signup);
+            navigate(Login);
         } else {
             setAuthorId(user?.id)
             getAllGenres();
@@ -97,21 +98,10 @@ export default function AuthorCreate() {
         try {
             const response = await axios.post(`${authorCreatePost}${title}`, formData)
             if (response.data.status) {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: response.data.message,
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(() => navigate(authorNovels));
+                toast.success(response.data.message)
+                navigate(authorNovels)
             } else {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: response.data.message,
-                    showConfirmButton: false,
-                    timer: 1500
-                })
+                toast.error(response.data.message)
             }
         } catch (error) {
             console.error('Error uploading Novel:', error);

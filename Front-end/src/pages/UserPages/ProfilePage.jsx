@@ -1,9 +1,13 @@
 import React, { Suspense, lazy, useState } from 'react'
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 //.....................................................................................
 import HeaderComponents from '../../components/UserComponents/header.jsx';
 import FooterComponents from '../../components/UserComponents/footer.jsx';
 const ProfileComponents = lazy(() => import('../../components/UserComponents/profile/profile.jsx'));
 const WalletComponents = lazy(() => import('../../components/UserComponents/profile/wallet.jsx'));
+//.....................................................................................
+const stripePromise = loadStripe(process.env.REACT_APP_STRIP_PUBLISHER_KEY);
 //.....................................................................................
 
 
@@ -29,8 +33,8 @@ function HomePage() {
 
                     {
                         isProfile ?
-                            <>Profile <i class="fa-solid text-blue-500 fa-user"></i></>
-                            : <>Wallet <i class="fa-solid fa-wallet text-blue-500"></i></>
+                            <>Profile <i className="fa-solid text-blue-500 fa-user"></i></>
+                            : <>Wallet <i className="fa-solid fa-wallet text-blue-500"></i></>
                     }
 
                 </p>
@@ -57,7 +61,10 @@ function HomePage() {
                         {
                             isProfile ?
                                 <ProfileComponents /> :
-                                <WalletComponents />
+
+                                <Elements stripe={stripePromise}>
+                                    <WalletComponents />
+                                </Elements>
                         }
 
                     </Suspense >

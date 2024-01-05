@@ -4,25 +4,44 @@ const Wallet = new mongoose.Schema({
     //..................................
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "ReaderData",
+        ref: "UserData",
         require: true
     },
     //..................................
-    email: {
-        type: String,
-        unique: true,
-        require: true
+    walletAmount: {
+        type: Number,
+        default: 0
     },
     //..................................
-    password: {
-        type: String,
-        require: true
-    },
+    amountAdd: [{
+        amount: {
+            type: Number,
+        },
+        //----------------
+        date: {
+            type: Date,
+        }
+        //----------------
+    }],
     //..................................
-    is_Block: {
-        type: Boolean,
-        default: false
-    }
+    amountUse: [{
+        amount: {
+            type: Number,
+        },
+        //----------------
+        novel: {
+            type: mongoose.Schema.Types.ObjectId,
+        },
+        //----------------
+        chapterNo: {
+            type: Number
+        },
+        //----------------
+        date: {
+            type: Date,
+        }
+        //----------------
+    }],
     //..................................
 });
 

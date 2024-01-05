@@ -3,8 +3,8 @@ import './Login.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { Signup, readerHome } from '../../../util/constants';
-import { userLogin } from '../../../redux/Actions/userActions/loginActions';
+import { Signup, loginPost, readerHome } from '../../../util/constants';
+import axios from '../../../util/axios'
 //.........................................................................
 
 
@@ -13,18 +13,12 @@ export default function Login() {
     //.........................................................................
 
     const navigate = useNavigate();
-    const dispatch = useDispatch()
 
     //.........................................................................
 
     const [email, setEmail] = useState('');
     const [password, SetPassword] = useState('');
-    const [isAuthor, setIsAuthor] = useState(false);
 
-    //.........................................................................
-
-    const userLoginData = useSelector(state => state.userLogin)
-    let { error, loading, userLoginDetails } = userLoginData
 
     //.........................................................................
 
@@ -32,11 +26,26 @@ export default function Login() {
         try {
             e.preventDefault();
             if (email || password) {
-                dispatch(userLogin(email, password, isAuthor)).then(() => {
-                    navigate(readerHome)
+
+                axios.post(loginPost, { email, password }, {
+                    headers: { "Content-Type": "application/json" }
+                }).then((response) => {
+
+                    if (response.data.status) {
+
+                        localStorage.setItem('user-login', JSON.stringify(response.data.details));
+                        navigate(readerHome);
+
+                    } else {
+
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: response.data.message,
+                        });
+                    }
                 })
-            } else {
-                error = 'Fill the Form correctly'
+
             }
 
         } catch (error) {
@@ -68,16 +77,9 @@ export default function Login() {
                                         onChange={e => setEmail(e.target.value)} value={email} required />
                                     <input type="password" name="password" className='input-login d-block' placeholder='Password'
                                         onChange={e => SetPassword(e.target.value)} value={password} required />
-                                    <div className='flex flex-row'>
-                                        <input type="checkbox" className='mb-3 ml-3 cursor-pointer w-4'
-                                            onClick={() => isAuthor ? setIsAuthor(false) : setIsAuthor(true)}
-                                        />
-                                        <label className='mb-3 ml-2 font-mono'>Are You An Author?</label>
-                                    </div>
                                     <button type='submit' className='button-login mb-3'>Login Now</button>
                                 </form>
                                 <Link to={Signup}> <p className='aTag-login'>No Account?</p> </Link>
-                                {error ? <p className='text-red-500'>{error}</p> : " "}
                             </div>
                         </div>
                     </div>

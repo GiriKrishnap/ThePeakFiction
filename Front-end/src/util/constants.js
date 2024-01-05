@@ -1,8 +1,8 @@
 export const baseUrl = "http://localhost:4000/";
 export const CoverUrl = "http://localhost:4000/admin/image";
 
-
-//USER SIDE URLS ====>
+//////////////////////////////////////////////
+///////////USER SIDE URLS =====>
 ////READER------------------------------------
 export const Signup = '/signup';
 export const Login = '/'
@@ -12,10 +12,6 @@ export const novelDetailedView = '/novelDetailed'
 export const readNovel = '/novel/read'
 export const profileUrl = '/profile'
 
-//post
-export const signupPost = '/signup';
-export const loginPost = '/login'
-export const verifyUserToken = '/verifyUserToken'
 //homePage
 export const getMostViewed = '/getMostViewed'
 export const getTrending = '/getTrending'
@@ -24,6 +20,15 @@ export const getRandom = '/getRandom'
 //filter
 export const getFilteredNovelsUsers = '/filterNovels-user'
 export const getAllNovelsUsers = '/getAllNovels-user'
+
+//post
+export const signupPost = '/signup';
+export const loginPost = '/login'
+export const verifyUserToken = '/verifyUserToken'
+
+//PAYMENT
+export const createPaymentIntentURL = '/create-payment-intent'
+export const confirmPaymentURL = '/payment-confirm'
 
 
 
@@ -41,7 +46,7 @@ export const getAuthorNovels = '/author/getAuthorNovels'
 export const AuthorAddChapterPost = '/author/addChapter'
 
 ////////////////////////////////////////////////////////////////////////
-//ADMIN SIDE URLS ====>
+//////////ADMIN SIDE URLS ====>
 export const adminLogin = '/admin'
 export const adminDashboard = '/admin/dashboard'
 export const adminUserManagement = '/admin/users'

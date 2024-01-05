@@ -24,7 +24,6 @@ export default function Header() {
     const [isAuthor, setIsAuthor] = useState(false);
 
     const navigate = useNavigate();
-    const dispatch = useDispatch()
 
     const handleLogout = (e) => {
         e.preventDefault();
@@ -38,7 +37,7 @@ export default function Header() {
             confirmButtonText: 'Logout'
         }).then((result) => {
             if (result.isConfirmed) {
-                dispatch(userLogout())
+                localStorage.removeItem("user-login");
                 navigate('/');
             }
         })
@@ -46,6 +45,8 @@ export default function Header() {
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user-login'))
+        console.log('localStorage item is here', user)
+        console.log('is user is Author = ', user?.isAuthor);
         if (!user) {
             navigate(Login)
         } else {

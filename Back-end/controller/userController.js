@@ -4,8 +4,7 @@ const bcrypt = require('bcrypt');
 const generateToken = require('../util/generateToken')
 
 //-MODELS---------------------------------------------------
-const ReaderModel = require('../model/readerModel');
-const AuthorModel = require('../model/authorModel');
+const UserModel = require('../model/UserModel');
 const NovelModel = require('../model/novelModel');
 const GenreModel = require('../model/genreModel');
 //----------------------------------------------------------
@@ -16,40 +15,34 @@ module.exports = {
         try {
 
             let isAuthor = req.body.isAuthor;
-            let emailExist = await ReaderModel.findOne({ email: req.body.email });
-            let emailExistAuthor = await AuthorModel.findOne({ email: req.body.email });
+            let emailExist = await UserModel.findOne({ email: req.body.email });
 
-            if (emailExist || emailExistAuthor) {
 
-                res.status(400).json("User Already Exists")
+            if (emailExist) {
+
+                res.json({ status: false, message: "User Already Exists" });
 
             } else {
 
                 const securePassword = await bcrypt.hash(req.body.password, 10);
-                if (isAuthor) {
 
-                    const authorCreate = AuthorModel.create({
-                        userName: req.body.userName,
-                        email: req.body.email,
-                        password: securePassword
-                    })
-
-                } else {
-
-                    const userCreate = ReaderModel.create({
-                        userName: req.body.userName,
-                        email: req.body.email,
-                        password: securePassword
-
-                    })
-                }
-
-                let details = {
-                    firstName: req.body.userName,
+                const userCreate = UserModel.create({
+                    userName: req.body.userName,
                     email: req.body.email,
-                }
+                    password: securePassword,
+                    is_Author: isAuthor
+                }).then(() => {
 
-                res.status(201).json(details)
+                    let details = {
+                        firstName: req.body.userName,
+                        email: req.body.email,
+                        is_Author: isAuthor
+                    }
+
+                    res.json({ status: true, details });
+
+                })
+
             }
 
         } catch (error) {
@@ -62,20 +55,14 @@ module.exports = {
     readerLogin: async (req, res) => {
         try {
 
-            let emailExist = ''
 
-            if (req.body.isAuthor) {
+            console.log('email is here login', req.body.email)
+            const emailExist = await UserModel.findOne({ email: req.body.email })
 
-                emailExist = await AuthorModel.findOne({ email: req.body.email });
-
-            } else {
-
-                emailExist = await ReaderModel.findOne({ email: req.body.email })
-            }
 
             if (!emailExist) {
 
-                res.status(400).json("User Does Not Exist")
+                res.json({ status: false, message: "User Does Not Exist" });
 
             } else {
 
@@ -92,11 +79,11 @@ module.exports = {
                         id: emailExist._id,
                         userName: emailExist.userName,
                         email: emailExist.email,
-                        token: generateToken(emailExist._id, req.body.isAuthor),
-                        isAuthor: req.body.isAuthor
+                        token: generateToken(emailExist._id),
+                        isAuthor: emailExist.is_Author
                     }
 
-                    res.status(200).json(details);
+                    res.json({ status: true, details });
                 }
             }
 
@@ -150,7 +137,7 @@ module.exports = {
                 { $sample: { size: 1 } },
                 {
                     $lookup: {
-                        from: 'authordatas',
+                        from: 'userdatas',
                         localField: 'author_id',
                         foreignField: '_id',
                         as: 'author',
