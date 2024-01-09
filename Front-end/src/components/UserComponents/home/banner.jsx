@@ -1,7 +1,7 @@
 import axios from '../../../util/axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { CoverUrl, getRandom, novelDetailedView } from '../../../util/constants';
+import { CoverUrl, getRandomPost, novelDetailedView } from '../../../util/constants';
 //.........................................................................
 
 
@@ -25,7 +25,7 @@ export default function Banner() {
 
     const changeBanner = async () => {
         try {
-            const response = await axios.get(getRandom)
+            const response = await axios.get(getRandomPost)
             if (response.data.status) {
                 setNovel(response.data.random[0])
             }
@@ -67,6 +67,7 @@ export default function Banner() {
                             <button className=' bg-red-500 h-8 text-center w-20 rounded-lg text-white 
                         font-medium mr-2 drop-shadow-lg hover:scale-105 hover:bg-red-600 duration-500'
                                 onClick={() => handleClick(novel._id)}>Read</button>
+
                             <button className=' bg-blue-500 h-8 w-20 rounded-lg
                          text-white font-medium drop-shadow-lg hover:scale-105
                          text-sm hover:bg-blue-600 duration-500'>+library</button>
@@ -91,13 +92,25 @@ export default function Banner() {
 
                         <br />
 
+                        {/* ..............BUTTONS.............. */}
                         <div className='flex mt-3'>
                             <button className=' bg-red-500 h-10 p-2 w-52 rounded-full text-white 
-                        font-medium mr-2 drop-shadow-lg hover:scale-105 hover:ml-1 hover:bg-red-600 duration-500'><i className="fa-solid fa-book-open"></i> Read Now</button>
+                                    font-medium mr-2 drop-shadow-lg hover:scale-105 hover:ml-1 hover:bg-red-600 
+                                    duration-500' onClick={() => handleClick(novel._id)}>
+                                <i className="fa-solid fa-book-open"></i> Read Now
+                            </button>
+
                             <button className=' bg-blue-500 h-10 p-2 w-52 rounded-full
-                         text-white font-medium drop-shadow-lg hover:scale-105 hover:ml-1 hover:bg-blue-600 duration-500'><i className="fa-solid fa-circle-plus"></i> Add to library</button>
-                            <i className="fa-solid fa-retweet text-white fa-xl mt-5 cursor-pointer m-2" onClick={changeBanner}></i>
+                                text-white font-medium drop-shadow-lg hover:scale-105 hover:ml-1 hover:bg-blue-600 
+                                duration-500'>
+                                <i className="fa-solid fa-circle-plus"></i> Add to library
+                            </button>
+
+                            <i className="fa-solid fa-retweet text-white fa-xl mt-5 cursor-pointer m-2"
+                                onClick={changeBanner}></i>
                         </div>
+                        {/* ..............BUTTONS END.............. */}
+
                     </div>
 
                 </div> : 'No Novels'

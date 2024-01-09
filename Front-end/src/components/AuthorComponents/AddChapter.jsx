@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from '../../util/axios'
+import toast from 'react-hot-toast';
 import { AuthorAddChapterPost, AuthorNovelDetails, Signup } from '../../util/constants';
 //.........................................................................
 

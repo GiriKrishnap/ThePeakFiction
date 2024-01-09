@@ -11,11 +11,15 @@ export const filter = '/filter'
 export const novelDetailedView = '/novelDetailed'
 export const readNovel = '/novel/read'
 export const profileUrl = '/profile'
+export const getUpdatedUrl = '/updated'
+export const trendingUrl = '/trending'
+export const myLibraryUrl = '/my-library'
 
 //homePage
-export const getMostViewed = '/getMostViewed'
-export const getTrending = '/getTrending'
-export const getRandom = '/getRandom'
+export const getMostViewedPost = '/getMostViewed'
+export const getTrendingPost = '/getTrending'
+export const getRandomPost = '/getRandom'
+export const getNewUpdatedPost = '/getNewUpdated'
 
 //filter
 export const getFilteredNovelsUsers = '/filterNovels-user'
@@ -25,10 +29,12 @@ export const getAllNovelsUsers = '/getAllNovels-user'
 export const signupPost = '/signup';
 export const loginPost = '/login'
 export const verifyUserToken = '/verifyUserToken'
+export const RatingsPostUrl = '/rateNovel'
 
 //PAYMENT
 export const createPaymentIntentURL = '/create-payment-intent'
 export const confirmPaymentURL = '/payment-confirm'
+export const PaymentSuccessURL = '/profile/success'
 
 
 
@@ -72,3 +78,4 @@ export const AdminGetAllNovels = '/admin/getAllNovels'
 
 export const getNovelCover = '/admin/image/'
 export const getNovelDetailsWithId = '/novelWithId'
+export const getUserById = '/userById?userId='

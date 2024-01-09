@@ -166,7 +166,10 @@ module.exports = {
     getAllNovels: async (req, res) => {
         try {
 
-            let novels = await NovelModel.find().populate('author_id').populate('genre');
+            let novels = await NovelModel.find()
+                .populate('genre')
+                .populate('author_id')
+                .sort({ 'publish_date': -1 })
 
             if (novels) {
 

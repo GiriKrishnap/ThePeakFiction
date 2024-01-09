@@ -2,7 +2,7 @@ import React from 'react';
 import axios from '../../../util/axios'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { authorNovels, createPaymentIntentURL, getNovelDetailsWithId } from '../../../util/constants';
+import { authorNovels, createPaymentIntentURL, getNovelDetailsWithId, getUserById } from '../../../util/constants';
 import { CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js';
 import StripeCheckout from 'react-stripe-checkout';
 import toast from 'react-hot-toast';
@@ -14,8 +14,8 @@ export default function WalletComponent() {
 
     //.........................................................................
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [clientSecret, setClientSecret] = useState('');
-    const [clientSecret2, setClientSecret2] = useState('');
+    const [paymentSuccess, setPaymentSuccess] = useState(false);
+    const [walletAmount, setWalletAmount] = useState({});
     //.........................................................................
 
     const stripe = useStripe();
@@ -25,41 +25,33 @@ export default function WalletComponent() {
 
     //.........................................................................
 
-    // const handleAddAmount = async () => {
-    //     // try {
+    const getWallet = async () => {
 
-    //     const body = JSON.stringify({
-    //         amount: 1000,
-    //     })
+        const userId = JSON.parse(localStorage.getItem("user-login")).id
+        axios.get(`${getUserById}${userId}`).then((response) => {
+            if (response.data.status) {
+                console.log('response.data.walletDetails - ', response.data.walletDetails)
+                setWalletAmount(response.data.walletDetails);
+            }
+        })
+    }
 
-    //     const response = await axios.post(createPaymentIntentURL, body, {
-    //         headers: { "Content-Type": "application/json" }
-    //     })
+    //.........................................................................
 
-    //     const { clientSecret } = response.data;
+    useEffect(() => {
 
-    //     return stripePromise.then(stripe => {
-    //         const elements = stripe.elements();
+        getWallet();
 
-    //         setIsModalOpen(true);
-    //         setClientSecret(clientSecret.client_secret);
-    //         setClientSecret2(clientSecret);
-    //     });
+    }, [])
 
-    //     // } catch (error) {
-    //     //     toast.error('client side catch error');
-    //     //     console.log('client side catch error', error.message);
-    //     // }
+    //.........................................................................
 
 
-    // };
-
-
-    const makePayment = async () => {
+    const makePayment = async (givenAmount) => {
         const stripe = await loadStripe(process.env.REACT_APP_STRIP_PUBLISHER_KEY);
 
         const body = {
-            amount: 1000
+            amount: givenAmount
         }
         const headers = {
             "Content-Type": "application/json"
@@ -96,7 +88,7 @@ export default function WalletComponent() {
                  flex flex-col justify-center place-items-center gap-2 drop-shadow-md'>
                     <small className='poppins2'>Total Balance</small>
                     <p className='poppins2 text-4xl font-bold'>
-                        <i className="fa-solid fa-indian-rupee-sign"></i> 200</p>
+                        <i className="fa-solid fa-indian-rupee-sign"></i> {walletAmount.walletAmount}</p>
                 </div>
 
                 <div className='p-10 text-2xl flex justify-center gap-10'>
@@ -104,13 +96,41 @@ export default function WalletComponent() {
 
                     <i className="fa-solid fa-square-plus fa-2xl drop-shadow-md hover:scale-105
                      duration-200 hover:-rotate-6 hover:text-gray-600"
-                        onClick={makePayment}></i>
-
-
+                        onClick={() => setIsModalOpen(!isModalOpen)} ></i>
 
                     <i className="fa-solid fa-list-ol fa-2xl drop-shadow-md hover:scale-105
                      duration-200 hover:rotate-6 hover:text-gray-600"></i>
                 </div>
+
+                {
+                    isModalOpen ?
+                        <div className='text-center font-mono'>
+                            <small className='text-gray-300'>please select your value</small>
+                            <div className='flex gap-3 duration-700
+                             bg-gray-700 rounded-b-3xl w-full h-24 drop-shadow-md p-5 poppins2'>
+
+                                <button className='bg-blue-300 p-3 rounded-lg grow hover:scale-105 '
+                                    onClick={() => makePayment(10)}>
+                                    + 10rs
+                                </button>
+                                <button className='bg-blue-400 p-3 rounded-lg grow hover:scale-105'
+                                    onClick={() => makePayment(10)}>
+                                    + 15rs
+                                </button>
+                                <button className='bg-blue-500 p-3 rounded-lg grow hover:scale-105'
+                                    onClick={() => makePayment(10)}>
+                                    + 20rs
+                                </button>
+                                <button className='bg-blue-600 p-3 rounded-lg grow hover:scale-105'
+                                    onClick={() => makePayment(10)}>
+                                    + 50rs
+                                </button>
+
+                            </div>
+                        </div>
+
+                        : ''
+                }
 
             </div>
         </>

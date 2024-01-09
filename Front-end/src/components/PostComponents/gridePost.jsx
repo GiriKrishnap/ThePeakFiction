@@ -1,11 +1,11 @@
 import axios from '../../util/axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { CoverUrl, adminGetAllGenres, getAllNovelsUsers, getFilteredNovelsUsers, novelDetailedView } from '../../util/constants';
+import { CoverUrl, novelDetailedView } from '../../util/constants';
 //.........................................................................
 
 
-export default function Banner() {
+export default function GridPost({ axiosUrl, limit = Infinity, title }) {
 
 
     //.........................................................................
@@ -15,13 +15,10 @@ export default function Banner() {
     //.........................................................................
 
     const [novels, setNovels] = useState([]);
-    const [allGenre, setAllGenre] = useState([]);
-    const [search, setSearch] = useState('');
 
     //.........................................................................
 
     useEffect(() => {
-        getAllGenres();
         getAllNovels();
     }, [])
 
@@ -29,67 +26,13 @@ export default function Banner() {
 
     const getAllNovels = async () => {
         try {
-            const response = await axios.get(getAllNovelsUsers)
+            const response = await axios.get(axiosUrl)
             if (response.data.status) {
-                setNovels(response.data.novels)
+                setNovels(response.data.novels.slice(0, limit))
+
             }
         } catch (error) {
             console.log(error)
-        }
-    }
-
-    //.........................................................................
-
-    const getAllGenres = () => {
-        try {
-            axios.get(adminGetAllGenres).then((response) => {
-                if (response.data.status) {
-                    setAllGenre(response.data.genres)
-                    allGenre.sort()
-                } else { alert('there is problem') }
-
-            });
-
-        } catch (error) {
-            console.log("error in getGenres function client side");
-        }
-    }
-
-    //.........................................................................
-
-    const handleFilter = async () => {
-        try {
-            var checkboxes = document.getElementsByName("genres");
-            var selectedGenres = [];
-
-            for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked) {
-                    selectedGenres.push(checkboxes[i].value);
-                }
-            }
-
-            const selectedStatus = document.getElementById("status").value;
-            const selectedYear = document.getElementById("year").value;
-            const selectedSort = document.getElementById("sort").value;
-
-            const body = JSON.stringify({
-                selectedGenres,
-                selectedStatus,
-                selectedYear,
-                selectedSort,
-                search
-            })
-
-            const response = await axios.post(getFilteredNovelsUsers, body, { headers: { "Content-Type": "application/json" } })
-            if (response.data.status) {
-                setNovels(response.data.novels);
-            }
-
-
-
-
-        } catch (error) {
-            console.log('catch error client :: handleFilter');
         }
     }
 
@@ -106,113 +49,14 @@ export default function Banner() {
     return (
         <>
 
-            <div className='m-1 bg-gray-800 overflow-hidden flex flex-col rounded-lg pb-5 text-center'>
+            <div className='bg-gray-800 overflow-hidden flex flex-col pb-5 text-center pt-8'>
 
-                {/* ONE_____________ */}
-                <div className='p-5 w-full'>
-                    <h1 className='mt-5 mb-2 text-4xl drop-shadow-md
-                     text-white bold-text'>Filter The Novels</h1>
-                    <small className='text-gray-400'>Effortlessly discover and savor captivating novels
-                        with ease through efficient filtering, enabling a delightful reading experience.</small>
-                </div>
-
-                {/* TWO_____________ */}
-                <div className='w-full p-2 mt-3'>
-
-                    <div className='flex flex-row gap-4 justify-center'>
-                        {/* ----------------------GENRES----------------------------------------- */}
-                        {
-                            allGenre.map((item) => (
-                                <div key={item._id}
-                                    className="flex items-center mb-4 ">
-                                    <input id={item._id} type="checkbox" value={item._id} name='genres'
-                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300" />
-
-                                    <label className="ms-1.5 text-sm font-medium text-gray-900 
-                                     dark:text-gray-300" >
-                                        {item.name}
-                                    </label>
-                                </div>
-
-                            ))
-                        }
-
-                    </div>
-
-                    <hr className='border-red-500 border-2' />
-
-                    <div className='sm:flex sm:gap-4 gap-2 grid grid-cols-1 p-3 justify-center font-mono'>
-                        {/* ------------------------------STATUS---------------------- */}
-                        <div>
-                            <select id="status" className="bg-gray-50 border border-gray-300 text-gray-900
-                             text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
-                                p-2 w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                               dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value={''}>Status</option>
-                                <option value={'completed'}>Completed</option>
-                                <option value={'ongoing'}>Ongoing</option>
-                                <option value={'canceled'}>Canceled</option>
-                            </select>
-                        </div>
-                        {/* ------------------------------YEAR---------------------- */}
-                        <div>
-                            <select id="year" className="bg-gray-50 border border-gray-300 text-gray-900
-                             text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
-                                p-2 w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                               dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value={''}>Year</option>
-                                <option value={2024}>2024</option>
-                                <option value={2023}>2023</option>
-                                <option value={2022}>2022</option>
-                                <option value={2021}>2021</option>
-                            </select>
-                        </div>
-                        {/* ------------------------------Sort---------------------- */}
-                        <div>
-                            <select id="sort" className="bg-gray-50 border border-gray-300 text-gray-900
-                             text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
-                                p-2 w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                               dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value={"views"}>Most viewed</option>
-                                <option value={"title"}>Name A-Z</option>
-                                <option value={"updated_date"}>Recently updated</option>
-                                <option value={"publish-date"}>Recently added</option>
-                                <option value={"in_library"}>Trending</option>
-                            </select>
-                        </div>
-                        {/* ---------------------------SEARCH NOVELS------------------------ */}
-                        <div>
-                            <input type='text' className="bg-gray-500 border-0 text-white
-                             text-sm rounded-lg block p-2 pl-3 w-full" placeholder='Search'
-                                onChange={(e) => setSearch(e.target.value)} />
-                        </div>
-                        {/* --------------------------FILTER BUTTON------------------------- */}
-                        <div className='flex gap-2'>
-                            <button className='bg-blue-500 p-1.5 text-white rounded-md pr-2 font-sans md:w-24 w-full'
-                                onClick={handleFilter}>
-                                <i className="fa-solid fa-circle-nodes ml-1 mr-1"></i>
-                                Filter
-                            </button>
-                            <button className='bg-red-500 p-1.5 text-white rounded-md pr-2 font-sans md:w-24 w-full'
-                                onClick={getAllNovels}>
-                                <i className="fa-solid fa-retweet mr-1"></i>
-                                Get All
-                            </button>
-                        </div>
-
-                    </div>
-
-
-
-                </div>
-
-
-                {/* THREE_____________ */}
                 {novels.length > 0 ? '' :
                     < h1 className='font-mono text-5xl text-white text-center mt-10 mb-4'>
                         - There is No Novels <i className="fa-regular fa-face-sad-tear "></i> -
                     </h1>
                 }
+                {novels.length > 0 ? <p className='text-white poppins text-4xl text-left mb-1 ml-2'>{title}</p> : ''}
                 <div className='grid md:grid-cols-2 grid-cols-1 p-5 gap-2'>
 
                     {
@@ -337,13 +181,7 @@ export default function Banner() {
                     }
 
 
-
-
-
-
                 </div>
-
-
 
             </div >
 

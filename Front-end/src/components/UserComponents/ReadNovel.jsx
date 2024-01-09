@@ -2,7 +2,7 @@ import axios from '../../util/axios'
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getNovelDetailsWithId, novelDetailedView, readNovel } from '../../util/constants';
-import Comments from '../../components/comments.jsx';
+import Comments from '../../components/Comments/comments';
 //.........................................................................
 
 
@@ -159,4 +159,5 @@ export default function ReadNovel() {
         </>
     )
 }
+
 //.........................................................................

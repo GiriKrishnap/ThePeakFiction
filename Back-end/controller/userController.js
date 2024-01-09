@@ -7,6 +7,7 @@ const generateToken = require('../util/generateToken')
 const UserModel = require('../model/UserModel');
 const NovelModel = require('../model/novelModel');
 const GenreModel = require('../model/genreModel');
+const WalletModel = require('../model/walletModel');
 //----------------------------------------------------------
 
 module.exports = {
@@ -98,12 +99,14 @@ module.exports = {
     getMostViewed: async (req, res) => {
         try {
 
-            const most = await NovelModel.find({ status: { $ne: "pending" } }).sort({ 'views': -1 }).limit(6);
+            const novels = await NovelModel.find({ status: { $ne: "pending" } })
+                .sort({ 'views': -1 });
 
-            if (most) {
+            if (novels) {
 
-                res.json({ status: true, most });
+                res.json({ status: true, novels });
             }
+
         } catch (error) {
 
             res.json({ status: false, message: 'catch Error :: getMostViewed' })
@@ -114,7 +117,27 @@ module.exports = {
     //---------------------------------------------------------
     getTrending: async (req, res) => {
         try {
-            const novels = await NovelModel.find({ status: { $ne: "pending" } }).sort({ 'in_library': 1 }).limit(6);
+            const novels = await NovelModel.find({ status: { $ne: "pending" } })
+                .populate('genre')
+                .sort({ 'in_library': -1 })
+
+            if (novels) {
+
+                res.json({ status: true, novels });
+            }
+
+        } catch (error) {
+
+            res.json({ status: false, message: 'catch Error :: getMostViewed' })
+            console.log('catch Error :: getMostViewed ' + error.message);
+        }
+    },
+    //---------------------------------------------------------
+    getNewUpdated: async (req, res) => {
+        try {
+            const novels = await NovelModel.find({ status: { $ne: "pending" } })
+                .populate('genre')
+                .sort({ 'updated_date': -1 })
 
             if (novels) {
 
@@ -122,8 +145,8 @@ module.exports = {
             }
         } catch (error) {
 
-            res.json({ status: false, message: 'catch Error :: getMostViewed' })
-            console.log('catch Error :: getMostViewed ' + error.message);
+            res.json({ status: false, message: 'catch Error :: getNewUpdated' })
+            console.log('catch Error :: getNEwUpdated ' + error.message);
         }
     },
 
@@ -250,5 +273,85 @@ module.exports = {
             res.json({ status: false, message: 'catch error ::getNovelWithId server-side' })
             console.log('catch error ::getNovelWithId - ', error.message)
         }
-    }
+    },
+    //---------------------------------------------------------
+    addToLibrary: async (req, res) => {
+        try {
+
+            const { userId, novelId } = req.body;
+
+            const addingToLibrary = await UserModel.findByIdAndUpdate({ _id: userId }, { library: { $push: novelId } });
+
+            if (!addingToLibrary) {
+                res.json({ status: false, message: 'user not found' });
+            }
+
+            res.json({ status: true, message: "Added" });
+
+        } catch (error) {
+            res.json({ status: false, message: 'server catch error :: addToLibrary' });
+            console.log('catch error :: addToLibrary', error.message);
+        }
+    },
+
+    //---------------------------------------------------------
+
+    addRating: async (req, res) => {
+        try {
+
+            const { userId, rate, novelId } = req.body;
+
+
+            const existingRating = await NovelModel.findOne({
+                _id: novelId,
+                "ratings.user_id": userId
+            });
+
+            if (existingRating) {
+
+                return res.json({ status: false, message: 'Already rated' });
+            };
+
+
+            const updatedNovel = await NovelModel.findByIdAndUpdate(
+                { _id: novelId },
+                { $push: { ratings: { user_id: userId, rate: rate } } },
+                { new: true }
+            );
+
+            const totalRatings = updatedNovel.ratings.reduce((acc, curr) => acc + curr.rate, 0);
+            const newAverageRating = totalRatings / updatedNovel.ratings.length;
+
+            await NovelModel.updateOne({ _id: novelId }, { $set: { rate: newAverageRating } });
+
+            res.json({ status: true, message: 'Rating added successfully' });
+
+        } catch (error) {
+            res.json({ status: false, message: 'Server catch error: addRating' });
+            console.log('Catch error: addRating', error.message);
+        }
+    },
+
+    //---------------------------------------------------------
+
+    getUserById: async (req, res) => {
+        try {
+
+            const { userId } = req.query;
+            console.log(userId)
+
+            const walletDetails = await WalletModel.findOne({ user_id: userId });
+
+            if (!walletDetails) {
+                res.json({ status: false, message: 'user not found' });
+            }
+
+            res.json({ status: true, walletDetails });
+
+        } catch (error) {
+            res.json({ status: false, message: 'server catch error :: getUserWithId' });
+            console.log('catch error :: getUserWithId', error.message);
+        }
+    },
+
 }

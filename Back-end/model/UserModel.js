@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const User = new mongoose.Schema({
     //..................................
@@ -26,7 +27,13 @@ const User = new mongoose.Schema({
     is_Author: {
         type: Boolean,
         default: false
-    }
+    },
+    //...................................
+    library: [{
+        type: ObjectId,
+        ref: 'NovelsData'
+    }],
+    //.....................................
 });
 
 const model = mongoose.model('UserData', User);

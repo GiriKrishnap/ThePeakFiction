@@ -4,14 +4,13 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
-import { Login, authorHome, filter, profileUrl, verifyUserToken } from '../../util/constants';
-import { userLogout } from '../../redux/Actions/userActions/loginActions';
+import { Login, authorHome, filter, getUpdatedUrl, myLibraryUrl, profileUrl, trendingUrl } from '../../util/constants';
 
 const navigationObj = [
     { name: 'Home', link: '/home', current: false },
-    { name: 'Updated', link: '/updated', current: false },
-    { name: 'New Release', link: '/newRelease', current: false },
-    { name: 'My Library', link: '/myLibrary', current: false },
+    { name: 'Updated', link: getUpdatedUrl, current: false },
+    { name: 'Trending', link: trendingUrl, current: false },
+    { name: 'My Library', link: myLibraryUrl, current: false },
     { name: 'Random', link: '/Random', current: false }
 ]
 

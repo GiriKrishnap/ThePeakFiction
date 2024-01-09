@@ -47,14 +47,21 @@ const novelSchema = mongoose.Schema({
     },
     //..................................
     rate: {
-        type: Number,
-        require: true,
-        default: 0
+        type: Number
     },
+    //..................................
+    ratings: [{
+
+        rate: {
+            type: Number
+        },
+        user_id: {
+            type: String
+        }
+    }],
     //..................................
     in_library: {
         type: Number,
-        require: true,
         default: 0
     },
     //..................................

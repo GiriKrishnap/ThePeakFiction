@@ -6,9 +6,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import {
   AuthorAddChapter,
   AuthorNovelDetails,
-  Login, Signup, adminAuthorManagement, adminDashboard, adminGenreManagement, adminLogin,
+  Login, PaymentSuccessURL, Signup, adminAuthorManagement, adminDashboard, adminGenreManagement, adminLogin,
   adminNovelManagement,
-  adminUserManagement, authorCreate, authorHome, authorNovels, filter, novelDetailedView, profileUrl, readNovel, readerHome
+  adminUserManagement, authorCreate, authorHome, authorNovels, filter, getNewUpdatedPost, getUpdatedUrl, myLibraryUrl, novelDetailedView, profileUrl, readNovel, readerHome, trendingUrl
 } from './util/constants';
 import { Toaster } from 'react-hot-toast';
 
@@ -23,6 +23,9 @@ const FilterNovelsPage = lazy(() => import('./pages/UserPages/FilterPage'))
 const NovelDetailedPage = lazy(() => import('./pages/UserPages/NovelDetailedView'))
 const ReadNovel = lazy(() => import('./pages/UserPages/ReadNovelPage'))
 const ProfilePage = lazy(() => import('./pages/UserPages/ProfilePage'))
+const UpdatedPage = lazy(() => import('./pages/UserPages/Updated'))
+const TrendingPage = lazy(() => import('./pages/UserPages/TrendingPage'))
+const LibraryPage = lazy(() => import('./pages/UserPages/LibraryPage'))
 
 //author
 const AuthorHomePage = lazy(() => import('./pages/AuthorPages/AuthorHome'))
@@ -41,6 +44,8 @@ const AdminNovelPage = lazy(() => import('./pages/AdminPages/adminNovelsPage'))
 
 //404 notFound
 const NotFound404 = lazy(() => import('./pages/404-Page'))
+//payment Success
+const PaymentSuccessPage = lazy(() => import('./pages/UserPages/paymentSuccess'))
 
 
 
@@ -74,6 +79,10 @@ function App() {
             <Route exact path={novelDetailedView} element={<NovelDetailedPage />} />
             <Route exact path={readNovel} element={<ReadNovel />} />
             <Route exact path={profileUrl} element={<ProfilePage />} />
+            <Route exact path={PaymentSuccessURL} element={<PaymentSuccessPage />} />
+            <Route exact path={getUpdatedUrl} element={<UpdatedPage />} />
+            <Route exact path={trendingUrl} element={<TrendingPage />} />
+            <Route exact path={myLibraryUrl} element={<LibraryPage />} />
 
 
             {/* AuthorPart */}

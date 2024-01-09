@@ -12,8 +12,7 @@ const AuthorModel = require('../model/authorModel');
 const WalletModel = require('../model/walletModel');
 ///---------------------------
 
-const YOUR_DOMAIN = 'http://localhost:4000';
-const YOUR_DOMAIN2 = 'http://localhost:3000/profile';
+const YOUR_DOMAIN = 'http://localhost:3000/profile';
 
 
 module.exports = {
@@ -26,7 +25,7 @@ module.exports = {
 
         try {
 
-            const session = await stripe.checkout.sessions.create({
+            let session = await stripe.checkout.sessions.create({
                 payment_method_types: ["card"],
                 line_items: [
                     {
@@ -42,10 +41,13 @@ module.exports = {
                 ],
                 mode: 'payment',
 
-                success_url: `${YOUR_DOMAIN}/success`,
-                cancel_url: `${YOUR_DOMAIN2}`,
+                success_url: `http://localhost:3000/profile/success?sessionId={CHECKOUT_SESSION_ID}`,
+                cancel_url: `http://localhost:3000/profile`,
 
             });
+
+            session.success_url = `http://localhost:3000/profile/success?sessionId=${session.id}`
+            console.log(session);
 
             res.json({ id: session.id });
 
@@ -55,71 +57,34 @@ module.exports = {
         }
     },
     ///---------------------------
-    confirmPayment: async (req, res) => {
+    confirmPayment: async (req, res) => { 
 
-        // const { paymentIntentId, paymentMethodId, userId, amount, token } = req.body
-        // console.log(token)
-        // console.log("paymentIntentId - ", paymentIntentId)
-        // console.log("paymentMethodId - ", paymentMethodId)
+        try {
 
-        // try {
+            const { sessionId, userId } = req.body;
 
-        //     const paymentIntent = await stripe.paymentIntents.confirm(
-        //         { source: token },
-        //         paymentIntentId,
-        //         { payment_method: paymentMethodId }
-        //     );
-        //     console.log(paymentIntent)
-        //     if (paymentIntent.status === 'succeed') {
+            const session = await stripe.checkout.sessions.retrieve(sessionId);
+            console.log(session)
 
-        //         const checkWalletExist = await WalletModel.find({ userId: userId })
-        //         const currentDate = moment().format('YYYY-MM-DD');
+            if (session.payment_status === 'paid') {
 
-        //         if (!checkWalletExist) {
+                console.log('the payment is successful ⭐⭐⭐⭐');
+                await WalletModel.updateOne(
+                    { user_id: userId },
+                    { $inc: { walletAmount: session.amount_total / 100 } },
+                    { upsert: true }
+                );
+                res.json({ status: true, message: 'Wallet Updated' });
 
-        //             WalletModel.create({
-        //                 walletAmount: amount,
-        //                 amountAdd: {
-        //                     amount: amount,
-        //                     date: currentDate
-        //                 }
-        //             }).then(() => {
+            } else {
+                console.log('the payment is a Failed  🤑🤑');
+            }
 
-        //                 res.json({ status: true, message: 'Payment successful!' });
-        //             })
+        } catch (error) {
+            res.status(500).json({ error: 'server catch error :: confirm payment' });
+            console.log(error.message);
 
-        //         } else {
-
-        //             const finalAmount = checkWalletExist.walletAmount + amount;
-
-        //             WalletModel.updateOne(
-        //                 { userId: userId },
-        //                 {
-        //                     $set: {
-        //                         walletAmount: finalAmount,
-        //                         amountAdd: {
-        //                             $push: {
-        //                                 amount: amount,
-        //                                 date: new Date(currentDate),
-        //                             }
-        //                         }
-        //                     }
-        //                 }
-        //             ).then(() => {
-
-        //                 res.json({ status: true, message: 'Payment successful!' });
-        //             })
-        //         }
-
-        //     } else {
-        //         res.status(400).json({ error: 'Payment failed' });
-        //     }
-
-        // } catch (error) {
-        //     res.status(500).json({ error: 'server catch error :: confirm payment' });
-        //     console.log(error.message);
-
-        // }
+        }
     }
     ///---------------------------
     ///---------------------------

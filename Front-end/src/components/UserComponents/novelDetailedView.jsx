@@ -1,8 +1,9 @@
 import axios from '../../util/axios'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CoverUrl, getNovelDetailsWithId, readNovel } from '../../util/constants';
-import Comments from '../../components/comments.jsx';
+import { CoverUrl, RatingsPostUrl, getNovelDetailsWithId, readNovel } from '../../util/constants';
+import Comments from '../../components/Comments/comments';
+import toast from 'react-hot-toast';
 
 
 //.............................................................................
@@ -27,7 +28,9 @@ export default function NovelDetailedView() {
         const NovelId = queryParams.get('NovelId');
 
         if (!NovelId) {
+
             navigate(-1)
+
         } else {
             getNovelWithId(NovelId);
         }
@@ -39,7 +42,9 @@ export default function NovelDetailedView() {
         try {
 
             axios.get(`${getNovelDetailsWithId}/${novelId}`).then((response) => {
+
                 setNovel([response.data.novel]);
+
             })
         } catch (error) {
             console.log('catch error in ::getNovelWithId - ' + error.message)
@@ -49,7 +54,35 @@ export default function NovelDetailedView() {
     //.........................................................................
 
     const handleChapterClick = (novelId, number) => {
+
         navigate(`${readNovel}?NovelId=${novelId}&number=${number}`)
+    }
+
+    //.........................................................................
+
+    const giveRating = async (rate, novelId) => {
+
+        const userId = JSON.parse(localStorage.getItem('user-login')).id
+
+        const body = JSON.stringify({
+            rate,
+            userId,
+            novelId
+        })
+
+        const response = await axios.post(RatingsPostUrl, body, {
+            headers: { "Content-Type": "application/json" }
+        })
+
+        if (response.data.status) {
+
+            toast.success(response.data.message)
+
+        } else {
+
+            toast.error(response.data.message)
+        }
+
     }
 
     //.........................................................................
@@ -64,7 +97,7 @@ export default function NovelDetailedView() {
 
 
                 < div className='bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))]
-            from-gray-600 via-gray-700 to-gray-800 m-1 p-2'>
+            from-gray-600 via-gray-700 to-gray-800 m-1 p-2' key={item._id}>
 
                     {/*--------------------- NOVEL DETAILS -----------------*/}
                     <div className='m-3 p-1 sm:flex-row flex flex-col gap-5'>
@@ -93,16 +126,16 @@ export default function NovelDetailedView() {
                                 <div className='md:w-3/4 flex gap-2 mt-3 w-full'>
 
                                     <button className='bg-blue-500 hover:bg-gray-500 poppins2 p-1.5
-                             text-white rounded-md pr-2 font-sans w-full drop-shadow-lg'
+                                    text-white rounded-md pr-2 font-sans w-full drop-shadow-lg'
                                         onClick={() => handleChapterClick(item._id, 1)}>
                                         Read Now
-                                        <i class="fa-solid fa-caret-right m-1.5"></i>
+                                        <i className="fa-solid fa-caret-right m-1.5"></i>
                                     </button>
 
                                     <button className='bg-gray-700 hover:bg-blue-700 poppins2 p-1.5
-                             text-white rounded-md pr-2 font-sans w-full drop-shadow-lg'>
+                                   text-white rounded-md pr-2 font-sans w-full drop-shadow-lg'>
                                         Add To Library
-                                        <i class="fa-solid fa-circle-plus m-1.5"></i>
+                                        <i className="fa-solid fa-circle-plus m-1.5"></i>
                                     </button>
 
                                 </div>
@@ -112,9 +145,9 @@ export default function NovelDetailedView() {
                                 {/* NOVEL VIEWS AND LIBRARY COUNT */}
                                 <div className='w-3/4 flex gap-5 ml-4 mt-3'>
 
-                                    <small className='text-gray-300'>Views {item.views} <i class="fa-solid fa-eye"></i></small>
+                                    <small className='text-gray-300'>Views {item.views} <i className="fa-solid fa-eye"></i></small>
                                     <small className='text-gray-300'>|</small>
-                                    <small className='text-gray-300'>in {item.in_library} Library <i class="fa-solid fa-book-bookmark"></i></small>
+                                    <small className='text-gray-300'>in {item.in_library} Library <i className="fa-solid fa-book-bookmark"></i></small>
 
                                 </div>
                                 {/* NOVEL VIEWS AND LIBRARY COUNT END*/}
@@ -145,26 +178,31 @@ export default function NovelDetailedView() {
                             }</p>
 
                             {/* RATING SYSTEM */}
-                            <div class="flex items-center  ">
+                            <div className="flex items-center  ">
                                 <div className='bg-gray-800 flex p-3 pl-6 pr-6 mt-3 rounded-lg'>
-                                    <p class="ms-1 text-md font-medium text-gray-500 dark:text-gray-400">4.95</p>
-                                    <p class="ms-1 text-md font-medium text-gray-500 dark:text-gray-400">out of</p>
-                                    <p class="ms-1 text-md font-medium text-gray-500 dark:text-gray-400 mr-3">5</p>
+                                    <p className="ms-1 text-md font-medium text-gray-500 dark:text-gray-400">{item.rate}</p>
+                                    <p className="ms-1 text-md font-medium text-gray-500 dark:text-gray-400">out of</p>
+                                    <p className="ms-1 text-md font-medium text-gray-500 dark:text-gray-400 mr-3">5</p>
 
-                                    <svg class="w-6 h-6 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    <svg className="w-6 h-6 text-yellow-300 me-1 hover:scale-105" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill={item.rate >= 1 ? "currentColor" : 'gray'} viewBox="0 0 22 20">
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
+                                            onClick={() => giveRating(1, item._id)} />
                                     </svg>
-                                    <svg class="w-6 h-6 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    <svg className="w-6 h-6 text-yellow-300 me-1 hover:scale-105" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill={item.rate >= 2 ? "currentColor" : "gray"} viewBox="0 0 22 20">
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
+                                            onClick={() => giveRating(2, item._id)} />
                                     </svg>
-                                    <svg class="w-6 h-6 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    <svg className="w-6 h-6 text-yellow-300 me-1 hover:scale-105" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill={item.rate >= 3 ? "currentColor" : "gray"} viewBox="0 0 22 20">
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
+                                            onClick={() => giveRating(3, item._id)} />
                                     </svg>
-                                    <svg class="w-6 h-6 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    <svg className="w-6 h-6 text-yellow-300 me-1 hover:scale-105" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill={item.rate >= 4 ? "currentColor" : "gray"} viewBox="0 0 22 20">
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
+                                            onClick={() => giveRating(4, item._id)} />
                                     </svg>
-                                    <svg class="w-6 h-6 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    <svg className="w-6 h-6 text-yellow-300 me-1 hover:scale-105 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill={item.rate >= 5 ? "currentColor" : "gray"} viewBox="0 0 22 20">
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
+                                            onClick={() => giveRating(5, item._id)} />
                                     </svg>
                                 </div>
                             </div>
@@ -185,7 +223,7 @@ export default function NovelDetailedView() {
                                     <div className={`hover:bg-gray-500 ${chapter.gcoin > 0 ? "bg-gray-900" : 'bg-gray-600'} w-full rounded-lg
                                          p-2 pl-5 pr-5 grid grid-cols-3 lg:grid-cols-4 font-medium poppins2 ${chapter.gcoin > 0 ? "text-white" : 'text-gray-400'}
                                           hover:text-white gap-5 hover:font-mono select-none cursor-pointer`}
-                                        onClick={() => handleChapterClick(item._id, chapter.number)}>
+                                        onClick={() => handleChapterClick(item._id, chapter.number)} key={chapter._id}>
 
                                         <p className='text-left text-sm lg:text-lg lg:col-span-2'>chapter {chapter.number}: {chapter.title}</p>
 
@@ -208,11 +246,6 @@ export default function NovelDetailedView() {
                     {/* -----------------------NOVEL CHAPTERS END-------------------- */}
 
 
-
-
-
-
-
                     <div className='bg-gray-700 p-5 mt-10 rounded-xl text-white text-2xl font-mono'>
                         <Comments novelId={item._id} />
                     </div>
@@ -220,17 +253,12 @@ export default function NovelDetailedView() {
                 </div >
 
 
-
-
-
             ))
-
-
-
 
         }
 
         </>
     )
 }
+
 //.........................................................................
