@@ -1,13 +1,13 @@
 import axios from '../util/axios'
 import {
     AuthorAddChapterPost,
-    RatingsPostUrl, addNovelToLibraryPostUrl, adminGetAllGenres, authorCreatePost, getAllNovelsUsers,
+    RatingsPostUrl, addNovelToLibraryPostUrl, adminGetAllGenres, authorCreatePost, checkGCoinSystemUrl, getAllNovelsUsers,
     getAuthorNovels,
-    getFilteredNovelsUsers, getLibraryNovelsUrl, getNovelDetailsWithId, getRandomPost
+    getFilteredNovelsUsers, getNovelDetailsWithId, getRandomPost, getUserById
 } from '../util/constants'
 //---------------------------------
 const user = JSON.parse(localStorage.getItem('user-login'))
-const userId = user?.id
+const userId = user.id;
 
 //.....................................................................
 
@@ -40,11 +40,14 @@ export const getAllGenresAPI = () => axios.get(adminGetAllGenres, configToken);
 export const getNovelDetailsWithIdAPI = (id) => axios.get(`${getNovelDetailsWithId}/${id}`, configToken);
 export const getMostViewedNovelsAPI = (url) => axios.get(url, configToken);
 export const gridePostAPI = (url) => axios.get(`${url}?userId=${userId}`, configToken);
+export const getWalletAPI = () => axios.get(`${getUserById}?userId=${userId}`, configToken);
+export const checkGCoinSystemAPI = (novelId) => axios.get(`${checkGCoinSystemUrl}${novelId}`, configToken);
 
 
 export const getFilteredNovelsAPI = (body) => axios.post(getFilteredNovelsUsers, body, configToken);
 export const RatingPostAPI = (body) => axios.post(RatingsPostUrl, body, configToken);
 export const addNovelToLibraryAPI = (novelId) => axios.post(addNovelToLibraryPostUrl, { novelId, userId }, configToken);
+
 
 
 //AUTHOR

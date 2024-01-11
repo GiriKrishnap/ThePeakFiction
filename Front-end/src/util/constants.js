@@ -14,6 +14,7 @@ export const profileUrl = '/profile'
 export const getUpdatedUrl = '/updated'
 export const trendingUrl = '/trending'
 export const myLibraryUrl = '/my-library'
+export const checkGCoinSystemUrl = '/check-GCoinSystem?NovelId='
 
 //homePage
 export const getMostViewedPost = '/getMostViewed'
@@ -80,4 +81,4 @@ export const AdminGetAllNovels = '/admin/getAllNovels'
 
 export const getNovelCover = '/admin/image/'
 export const getNovelDetailsWithId = '/novelWithId'
-export const getUserById = '/userById?userId='
+export const getUserById = '/getWallet'

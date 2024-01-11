@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { CoverUrl, novelDetailedView } from '../../../util/constants';
 import { getAllGenresAPI, getAllNovelsForUsersAPI, getFilteredNovelsAPI } from '../../../APIs/userAPI';
+import toast from 'react-hot-toast';
 //.........................................................................
 
 
@@ -37,6 +38,8 @@ export default function Banner() {
 
         } catch (error) {
             console.log(error)
+            toast.error(error.message);
+
         }
     }
 
@@ -58,6 +61,8 @@ export default function Banner() {
 
         } catch (error) {
             console.log("error in getGenres function client side");
+            toast.error(error.message);
+
         }
     }
 
@@ -65,7 +70,7 @@ export default function Banner() {
 
     const handleFilter = async () => {
         try {
-            
+
             var checkboxes = document.getElementsByName("genres");
             var selectedGenres = [];
 
@@ -95,6 +100,8 @@ export default function Banner() {
 
         } catch (error) {
             console.log('catch error client :: handleFilter');
+            toast.error(error.message);
+
         }
     }
 
@@ -181,7 +188,7 @@ export default function Banner() {
                                 <option value={"views"}>Most viewed</option>
                                 <option value={"title"}>Name A-Z</option>
                                 <option value={"updated_date"}>Recently updated</option>
-                                <option value={"publish-date"}>Recently added</option>
+                                <option value={"publish_date"}>Recently added</option>
                                 <option value={"in_library"}>Trending</option>
                             </select>
                         </div>
@@ -330,7 +337,16 @@ export default function Banner() {
                                         </div>
                                         {/* -------CHAPTERS END----------------------- */}
 
+                                        {
+                                            item.chapters.length <= 0 ?
+                                                < div className='bg-gray-600 text-gray-300 
+                                                rounded-3xl cursor-default font-mono h-full p-10'>
+                                                    <p className='text-center'>
+                                                        no chapters yet..
+                                                    </p>
+                                                </div> : ''
 
+                                        }
 
                                     </div>
 

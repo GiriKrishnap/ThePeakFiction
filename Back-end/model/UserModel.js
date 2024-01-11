@@ -24,6 +24,11 @@ const User = new mongoose.Schema({
         default: false
     },
     //..................................
+    is_verified: {
+        type: Boolean,
+        default: false,
+    },
+    //..................................
     is_Author: {
         type: Boolean,
         default: false

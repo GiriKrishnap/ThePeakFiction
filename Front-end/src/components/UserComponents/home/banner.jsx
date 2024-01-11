@@ -34,6 +34,8 @@ export default function Banner() {
 
         } catch (error) {
             console.log(error)
+            toast.error(error.message);
+
         }
     }
 
@@ -80,8 +82,8 @@ export default function Banner() {
                     <div className=' pl-5 flex flex-col place-items-start text-left bg-gradient-to-r
                  from-gray-800 from-50% to-transparent to-95% rounded-lg p-4'>
 
-                        <p className='md:text-7xl text-4xl m-1  md:mt-8 mt-8 font-medium 
-                    bold-text text-white drop-shadow-md hover:tracking-wide hover:ml-10 duration-1000 '>{novel.title}
+                        <p className={`${novel.title?.length < 15 ? "md:text-7xl" : 'md:text-6xl'} text-4xl m-1  md:mt-8 mt-8 font-medium 
+                    bold-text text-white drop-shadow-md hover:animate-pulse duration-1000 `}>{novel.title}
                         </p>
 
                         <p className='text-gray-200 mt-3 italic md:h-36 h-full overflow-hidden 
@@ -141,7 +143,7 @@ export default function Banner() {
 
                     </div>
 
-                </div> : 'No Novels'
+                </div > : 'No Novels'
 
         }
         </>

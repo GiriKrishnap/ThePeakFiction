@@ -1,16 +1,19 @@
 //..............................................................................................
-import { lazy, Suspense, useEffect } from 'react';
+
+import { lazy, Suspense } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import loading from './components/loading';
 
 //LINKS.........................................................................................
+
 import {
   AuthorAddChapter,
   AuthorNovelDetails,
-  Login, PaymentSuccessURL, Signup, adminAuthorManagement, adminDashboard, adminGenreManagement, adminLogin,
-  adminNovelManagement,
-  adminUserManagement, authorCreate, authorHome, authorNovels, filter, getNewUpdatedPost, getUpdatedUrl, myLibraryUrl, novelDetailedView, profileUrl, readNovel, readerHome, trendingUrl
+  Login, PaymentSuccessURL, Signup, adminAuthorManagement, adminDashboard, adminGenreManagement,
+  adminLogin, adminNovelManagement, adminUserManagement, authorCreate, authorHome, authorNovels,
+  filter, getUpdatedUrl, myLibraryUrl, novelDetailedView, profileUrl, readNovel, readerHome, trendingUrl
 } from './util/constants';
-import { Toaster } from 'react-hot-toast';
 
 
 //Pages.........................................................................................
@@ -50,8 +53,8 @@ const PaymentSuccessPage = lazy(() => import('./pages/UserPages/paymentSuccess')
 
 
 //........................................................................................
-function App() {
 
+function App() {
 
   return (
 
@@ -59,15 +62,7 @@ function App() {
       <div><Toaster /></div>
       <Router>
 
-        <Suspense fallback={<div className="flex items-center justify-center min-h-screen p-5 bg-blue-400 min-w-screen">
-
-          <div className="flex space-x-2 animate-pulse">
-            <div className="w-6 h-6 bg-gray-100 rounded-full"></div>
-            <div className="w-6 h-6 bg-gray-100 rounded-full"></div>
-            <div className="w-6 h-6 bg-gray-100 rounded-full"></div>
-          </div>
-
-        </div>}>
+        <Suspense fallback={loading}>
 
           <Routes>
 
@@ -104,9 +99,7 @@ function App() {
             <Route path='*' element={<NotFound404 />} />
 
           </Routes>
-
         </Suspense>
-
       </Router>
 
     </div >

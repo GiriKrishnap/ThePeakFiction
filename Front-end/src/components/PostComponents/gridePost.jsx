@@ -84,7 +84,7 @@ export default function GridPost({ axiosUrl, limit = Infinity, title }) {
                                         <div className='text-right'>
                                             <p className='text-white poppins text-right text-lg bg-red-500 
                                                 inline drop-shadow-md p-2 rounded-b-lg'
-                                            >3.4</p>
+                                            >{item.rate}</p>
                                         </div>
 
                                         <div className='flex'>
@@ -172,7 +172,16 @@ export default function GridPost({ axiosUrl, limit = Infinity, title }) {
                                             }
                                         </div>
                                         {/* -------CHAPTERS END----------------------- */}
+                                        {
+                                            item.chapters.length <= 0 ?
+                                                < div className='bg-gray-600 text-gray-300 
+                                                rounded-3xl cursor-default font-mono h-full p-10'>
+                                                    <p className='text-center'>
+                                                        no chapters yet..
+                                                    </p>
+                                                </div> : ''
 
+                                        }
 
 
                                     </div>

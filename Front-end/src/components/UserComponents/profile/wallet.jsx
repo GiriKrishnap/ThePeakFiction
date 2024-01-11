@@ -6,6 +6,7 @@ import { getUserById } from '../../../util/constants';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import toast from 'react-hot-toast';
 import { loadStripe } from '@stripe/stripe-js';
+import { getWalletAPI } from '../../../APIs/userAPI';
 //.........................................................................
 
 export default function WalletComponent() {
@@ -23,22 +24,27 @@ export default function WalletComponent() {
 
     //.........................................................................
 
-    const getWallet = async () => {
+    const fetchGetWallet = async () => {
+        try {
 
-        const userId = JSON.parse(localStorage.getItem("user-login")).id
-        axios.get(`${getUserById}${userId}`).then((response) => {
+            const response = await getWalletAPI();
             if (response.data.status) {
-                console.log('response.data.walletDetails - ', response.data.walletDetails)
                 setWalletAmount(response.data.walletDetails);
+            } else {
+                toast.error("status is false");
             }
-        })
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message);
+
+        }
     }
 
     //.........................................................................
 
     useEffect(() => {
 
-        getWallet();
+        fetchGetWallet();
 
     }, [])
 
@@ -112,15 +118,15 @@ export default function WalletComponent() {
                                     + 10rs
                                 </button>
                                 <button className='bg-blue-400 p-3 rounded-lg grow hover:scale-105'
-                                    onClick={() => makePayment(10)}>
+                                    onClick={() => makePayment(15)}>
                                     + 15rs
                                 </button>
                                 <button className='bg-blue-500 p-3 rounded-lg grow hover:scale-105'
-                                    onClick={() => makePayment(10)}>
+                                    onClick={() => makePayment(20)}>
                                     + 20rs
                                 </button>
                                 <button className='bg-blue-600 p-3 rounded-lg grow hover:scale-105'
-                                    onClick={() => makePayment(10)}>
+                                    onClick={() => makePayment(50)}>
                                     + 50rs
                                 </button>
 

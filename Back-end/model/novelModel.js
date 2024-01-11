@@ -47,7 +47,8 @@ const novelSchema = mongoose.Schema({
     },
     //..................................
     rate: {
-        type: Number
+        type: Number,
+        default: 0
     },
     //..................................
     ratings: [{

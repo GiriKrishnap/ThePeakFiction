@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { novelDetailedView, readNovel } from '../../../util/constants';
 import Comments from '../../Comments/comments';
 import { getNovelDetailsWithIdAPI } from '../../../APIs/userAPI';
+import toast from 'react-hot-toast';
 //.........................................................................
 
 
@@ -53,6 +54,8 @@ export default function ReadNovel() {
 
         } catch (error) {
             console.log('catch error in ::getNovelWithId - ' + error.message)
+            toast.error(error.message);
+
         }
     }
 

@@ -65,7 +65,6 @@ module.exports = {
         try {
 
             let authors = await UserModel.find({ is_Author: true });
-
             if (authors) {
 
                 res.json({ status: true, authors })

@@ -14,7 +14,7 @@ module.exports = {
     getMostViewed: async (req, res) => {
         try {
 
-            const novels = await NovelModel.find({ status: { $ne: "pending" } })
+            const novels = await NovelModel.find({ status: { $ne: "pending" }, is_hide: false })
                 .sort({ 'views': -1 });
 
             if (novels) {
@@ -33,7 +33,7 @@ module.exports = {
 
     getTrending: async (req, res) => {
         try {
-            const novels = await NovelModel.find({ status: { $ne: "pending" } })
+            const novels = await NovelModel.find({ status: { $ne: "pending" }, is_hide: false })
                 .populate('author_id')
                 .populate('genre')
                 .sort({ 'in_library': -1 })
@@ -54,7 +54,7 @@ module.exports = {
 
     getNewUpdated: async (req, res) => {
         try {
-            const novels = await NovelModel.find({ status: { $ne: "pending" } })
+            const novels = await NovelModel.find({ status: { $ne: "pending" }, is_hide: false })
                 .populate('author_id')
                 .populate('genre')
                 .sort({ 'updated_date': -1 })
@@ -106,7 +106,7 @@ module.exports = {
     getAllNovels: async (req, res) => {
         try {
 
-            const novels = await NovelModel.find({ status: { $ne: "pending" } })
+            const novels = await NovelModel.find({ status: { $ne: "pending" }, is_hide: false })
                 .sort({ 'publish_date': -1 })
                 .populate('genre')
                 .populate('author_id');
@@ -150,6 +150,8 @@ module.exports = {
 
             const query = {
                 $and: [
+                    { is_hide: false },
+                    { status: { $ne: "pending" } },
                     genre.length > 0 ? { genre: { $all: genre } } : {},
                     year ? { publish_date: { $gte: startDate, $lt: endDate } } : {},
                     status ? { status: status } : {},
@@ -227,7 +229,7 @@ module.exports = {
             const totalRatings = updatedNovel.ratings.reduce((acc, curr) => acc + curr.rate, 0);
             const newAverageRating = totalRatings / updatedNovel.ratings.length;
 
-            await NovelModel.updateOne({ _id: novelId }, { $set: { rate: newAverageRating } });
+            await NovelModel.updateOne({ _id: novelId }, { $set: { rate: newAverageRating.toFixed(1) } });
 
             res.json({ status: true, message: 'Rating added successfully' });
 
@@ -282,16 +284,39 @@ module.exports = {
             if (isInLibrary) {
 
                 await UserModel.findByIdAndUpdate(userId, { $pull: { library: novelId } });
+                await NovelModel.updateOne({ _id: novelId }, { $inc: { in_library: -1 } });
                 res.json({ status: true, message: 'Novel removed from library' });
             } else {
 
                 await UserModel.findByIdAndUpdate(userId, { $push: { library: novelId } });
+                await NovelModel.updateOne({ _id: novelId }, { $inc: { in_library: 1 } });
                 res.json({ status: true, message: 'Novel added to library' });
             }
 
         } catch (error) {
             res.status(400).json({ status: false, message: 'server catch error :: addToLibrary' });
             console.log('catch error :: getLibraryNovels', error.message);
+        }
+    },
+
+    //---------------------------------------------------------
+
+    checkGCoinSystem: async (req, res) => {
+        try {
+
+            const { NovelId } = req.query;
+            const Novel = await NovelModel.findOne({ _id: NovelId });
+
+            if (Novel.views > 1000) {
+                const Novel = await NovelModel.updateOne({ _id: NovelId }, { $set: { gcoin_system: true } });
+                res.json({ status: true, message: 'Eligible for Coin System' });
+            }
+
+            res.json({ status: false, message: 'Not Eligible for Coin System' });
+
+        } catch (error) {
+            res.status(400).json({ status: false, message: "oops catch error ::checkGCoinSystem serverSide" });
+            console.log('catch error on :: checkGCoinSystem - ', error.message)
         }
     }
 }

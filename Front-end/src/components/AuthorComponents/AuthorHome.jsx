@@ -24,7 +24,7 @@ export default function AuthorHome() {
 
     return (
         <>
-            <div className='m-6 md:m-28'>
+            <div className='m-6 md:m-28 '>
                 <div className='mainBody-login'>
                     <div className="flex flex-col md:flex-row gap-6`">
 

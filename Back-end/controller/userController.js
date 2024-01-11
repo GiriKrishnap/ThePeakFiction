@@ -31,7 +31,11 @@ module.exports = {
                     email: req.body.email,
                     password: securePassword,
                     is_Author: isAuthor
-                }).then(() => {
+                }).then(async (response) => {
+
+                    await WalletModel.create({
+                        user_id: response._id
+                    })
 
                     let details = {
                         firstName: req.body.userName,
@@ -105,10 +109,12 @@ module.exports = {
             const walletDetails = await WalletModel.findOne({ user_id: userId });
 
             if (!walletDetails) {
-                res.json({ status: false, message: 'user not found' });
+                res.json({ status: false, message: 'No Wallet' });
+            } else {
+
+                res.json({ status: true, walletDetails });
             }
 
-            res.json({ status: true, walletDetails });
 
         } catch (error) {
             res.status(400).json({ status: false, message: 'server catch error :: getUserWithId' });
