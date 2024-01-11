@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import axios from '../../util/axios'
-import { CoverUrl, Signup, authorNovelDetailed, getAuthorNovels } from '../../util/constants';
+import { CoverUrl, Signup, authorNovelDetailed } from '../../util/constants';
 import { useNavigate } from 'react-router-dom'
-
+import { getAuthorNovelsAPI } from '../../APIs/userAPI';
+import toast from 'react-hot-toast';
 
 export default function AuthorNovels() {
 
@@ -36,15 +36,15 @@ export default function AuthorNovels() {
     const getAllNovels = async () => {
         try {
 
-            const userData = JSON.parse(localStorage.getItem('user-login'))
-
-            const response = await axios.get(`${getAuthorNovels}/${userData.id}`);
+            const response = await getAuthorNovelsAPI();
 
             if (response.data.status) {
                 setNovels(response.data.novels)
             }
+
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
+            toast.error(error.message);
         }
     }
 

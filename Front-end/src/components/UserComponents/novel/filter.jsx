@@ -1,7 +1,7 @@
-import axios from '../../util/axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { CoverUrl, adminGetAllGenres, getAllNovelsUsers, getFilteredNovelsUsers, novelDetailedView } from '../../util/constants';
+import { CoverUrl, novelDetailedView } from '../../../util/constants';
+import { getAllGenresAPI, getAllNovelsForUsersAPI, getFilteredNovelsAPI } from '../../../APIs/userAPI';
 //.........................................................................
 
 
@@ -29,10 +29,12 @@ export default function Banner() {
 
     const getAllNovels = async () => {
         try {
-            const response = await axios.get(getAllNovelsUsers)
+
+            const response = await getAllNovelsForUsersAPI();
             if (response.data.status) {
                 setNovels(response.data.novels)
             }
+
         } catch (error) {
             console.log(error)
         }
@@ -40,15 +42,19 @@ export default function Banner() {
 
     //.........................................................................
 
-    const getAllGenres = () => {
+    const getAllGenres = async () => {
         try {
-            axios.get(adminGetAllGenres).then((response) => {
-                if (response.data.status) {
-                    setAllGenre(response.data.genres)
-                    allGenre.sort()
-                } else { alert('there is problem') }
 
-            });
+            const response = await getAllGenresAPI();
+
+            if (response.data.status) {
+
+                setAllGenre(response.data.genres)
+                allGenre.sort()
+
+            } else {
+                console.log('backend Problem ::getAllGenres');
+            }
 
         } catch (error) {
             console.log("error in getGenres function client side");
@@ -59,6 +65,7 @@ export default function Banner() {
 
     const handleFilter = async () => {
         try {
+            
             var checkboxes = document.getElementsByName("genres");
             var selectedGenres = [];
 
@@ -80,13 +87,11 @@ export default function Banner() {
                 search
             })
 
-            const response = await axios.post(getFilteredNovelsUsers, body, { headers: { "Content-Type": "application/json" } })
+            const response = await getFilteredNovelsAPI(body);
+
             if (response.data.status) {
                 setNovels(response.data.novels);
             }
-
-
-
 
         } catch (error) {
             console.log('catch error client :: handleFilter');

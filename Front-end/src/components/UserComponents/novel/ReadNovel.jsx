@@ -1,8 +1,8 @@
-import axios from '../../util/axios'
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getNovelDetailsWithId, novelDetailedView, readNovel } from '../../util/constants';
-import Comments from '../../components/Comments/comments';
+import { novelDetailedView, readNovel } from '../../../util/constants';
+import Comments from '../../Comments/comments';
+import { getNovelDetailsWithIdAPI } from '../../../APIs/userAPI';
 //.........................................................................
 
 
@@ -40,11 +40,12 @@ export default function ReadNovel() {
     const getNovelWithId = async (novelId) => {
         try {
 
-            axios.get(`${getNovelDetailsWithId}/${novelId}`).then((response) => {
+            const response = await getNovelDetailsWithIdAPI(novelId);
+
+            if (response.data.status) {
 
                 setNovel([response.data.novel]);
-                console.log(response.data.novel)
-            })
+            }
 
             const queryParams = new URLSearchParams(location.search);
             const Number = queryParams.get('number');
@@ -74,7 +75,7 @@ export default function ReadNovel() {
 
     const handleHomeBtn = async (novelId) => {
 
-        navigate(`${novelDetailedView}?NovelId=${novelId}`)
+        navigate(`${novelDetailedView}?NovelId=${novelId}`);
     }
 
     //.........................................................................

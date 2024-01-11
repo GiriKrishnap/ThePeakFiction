@@ -1,7 +1,7 @@
-import axios from '../../util/axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { CoverUrl, authorNovelDetailed, novelDetailedView } from '../../util/constants';
+import { CoverUrl, novelDetailedView } from '../../util/constants';
+import { getMostViewedNovelsAPI } from '../../APIs/userAPI';
 //.........................................................................
 
 
@@ -19,17 +19,22 @@ export default function RowPost({ axiosUrl, limit = Infinity, title }) {
 
     useEffect(() => {
         getMostViewedNovels()
-
     }, [])
 
     //.........................................................................
 
     const getMostViewedNovels = async () => {
-        axios.get(axiosUrl).then((response) => {
+        try {
+
+            const response = await getMostViewedNovelsAPI(axiosUrl);
+
             if (response.data.status) {
-                setNovels(response.data.novels.slice(0, limit))
+                setNovels(response.data.novels.slice(0, limit));
             }
-        }).catch(err => console.log('error on getMostViewedNovels => ' + err))
+
+        } catch (error) {
+            console.log('error on getMostViewedNovels => ' + error);
+        }
     }
 
     //.........................................................................

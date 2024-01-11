@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import axios from '../../util/axios'
-import { adminGetAllAuthors } from '../../util/constants';
+import toast from 'react-hot-toast';
+import { adminGetAllAuthorsAPI } from '../../APIs/adminAPI';
 //.........................................................................
 
 
@@ -19,18 +19,22 @@ export default function AuthorManagement() {
 
     //.........................................................................
 
-    const getAuthorsList = () => {
+    const getAuthorsList = async () => {
         try {
-            axios.get(adminGetAllAuthors).then((re) => {
-                if (re.data.status) {
-                    setAuthors(re.data.authors);
 
-                } else { alert('there is problem') }
+            const response = await adminGetAllAuthorsAPI()
 
-            });
+            if (response.data.status) {
+
+                setAuthors(response.data.authors);
+
+            } else {
+                toast.error('res.status is false');
+            }
 
         } catch (error) {
-            console.log("error in getUsersList function client side");
+            console.log("error in getUsersList function client side", error);
+            toast.error(error.message);
         }
     }
 

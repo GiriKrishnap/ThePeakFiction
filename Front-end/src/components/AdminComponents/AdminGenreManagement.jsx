@@ -1,7 +1,6 @@
+import toast from 'react-hot-toast';
 import React, { useEffect, useState } from 'react'
-import Swal from 'sweetalert2';
-import axios from '../../util/axios'
-import { adminGenresPost, adminGetAllGenres, } from '../../util/constants';
+import { adminGetAllGenreAPI, createGenresAPI } from '../../APIs/adminAPI';
 //.........................................................................
 
 
@@ -21,57 +20,54 @@ export default function UserManagement() {
 
     //.........................................................................
 
-    const getGenres = () => {
+    const getGenres = async () => {
         try {
-            axios.get(adminGetAllGenres).then((response) => {
-                if (response.data.status) {
-                    setGenre(response.data.genres);
-                } else { alert('there is problem') }
-
-            });
+            const response = await adminGetAllGenreAPI();
+            if (response.data.status) {
+                setGenre(response.data.genres);
+            } else {
+                alert('there is problem')
+            }
 
         } catch (error) {
-            console.log("error in getGenres function client side");
+            console.log("error in getGenres function client side - ", error);
+            toast.error(error.message);
+
         }
     }
 
     //.........................................................................
 
     const handleAddGenre = async () => {
-        if (!genreName || !genreDescription) {
-            Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: "fill the form!",
-                showConfirmButton: false,
-                timer: 1500
-            })
-        } else {
-            const body = JSON.stringify({
-                genreName,
-                genreDescription
-            })
-            const response = await axios.post(adminGenresPost, body, { headers: { "Content-Type": "application/json" } });
-            if (response.data.status) {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: response.data.message,
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                setGenreName('');
-                setGenreDescription('');
-                getGenres();
+        try {
+
+            if (!genreName || !genreDescription) {
+
+                toast.error("fill the form!");
+
             } else {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'error',
-                    title: response.data.message,
-                    showConfirmButton: false,
-                    timer: 1500
+                const body = JSON.stringify({
+                    genreName,
+                    genreDescription
                 })
+
+                const response = await createGenresAPI(body);
+                if (response.data.status) {
+
+                    toast.success("Added");
+
+                    setGenreName('');
+                    setGenreDescription('');
+                    getGenres();
+
+                } else {
+                    toast.error(response.data.message);
+                }
             }
+
+        } catch (error) {
+            toast.error(error.message);
+            console.log(error);
         }
     }
 

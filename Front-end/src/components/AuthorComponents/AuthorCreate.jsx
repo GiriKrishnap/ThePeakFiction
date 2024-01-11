@@ -1,12 +1,8 @@
+import toast from 'react-hot-toast';
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import axios from '../../util/axios'
-import toast from 'react-hot-toast';
-import {
-    authorHome, authorNovels,
-    adminGetAllGenres, authorCreatePost, Login
-} from '../../util/constants';
+import { authorHome, authorNovels, Login } from '../../util/constants';
+import { authorNovelCreateAPI, getAllGenresAPI } from '../../APIs/userAPI';
 //.........................................................................
 
 
@@ -43,18 +39,19 @@ export default function AuthorCreate() {
     //.........................................................................
 
 
-    const getAllGenres = () => {
+    const getAllGenres = async () => {
         try {
-            axios.get(adminGetAllGenres).then((response) => {
-                if (response.data.status) {
-                    setAllGenre(response.data.genres)
-                    allGenre.sort()
-                } else { alert('there is problem') }
-
-            });
+            const response = await getAllGenresAPI();
+            if (response.data.status) {
+                setAllGenre(response.data.genres)
+                allGenre.sort()
+            } else {
+                toast.error('backend error');
+            }
 
         } catch (error) {
             console.log("error in getGenres function client side");
+            toast.error(error.message);
         }
     }
 
@@ -96,15 +93,21 @@ export default function AuthorCreate() {
         formData.append('authorId', authorId);
 
         try {
-            const response = await axios.post(`${authorCreatePost}${title}`, formData)
+            const response = await authorNovelCreateAPI(title, formData);
+
             if (response.data.status) {
-                toast.success(response.data.message)
-                navigate(authorNovels)
+
+                toast.success(response.data.message);
+                navigate(authorNovels);
+
             } else {
-                toast.error(response.data.message)
+
+                toast.error(response.data.message);
             }
+
         } catch (error) {
             console.error('Error uploading Novel:', error);
+            toast.error(error.message);
         }
     }
 
@@ -181,5 +184,6 @@ export default function AuthorCreate() {
         </>
     )
 }
+
 //.........................................................................
 

@@ -2,6 +2,8 @@ import axios from '../../util/axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { CoverUrl, novelDetailedView } from '../../util/constants';
+import { gridePostAPI } from '../../APIs/userAPI';
+import toast from 'react-hot-toast';
 //.........................................................................
 
 
@@ -26,13 +28,15 @@ export default function GridPost({ axiosUrl, limit = Infinity, title }) {
 
     const getAllNovels = async () => {
         try {
-            const response = await axios.get(axiosUrl)
+            const response = await gridePostAPI(axiosUrl);
+
             if (response.data.status) {
                 setNovels(response.data.novels.slice(0, limit))
-
             }
         } catch (error) {
             console.log(error)
+            toast.error(error.message);
+
         }
     }
 
@@ -52,8 +56,8 @@ export default function GridPost({ axiosUrl, limit = Infinity, title }) {
             <div className='bg-gray-800 overflow-hidden flex flex-col pb-5 text-center pt-8'>
 
                 {novels.length > 0 ? '' :
-                    < h1 className='font-mono text-5xl text-white text-center mt-10 mb-4'>
-                        - There is No Novels <i className="fa-regular fa-face-sad-tear "></i> -
+                    < h1 className='font-mono text-5xl text-white text-center mt-60 mb-4'>
+                        - There is No Novels <i className="fa-solid fa-face-sad-tear "></i> -
                     </h1>
                 }
                 {novels.length > 0 ? <p className='text-white poppins text-4xl text-left mb-1 ml-2'>{title}</p> : ''}
@@ -91,7 +95,7 @@ export default function GridPost({ axiosUrl, limit = Infinity, title }) {
                                         <div className='w-full grid lg:grid-flow-col gap-2 mt-2'>
 
                                             <small className='bg-blue-700 pr-2 pl-2 p-0.5 text-gray-200 
-                                                    rounded-xl cursor-default font-mono'> Author: {item.author_id.userName} </small>
+                                                    rounded-xl cursor-default font-mono'> Author: {item?.author_id.userName} </small>
 
                                             {
                                                 item.genre.map((genre) => (

@@ -12,6 +12,7 @@ module.exports = {
         try {
 
             const { title, description, authorId } = req.body;
+
             const CoverPath = req.file.path;
             const genre = req.body.genre.split(',')
             const currentDate = moment().format('YYYY-MM-DD');
@@ -33,7 +34,7 @@ module.exports = {
 
         } catch (error) {
 
-            res.json({ status: false, message: "oops catch error" });
+            res.status(400).json({ status: false, message: "oops catch error" });
             console.log(error + ' error in AuthorCreateNovel ' + error.message);
         }
     },
@@ -49,7 +50,7 @@ module.exports = {
 
 
         } catch (error) {
-            res.json({ status: false, message: "oops catch error" });
+            res.status(400).json({ status: false, message: "oops catch error" });
             console.log(error + ' error in AuthorGetNovels ' + error.message);
         }
     },
@@ -72,7 +73,7 @@ module.exports = {
             })
 
         } catch (error) {
-            res.json({ status: false, message: "oops catch error ::addChapter serverSide" });
+            res.status(400).json({ status: false, message: "oops catch error ::addChapter serverSide" });
             console.log('catch error on :: addChapter - ', error.message)
         }
     },

@@ -1,7 +1,7 @@
 import React from 'react'
-import HeaderComponents from '../../components/UserComponents/header.jsx';
-import FooterComponents from '../../components/UserComponents/footer.jsx';
-import ReadNovelComponents from '../../components/UserComponents/ReadNovel.jsx';
+import HeaderComponents from '../../components/UserComponents/header-footer/header.jsx';
+import FooterComponents from '../../components/UserComponents/header-footer/footer.jsx';
+import ReadNovelComponents from '../../components/UserComponents/novel/ReadNovel.jsx';
 
 function HomePage() {
     return (

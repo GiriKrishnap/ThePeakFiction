@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import axios from '../../util/axios'
 import toast from 'react-hot-toast';
-import { AuthorAddChapterPost, AuthorNovelDetails, Signup } from '../../util/constants';
+import React, { useEffect, useState } from 'react'
+import { authorAddChapterAPI } from '../../APIs/userAPI';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { AuthorNovelDetails, Signup } from '../../util/constants';
 //.........................................................................
 
 
@@ -46,41 +45,33 @@ export default function AuthorCreate() {
     //.........................................................................
 
     const handleSubmit = async (e) => {
+        try {
 
-        e.preventDefault();
+            e.preventDefault();
 
-        const queryParams = new URLSearchParams(location.search);
-        const chapterNumber = queryParams.get('number');
+            const queryParams = new URLSearchParams(location.search);
+            const chapterNumber = queryParams.get('number');
 
-        const body = JSON.stringify({
-            NovelId,
-            title,
-            content,
-            chapterNumber
-        });
+            const body = JSON.stringify({
+                NovelId,
+                title,
+                content,
+                chapterNumber
+            });
 
-        let response = await axios.post(AuthorAddChapterPost, body, { headers: { "Content-Type": "application/json" } });
+            let response = await authorAddChapterAPI(body);
 
-        if (response.data.status) {
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: response.data.message,
-                showConfirmButton: false,
-                timer: 1500,
-            }).then(() => {
+            if (response.data.status) {
+
+                toast.success(response.data.message);
                 navigate(`${AuthorNovelDetails}?NovelId=${NovelId}`, { replace: true })
-            })
 
+            } else {
+                toast.error(response.data.message);
+            }
 
-        } else {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: response.data.message,
-                showConfirmButton: false,
-                timer: 1500,
-            })
+        } catch (error) {
+            toast.success(error.message);
         }
     }
 

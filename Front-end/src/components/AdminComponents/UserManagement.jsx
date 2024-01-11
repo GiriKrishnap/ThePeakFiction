@@ -1,6 +1,6 @@
+import toast from 'react-hot-toast'
 import React, { useEffect, useState } from 'react'
-import axios from '../../util/axios'
-import { adminGetAllUsers } from '../../util/constants';
+import { adminGetAllUsersAPI } from '../../APIs/adminAPI';
 //.........................................................................
 
 
@@ -18,18 +18,22 @@ export default function UserManagement() {
 
     //.........................................................................
 
-    const getUsersList = () => {
+    const getUsersList = async () => {
         try {
-            axios.get(adminGetAllUsers).then((re) => {
-                if (re.data.status) {
-                    setUsers(re.data.users);
-                    console.log(re.data.users)
-                } else { alert('there is problem') }
 
-            });
+            const response = await adminGetAllUsersAPI()
+
+            if (response.data.status) {
+
+                setUsers(response.data.users);
+            } else {
+
+                toast.error('res.status is false');
+            }
 
         } catch (error) {
             console.log("error in getUsersList function client side");
+            toast.error(error.message);
         }
     }
 
@@ -91,7 +95,6 @@ export default function UserManagement() {
                     </table>
                 </div> : <p className='text-2xl rounded-lg text-white font-bold font-mono bg-blue-300'>There is no users</p>
             }
-
         </div>
     )
 }

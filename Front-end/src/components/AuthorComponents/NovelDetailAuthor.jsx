@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import axios from '../../util/axios'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AuthorAddChapter, CoverUrl, getNovelDetailsWithId } from '../../util/constants';
+import { AuthorAddChapter, CoverUrl } from '../../util/constants';
+import { getNovelDetailsWithIdAPI } from '../../APIs/userAPI';
 //.........................................................................
 
 export default function NovelDetailAuthor() {
@@ -35,11 +35,14 @@ export default function NovelDetailAuthor() {
     const getNovelWithId = async (novelId) => {
         try {
 
-            axios.get(`${getNovelDetailsWithId}/${novelId}`).then((response) => {
+            const response = await getNovelDetailsWithIdAPI(novelId);
+
+            if (response.data.status) {
                 setNovel([response.data.novel]);
                 setChapterNumber(response.data.novel.chapters.length + 1)
+            }
 
-            })
+
         } catch (error) {
             console.log('catch error in ::getNovelWithId - ' + error.message)
         }
@@ -111,9 +114,11 @@ export default function NovelDetailAuthor() {
                                     {/* NOVEL VIEWS AND LIBRARY COUNT */}
                                     <div className='w-3/4 flex gap-5 ml-4 mt-3'>
 
-                                        <small className='text-gray-300'>Views {item.views} <i class="fa-solid fa-eye"></i></small>
+                                        <small className='text-gray-300'>
+                                            Views {item.views} <i class="fa-solid fa-eye"></i></small>
                                         <small className='text-gray-300'>|</small>
-                                        <small className='text-gray-300'>in {item.in_library} Library <i class="fa-solid fa-book-bookmark"></i></small>
+                                        <small className='text-gray-300'>
+                                            in {item.in_library} Library <i class="fa-solid fa-book-bookmark"></i></small>
 
                                     </div>
                                     {/* NOVEL VIEWS AND LIBRARY COUNT END*/}
@@ -136,13 +141,22 @@ export default function NovelDetailAuthor() {
                             {/* ------------ NOVEL REVIEW AND DETAILS ------------- */}
                             <div className='sm:w-2/6 flex flex-col pl-12 justify-center
                                     text-white text-left font-mono'>
-                                <p><b className='font-sans'>Author:</b> {item.author_id.userName}</p>
-                                <p><b className='font-sans'>Publish Date:</b>{new Date(item.publish_date).toLocaleDateString("en-GB")}</p>
-                                <p><b className='font-sans'>Genres:</b> {
-                                    item.genre.map((genres) => (
-                                        genres.name + ', '
-                                    ))
-                                }</p>
+
+                                <p>
+                                    <b className='font-sans'>
+                                        Author:</b> {item.author_id.userName}
+                                </p>
+
+                                <p>
+                                    <b className='font-sans'>
+                                        Publish Date:</b> {new Date(item.publish_date).toLocaleDateString("en-GB")}
+                                </p>
+                                <p>
+                                    <b className='font-sans'>Genres:</b> {
+                                        item.genre.map((genres) => (
+                                            genres.name + ', '
+                                        ))
+                                    }</p>
 
                                 {/* RATING SYSTEM */}
                                 <div class="flex items-center  ">
@@ -182,18 +196,24 @@ export default function NovelDetailAuthor() {
                                 item.chapters?.length > 0 ?
                                     item.chapters.map((chapter) => (
 
-                                        <div className={`hover:bg-gray-500 ${chapter.gcoin > 0 ? "bg-gray-900" : 'bg-gray-600'} w-full rounded-lg
-                                         p-2 pl-5 grid grid-cols-4 lg:grid-cols-5 font-medium poppins2 ${chapter.gcoin > 0 ? "text-white" : 'text-gray-400'}
+                                        <div className={`hover:bg-gray-500 
+                                        ${chapter.gcoin > 0 ? "bg-gray-900" : 'bg-gray-600'} w-full rounded-lg
+                                         p-2 pl-5 grid grid-cols-4 lg:grid-cols-5 font-medium poppins2
+                                          ${chapter.gcoin > 0 ? "text-white" : 'text-gray-400'}
                                           hover:text-white gap-5 hover:font-mono select-none cursor-pointer`}>
 
-                                            <p className='text-left text-sm lg:text-lg lg:col-span-2'>chapter {chapter.number}: {chapter.title}</p>
+                                            <p className='text-left text-sm lg:text-lg lg:col-span-2'>
+                                                chapter {chapter.number}: {chapter.title}
+                                            </p>
 
                                             {
                                                 <p className='text-center text-sm lg:text-lg'>{chapter.gcoin ?
                                                     `${chapter.gcoin} Gcoin to unlock` : ''}</p>
                                             }
 
-                                            <p className='text-right text-sm lg:text-lg'>{new Date(chapter.publish_date).toLocaleDateString("en-GB")}</p>
+                                            <p className='text-right text-sm lg:text-lg'>
+                                                {new Date(chapter.publish_date).toLocaleDateString("en-GB")}
+                                            </p>
 
                                             <div className='md:flex gap-5'>
                                                 <p className='hover:underline lg:text-xl text-gray-300'>Edit</p>

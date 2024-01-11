@@ -2,8 +2,8 @@ import React, { Suspense, lazy, useState } from 'react'
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 //.....................................................................................
-import HeaderComponents from '../../components/UserComponents/header.jsx';
-import FooterComponents from '../../components/UserComponents/footer.jsx';
+import HeaderComponents from '../../components/UserComponents/header-footer/header.jsx';
+import FooterComponents from '../../components/UserComponents/header-footer/footer.jsx';
 const ProfileComponents = lazy(() => import('../../components/UserComponents/profile/profile.jsx'));
 const WalletComponents = lazy(() => import('../../components/UserComponents/profile/wallet.jsx'));
 //.....................................................................................

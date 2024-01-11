@@ -52,7 +52,7 @@ module.exports = {
             res.json({ id: session.id });
 
         } catch (error) {
-            res.json({ status: false, message: 'server catch error  :: createPayment' });
+            res.status(400).json({ status: false, message: 'server catch error  :: createPayment' });
             console.log(error.message);
         }
     },

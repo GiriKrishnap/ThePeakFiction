@@ -1,14 +1,14 @@
 import React from 'react'
-import HeaderComponents from '../../components/UserComponents/header.jsx';
-import FooterComponents from '../../components/UserComponents/footer.jsx';
+import HeaderComponents from '../../components/UserComponents/header-footer/header.jsx';
+import FooterComponents from '../../components/UserComponents/header-footer/footer.jsx';
 import GridePostComponent from '../../components/PostComponents/gridePost.jsx';
-import { getTrendingPost } from '../../util/constants.js';
+import { getLibraryNovelsUrl } from '../../util/constants.js';
 
 export default function Updated() {
     return (
         <div>
             <HeaderComponents />
-            <GridePostComponent axiosUrl={getTrendingPost} title={"My Library"} />
+            <GridePostComponent axiosUrl={getLibraryNovelsUrl} title={"My Library"} />
             <FooterComponents />
         </div>
     )

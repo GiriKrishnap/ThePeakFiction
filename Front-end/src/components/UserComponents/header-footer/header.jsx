@@ -3,15 +3,14 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { useDispatch, useSelector } from 'react-redux';
-import { Login, authorHome, filter, getUpdatedUrl, myLibraryUrl, profileUrl, trendingUrl } from '../../util/constants';
+import { Login, authorHome, filter, getUpdatedUrl, myLibraryUrl, profileUrl, trendingUrl } from '../../../util/constants';
 
 const navigationObj = [
     { name: 'Home', link: '/home', current: false },
     { name: 'Updated', link: getUpdatedUrl, current: false },
     { name: 'Trending', link: trendingUrl, current: false },
     { name: 'My Library', link: myLibraryUrl, current: false },
-    { name: 'Random', link: '/Random', current: false }
+    { name: 'Community', link: '/community', current: false }
 ]
 
 function classNames(...classes) {
@@ -43,9 +42,7 @@ export default function Header() {
     }
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('user-login'))
-        console.log('localStorage item is here', user)
-        console.log('is user is Author = ', user?.isAuthor);
+        const user = JSON.parse(localStorage.getItem('user-login'));
         if (!user) {
             navigate(Login)
         } else {

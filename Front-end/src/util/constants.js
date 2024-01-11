@@ -19,7 +19,9 @@ export const myLibraryUrl = '/my-library'
 export const getMostViewedPost = '/getMostViewed'
 export const getTrendingPost = '/getTrending'
 export const getRandomPost = '/getRandom'
+export const getLibraryNovelsUrl = '/get-library'
 export const getNewUpdatedPost = '/getNewUpdated'
+export const addNovelToLibraryPostUrl = '/add-To-library'
 
 //filter
 export const getFilteredNovelsUsers = '/filterNovels-user'
@@ -47,7 +49,7 @@ export const AuthorNovelDetails = '/author/Novels/detail'
 export const AuthorAddChapter = '/author/Novels/addChapter'
 
 //post
-export const authorCreatePost = '/author/create/'
+export const authorCreatePost = '/author/create'
 export const getAuthorNovels = '/author/getAuthorNovels'
 export const AuthorAddChapterPost = '/author/addChapter'
 

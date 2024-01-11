@@ -1,9 +1,9 @@
-import axios from '../../util/axios'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CoverUrl, RatingsPostUrl, getNovelDetailsWithId, readNovel } from '../../util/constants';
-import Comments from '../../components/Comments/comments';
+import { CoverUrl, readNovel, readerHome } from '../../../util/constants';
+import Comments from '../../Comments/comments';
 import toast from 'react-hot-toast';
+import { RatingPostAPI, addNovelToLibraryAPI, getNovelDetailsWithIdAPI } from '../../../APIs/userAPI';
 
 
 //.............................................................................
@@ -41,13 +41,19 @@ export default function NovelDetailedView() {
     const getNovelWithId = async (novelId) => {
         try {
 
-            axios.get(`${getNovelDetailsWithId}/${novelId}`).then((response) => {
-
+            const response = await getNovelDetailsWithIdAPI(novelId);
+            if (response.data.status) {
                 setNovel([response.data.novel]);
+            } else {
+                navigate(readerHome)
+                toast.error('not found');
+            }
 
-            })
+
         } catch (error) {
             console.log('catch error in ::getNovelWithId - ' + error.message)
+            toast.error(error.message);
+
         }
     }
 
@@ -61,28 +67,52 @@ export default function NovelDetailedView() {
     //.........................................................................
 
     const giveRating = async (rate, novelId) => {
+        try {
+            const userId = JSON.parse(localStorage.getItem('user-login')).id
 
-        const userId = JSON.parse(localStorage.getItem('user-login')).id
+            const body = JSON.stringify({
+                rate,
+                userId,
+                novelId
+            })
 
-        const body = JSON.stringify({
-            rate,
-            userId,
-            novelId
-        })
+            const response = await RatingPostAPI(body);
 
-        const response = await axios.post(RatingsPostUrl, body, {
-            headers: { "Content-Type": "application/json" }
-        })
+            if (response.data.status) {
 
-        if (response.data.status) {
+                toast.success(response.data.message)
 
-            toast.success(response.data.message)
+            } else {
 
-        } else {
+                toast.error(response.data.message)
+            }
 
-            toast.error(response.data.message)
+        } catch (error) {
+            console.log(error)
+            toast.error(error.message);
         }
 
+    }
+
+    //.........................................................................
+
+    const addToLibrary = async (novelId) => {
+        try {
+
+            const response = await addNovelToLibraryAPI(novelId);
+
+            if (response.data.status) {
+
+                toast.success(response.data.message);
+
+            } else {
+
+                toast.error(response.data.message);
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error(error.message);
+        }
     }
 
     //.........................................................................
@@ -133,7 +163,8 @@ export default function NovelDetailedView() {
                                     </button>
 
                                     <button className='bg-gray-700 hover:bg-blue-700 poppins2 p-1.5
-                                   text-white rounded-md pr-2 font-sans w-full drop-shadow-lg'>
+                                   text-white rounded-md pr-2 font-sans w-full drop-shadow-lg'
+                                        onClick={() => addToLibrary(item._id)}>
                                         Add To Library
                                         <i className="fa-solid fa-circle-plus m-1.5"></i>
                                     </button>

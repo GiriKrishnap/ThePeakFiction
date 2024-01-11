@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+//////////////////////////////////////////////////////////////
+const { protect } = require('../middlewares/verifyToken');
 
 /////controller///////////////////////
 const adminController = require('../controller/adminController');
@@ -11,27 +13,27 @@ router.post('/login', adminController.adminLogin);
 
 // .................{USERS}...................................
 //get
-router.get('/getAllUsers', adminController.getAllUsers);
+router.get('/getAllUsers', protect, adminController.getAllUsers);
 
 //.................{AUTHORS}...................................
 //get
-router.get('/getAllAuthors', adminController.getAllAuthors);
+router.get('/getAllAuthors', protect, adminController.getAllAuthors);
 
 //.................{GENRE}...................................
 //get
-router.get('/getAllGenres', adminController.getAllGenres);
+router.get('/getAllGenres', protect, adminController.getAllGenres);
 
 //post
-router.post('/addGenre', adminController.addGenre);
+router.post('/addGenre', protect, adminController.addGenre);
 
 //.................{NOVELS}...................................
 //get
 router.get('/image/:id', adminController.getImage);
-router.get('/getAllNovels', adminController.getAllNovels);
+router.get('/getAllNovels', protect, adminController.getAllNovels);
 
 //post
-router.post('/approve', adminController.giveApprove);
-router.post('/hideNovel', adminController.hideNovel);
+router.post('/approve', protect, adminController.giveApprove);
+router.post('/hideNovel', protect, adminController.hideNovel);
 
 
 

@@ -2,12 +2,10 @@ import React from 'react';
 import axios from '../../../util/axios'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { authorNovels, createPaymentIntentURL, getNovelDetailsWithId, getUserById } from '../../../util/constants';
-import { CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js';
-import StripeCheckout from 'react-stripe-checkout';
+import { getUserById } from '../../../util/constants';
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import toast from 'react-hot-toast';
 import { loadStripe } from '@stripe/stripe-js';
-import Modal from 'react-modal';
 //.........................................................................
 
 export default function WalletComponent() {

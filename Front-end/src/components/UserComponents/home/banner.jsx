@@ -1,7 +1,8 @@
-import axios from '../../../util/axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { CoverUrl, getRandomPost, novelDetailedView } from '../../../util/constants';
+import { addNovelToLibraryAPI, getRandomNovelAPI } from '../../../APIs/userAPI';
+import { CoverUrl, novelDetailedView } from '../../../util/constants';
+import toast from 'react-hot-toast';
 //.........................................................................
 
 
@@ -25,10 +26,12 @@ export default function Banner() {
 
     const changeBanner = async () => {
         try {
-            const response = await axios.get(getRandomPost)
+
+            const response = await getRandomNovelAPI();
             if (response.data.status) {
                 setNovel(response.data.random[0])
             }
+
         } catch (error) {
             console.log(error)
         }
@@ -43,6 +46,28 @@ export default function Banner() {
     }
 
     //.........................................................................
+
+    const addToLibrary = async (novelId) => {
+        try {
+
+            const response = await addNovelToLibraryAPI(novelId);
+
+            if (response.data.status) {
+
+                toast.success(response.data.message);
+
+            } else {
+
+                toast.error(response.data.message);
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error(error.message);
+        }
+    }
+
+    //.........................................................................
+
 
     return (
         <>{
@@ -68,9 +93,11 @@ export default function Banner() {
                         font-medium mr-2 drop-shadow-lg hover:scale-105 hover:bg-red-600 duration-500'
                                 onClick={() => handleClick(novel._id)}>Read</button>
 
+
                             <button className=' bg-blue-500 h-8 w-20 rounded-lg
-                         text-white font-medium drop-shadow-lg hover:scale-105
-                         text-sm hover:bg-blue-600 duration-500'>+library</button>
+                              text-white font-medium drop-shadow-lg hover:scale-105
+                               text-sm hover:bg-blue-600 duration-500'
+                                onClick={() => addToLibrary(novel._id)}>+library</button>
                         </div>
                     </div>
 
@@ -102,7 +129,8 @@ export default function Banner() {
 
                             <button className=' bg-blue-500 h-10 p-2 w-52 rounded-full
                                 text-white font-medium drop-shadow-lg hover:scale-105 hover:ml-1 hover:bg-blue-600 
-                                duration-500'>
+                                duration-500'
+                                onClick={() => addToLibrary(novel._id)}>
                                 <i className="fa-solid fa-circle-plus"></i> Add to library
                             </button>
 

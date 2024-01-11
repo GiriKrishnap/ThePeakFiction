@@ -64,7 +64,7 @@ module.exports = {
     getAllAuthors: async (req, res) => {
         try {
 
-            let authors = await UserModel.find({ is_Author: false });
+            let authors = await UserModel.find({ is_Author: true });
 
             if (authors) {
 
@@ -77,7 +77,7 @@ module.exports = {
 
             }
         } catch (error) {
-            res.json({ status: false, message: 'admin catch error server side :: getAllAuthors' });
+            res.status(401).json({ status: false, message: 'admin catch error server side :: getAllAuthors' });
             console.log(error.message);
         }
 
@@ -100,7 +100,7 @@ module.exports = {
 
             }
         } catch (error) {
-            res.json({ status: false, message: 'admin catch error server side :: getAllGenres' });
+            res.status(400).json({ status: false, message: 'admin catch error server side :: getAllGenres' });
             console.log("catch error getAllGenre " + error.message);
         }
 
@@ -110,26 +110,26 @@ module.exports = {
     addGenre: async (req, res) => {
         try {
 
-            let genres = await GenreModel.findOne({ name: req.body.genreName });
+            let genres = await GenreModel.findOne({ name: { $regex: new RegExp(req.body.genreName, 'i') } });
 
             if (genres) {
 
-                res.json({ status: false, message: 'already added' });
+                res.json({ status: false, message: 'Already added' });
 
             } else {
 
-                const genreAdd = GenreModel.create({
+                GenreModel.create({
+
                     name: req.body.genreName,
                     description: req.body.genreDescription,
+
                 }).then(() => {
-
                     res.json({ status: true, message: 'Added' });
-
                 })
-
             }
+
         } catch (error) {
-            res.json({ status: false, message: 'admin catch error server side :: addGenres' });
+            res.status(400).json({ status: false, message: 'admin catch error server side :: addGenres' });
             console.log("catch error addGenre " + error.message);
         }
 
@@ -158,6 +158,7 @@ module.exports = {
             }
 
         } catch (error) {
+            res.status(400).json({ status: false })
             console.log('catch error on :: getImage ' + error.message);
         }
     },
@@ -182,7 +183,7 @@ module.exports = {
 
             }
         } catch (error) {
-            res.json({ status: false, message: 'admin catch error server side :: getAllNovels' });
+            res.status(400).json({ status: false, message: 'admin catch error server side :: getAllNovels' });
             console.log('catch error ::giveAllNovels Admin controller ' + error.message);
         }
 
@@ -203,7 +204,7 @@ module.exports = {
                 res.json({ status: false, message: 'Can\'t Approve' });
             }
         } catch (error) {
-            res.json({ status: false, message: 'admin catch error server side :: giveApprove' });
+            res.status(400).json({ status: false, message: 'admin catch error server side :: giveApprove' });
             console.log('catch error at :: giveApprove adminController ' + error.message);
         }
     },
@@ -212,23 +213,17 @@ module.exports = {
     hideNovel: async (req, res) => {
         try {
 
-            const id = req.query.id
-            let isHide = req.query.isHide
+            const id = req.body.id
+            let isHide = req.body.isHide
 
             if (id) {
-
-                if (isHide !== false) {
-
-                    await NovelModel.updateOne({ _id: id }, { $set: { is_hide: false } })
-
-                } else {
-
-                    await NovelModel.updateOne({ _id: id }, { $set: { is_hide: true } })
-                }
+                const response = await NovelModel.findByIdAndUpdate({ _id: id }, { $set: { is_hide: !isHide } })
+                res.json({ status: true })
             }
 
+
         } catch (error) {
-            res.json({ status: false, message: 'admin catch error server side :: hideNovel' });
+            res.status(400).json({ status: false, message: 'admin catch error server side :: hideNovel' });
             console.log('catch error at :: hideNovel adminController - ' + error.message)
         }
     },

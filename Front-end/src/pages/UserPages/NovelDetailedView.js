@@ -1,7 +1,7 @@
 import React from 'react'
-import HeaderComponents from '../../components/UserComponents/header.jsx';
-import FooterComponents from '../../components/UserComponents/footer.jsx';
-import NovelDetailedViewComponents from '../../components/UserComponents/novelDetailedView.jsx';
+import HeaderComponents from '../../components/UserComponents/header-footer/header.jsx';
+import FooterComponents from '../../components/UserComponents/header-footer/footer.jsx';
+import NovelDetailedViewComponents from '../../components/UserComponents/novel/novelDetailedView.jsx';
 
 
 function NovelDetailPage() {

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
-import axios from '../../util/axios'
-import { AdminGetAllNovels, CoverUrl, adminNovelApprove, adminNovelHide } from '../../util/constants';
+import { CoverUrl } from '../../util/constants';
+import React, { useEffect, useState } from 'react'
+import { adminGetAllNovelsAPI, adminNovelApproveAPI, adminNovelHideAPI } from '../../APIs/adminAPI';
+import toast from 'react-hot-toast';
 //.........................................................................
 
 
@@ -19,28 +20,31 @@ export default function NovelManagement() {
 
     //.........................................................................
 
-    const getAllNovels = () => {
+    const getAllNovels = async () => {
         try {
-            axios.get(AdminGetAllNovels).then((re) => {
-                if (re.data.status) {
-                    setNovels(re.data.novels);
-                }
-
-            });
+            const response = await adminGetAllNovelsAPI();
+            if (response.data.status) {
+                setNovels(response.data.novels);
+            }
 
         } catch (error) {
-            console.log("error in getUsersList function client side");
+            console.log("error in getUsersList function client side - ", error);
+            toast.error(error.message);
         }
     }
 
     //.........................................................................
 
     const handleApprove = async (novelId) => {
-        const body = JSON.stringify({
-            novelId
-        })
-        axios.post(adminNovelApprove, body, { headers: { "Content-Type": "application/json" } }).then((response) => {
-            if (response.status) {
+        try {
+
+            const body = JSON.stringify({
+                novelId
+            })
+
+            const response = await adminNovelApproveAPI(body);
+
+            if (response.data.status) {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
@@ -59,18 +63,29 @@ export default function NovelManagement() {
                     timer: 1500
                 })
             }
-        })
 
+        } catch (error) {
+            toast.error(error.message);
+            console.log(error)
+        }
     }
 
     //.........................................................................
 
     const handleNovelHide = async (novelId, isHide) => {
         try {
-            axios.post(`${adminNovelHide}?id=${novelId}&isHide=${isHide}`)
+            const body = JSON.stringify({
+                id: novelId,
+                isHide
+            })
+
+            await adminNovelHideAPI(body);
+
             getAllNovels();
+
         } catch (error) {
-            console.log('catch error in :: handleNovelHide on clint side');
+            console.log('catch error in :: handleNovelHide on clint side - ', error);
+            toast.error(error.message);
         }
     }
 
@@ -192,16 +207,14 @@ export default function NovelManagement() {
                                                 onClick={() => handleNovelHide(novel._id, novel.is_hide)}>
                                                 {
                                                     novel.is_hide ?
-                                                        <>unHide < i className="fa-solid fa-eye"></i></> :
-                                                        <>Hide < i className="fa-solid fa-eye-slash"></i></>
+                                                        <>unListed < i className="fa-solid fa-eye"></i></> :
+                                                        <>listed < i className="fa-solid fa-eye-slash"></i></>
                                                 }
                                             </button>
                                         </td>
                                     </tr>
-
                                 ))
                             }
-
                         </tbody>
                     </table>
                 </div> : <p className='text-2xl rounded-lg text-white font-bold font-mono bg-blue-300'>There is no Novels</p>

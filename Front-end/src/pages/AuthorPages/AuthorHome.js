@@ -1,6 +1,6 @@
 import React from 'react'
-import HeaderComponents from '../../components/UserComponents/header.jsx';
-import FooterComponents from '../../components/UserComponents/footer.jsx';
+import HeaderComponents from '../../components/UserComponents/header-footer/header.jsx';
+import FooterComponents from '../../components/UserComponents/header-footer/footer.jsx';
 import AuthorHomeComponents from '../../components/AuthorComponents/AuthorHome.jsx';
 
 function HomePage() {
