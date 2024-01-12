@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { CoverUrl, novelDetailedView } from '../../util/constants';
 import { getMostViewedNovelsAPI } from '../../APIs/userAPI';
+import toast from 'react-hot-toast';
 //.........................................................................
 
 
@@ -34,6 +35,8 @@ export default function RowPost({ axiosUrl, limit = Infinity, title }) {
 
         } catch (error) {
             console.log('error on getMostViewedNovels => ' + error);
+            toast.error(error.message);
+            
         }
     }
 

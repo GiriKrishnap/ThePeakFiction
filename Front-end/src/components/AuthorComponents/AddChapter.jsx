@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 import React, { useEffect, useState } from 'react'
-import { authorAddChapterAPI } from '../../APIs/userAPI';
+import { authorAddChapterAPI, paymentEligibleCheckAPI } from '../../APIs/userAPI';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthorNovelDetails, Signup } from '../../util/constants';
 //.........................................................................
@@ -16,6 +16,8 @@ export default function AuthorCreate() {
     const [NovelId, setNovelId] = useState('');
     const [title, setTitle] = useState('');
     const [content, setContent] = useState(``);
+    const [paymentSystem, setPaymentSystem] = useState(false);
+    const [gcoin, setGcoin] = useState(0);
 
     //.........................................................................
 
@@ -56,7 +58,8 @@ export default function AuthorCreate() {
                 NovelId,
                 title,
                 content,
-                chapterNumber
+                chapterNumber,
+                gcoin
             });
 
             let response = await authorAddChapterAPI(body);
@@ -74,6 +77,31 @@ export default function AuthorCreate() {
             toast.success(error.message);
         }
     }
+
+    //.........................................................................
+
+    const checkPayment = async () => {
+        try {
+
+            const body = JSON.stringify({
+                NovelId
+            })
+            const response = await paymentEligibleCheckAPI(body);
+            if (response.data.status) {
+
+                toast.success("Eligible for Payment");
+
+            } else {
+                toast.error("No enough View Count");
+            }
+
+        } catch (error) {
+
+            console.log('error on checkPayment - ', error);
+            toast.error(error.message);
+        }
+    }
+
 
     //.........................................................................
 
@@ -116,6 +144,29 @@ export default function AuthorCreate() {
                             onChange={e => setContent(e.target.value)} required />
                     </div>
                     {/* ----------CHAPTER MAIN CONTENT END----------------------- */}
+
+
+
+                    {
+                        !paymentSystem ?
+                            /* ----------Add Payment system----------------------- */
+
+                            < p className="text-white hover:bg-gray-700 mt-14
+                            focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5
+                              py-2.5 text-center cursor-pointer"
+                                onClick={checkPayment}>
+                                Add Payment System
+                            </p>
+
+                            /* ----------Add Payment system end----------------------- */
+                            :
+                            <div>
+
+
+
+                            </div>
+                    }
+
 
 
                     {/* ----------BUTTONS----------------------- */}

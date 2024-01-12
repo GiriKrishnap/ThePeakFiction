@@ -105,8 +105,13 @@ export default function NovelDetailedView() {
             const response = await addNovelToLibraryAPI(novelId);
 
             if (response.data.status) {
-
-                toast.success(response.data.message);
+                if (response.data.message === 'Novel added to library') {
+                    toast.success('Novel added to library');
+                } else {
+                    toast(response.data.message, {
+                        icon: '📤',
+                    });
+                }
 
             } else {
 

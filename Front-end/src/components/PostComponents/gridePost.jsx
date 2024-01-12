@@ -1,37 +1,50 @@
 import axios from '../../util/axios'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { CoverUrl, novelDetailedView } from '../../util/constants';
+import PaginationComponent from '../../components/pagination/pagination';
 import { gridePostAPI } from '../../APIs/userAPI';
 import toast from 'react-hot-toast';
+import { Pagination } from '@mui/material';
 //.........................................................................
 
 
-export default function GridPost({ axiosUrl, limit = Infinity, title }) {
+export default function GridPost({ axiosUrl, title, home = false }) {
 
 
     //.........................................................................
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     //.........................................................................
 
     const [novels, setNovels] = useState([]);
+    const [currNovels, SetCurrNovels] = useState([]);
+    const [pageNumber, setPageNumber] = useState([]);
 
     //.........................................................................
 
     useEffect(() => {
-        getAllNovels();
+
+        const queryParams = new URLSearchParams(location.search);
+        const page = queryParams.get('page');
+
+        getAllNovels(page);
+
+
     }, [])
 
     //.........................................................................
 
-    const getAllNovels = async () => {
+    const getAllNovels = async (page) => {
         try {
             const response = await gridePostAPI(axiosUrl);
 
             if (response.data.status) {
-                setNovels(response.data.novels.slice(0, limit))
+                setNovels(response.data.novels)
+                SetCurrNovels(response.data.novels.slice(0, 6))
+                setPageNumber(Math.ceil(response.data.novels.length / 6))
             }
         } catch (error) {
             console.log(error)
@@ -50,21 +63,32 @@ export default function GridPost({ axiosUrl, limit = Infinity, title }) {
 
     //.........................................................................
 
+    const [currPage, setCurrPage] = useState(1);
+
+    const handleChange = (event, value) => {
+
+        SetCurrNovels(novels.slice((value - 1) * 6, value * 6))
+        setCurrPage(value);
+
+    };
+
+    //.........................................................................
+
     return (
         <>
 
             <div className='bg-gray-800 overflow-hidden flex flex-col pb-5 text-center pt-8'>
 
-                {novels.length > 0 ? '' :
+                {currNovels.length > 0 ? '' :
                     < h1 className='font-mono text-5xl text-white text-center mt-60 mb-4'>
                         - There is No Novels <i className="fa-solid fa-face-sad-tear "></i> -
                     </h1>
                 }
-                {novels.length > 0 ? <p className='text-white poppins text-4xl text-left mb-1 ml-2'>{title}</p> : ''}
+                {currNovels.length > 0 ? <p className='text-white poppins text-4xl text-left mb-1 ml-2'>{title}</p> : ''}
                 <div className='grid md:grid-cols-2 grid-cols-1 p-5 gap-2'>
 
                     {
-                        novels.map((item, index) => (
+                        currNovels.map((item, index) => (
 
                             <div key={item._id}>
                                 {/* -------------------NOVEL CARD---------------------------- */}
@@ -193,10 +217,21 @@ export default function GridPost({ axiosUrl, limit = Infinity, title }) {
                         ))
                     }
 
-
                 </div>
 
+
             </div >
+            {
+                !home ?
+                    <div className='bg-gray-800 justify-center flex p-3'>
+
+
+                        <Pagination count={pageNumber} page={currPage} siblingCount={2} color="primary" size='large'
+                            onChange={handleChange} />
+
+                    </div>
+                    : ''
+            }
 
         </>
     )

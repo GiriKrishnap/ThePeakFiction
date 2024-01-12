@@ -34,6 +34,7 @@ export default function ReadNovel() {
 
             getNovelWithId(NovelId);
         }
+        
     }, [])
 
     //.........................................................................

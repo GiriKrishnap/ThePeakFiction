@@ -10,6 +10,7 @@ export default function Updated() {
             <HeaderComponents />
             <NewUpdatedComponents axiosUrl={getNewUpdatedPost} title={"UPDATED"} />
             <FooterComponents />
+
         </div>
     )
 }

@@ -15,6 +15,7 @@ router.get('/getAuthorNovels/:id', protect, authorController.getAllAuthorNovels)
 //POST METHODS..........................................................
 router.post('/create/:title', protect, novelExistChecker, multer.single('photo'), authorController.authorCreate);
 router.post('/addChapter', protect, authorController.addChapter);
+router.post('/payment-Eligible-Check', protect, authorController.paymentEligibleCheck);
 
 
 module.exports = router;

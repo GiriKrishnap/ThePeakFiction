@@ -53,6 +53,7 @@ export const AuthorAddChapter = '/author/Novels/addChapter'
 export const authorCreatePost = '/author/create'
 export const getAuthorNovels = '/author/getAuthorNovels'
 export const AuthorAddChapterPost = '/author/addChapter'
+export const paymentEligibleCheckUrl = '/author/payment-Eligible-Check'
 
 ////////////////////////////////////////////////////////////////////////
 //////////ADMIN SIDE URLS ====>

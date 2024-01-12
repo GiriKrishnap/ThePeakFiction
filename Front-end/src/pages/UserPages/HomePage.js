@@ -11,9 +11,9 @@ function HomePage() {
         <div>
             <HeaderComponents />
             <BannerComponents />
-            <RowPostComponent axiosUrl={getMostViewedPost} title={"MOST VIEWED"} />
-            <NewUpdatedComponents axiosUrl={getTrendingPost} limit={4} title={"TRENDING"} />
-            <RowPostComponent axiosUrl={getNewUpdatedPost} title={"NEW UPDATED"} />
+            <RowPostComponent axiosUrl={getMostViewedPost} title={"MOST VIEWED"} limit={6} />
+            <NewUpdatedComponents axiosUrl={getTrendingPost} limit={4} title={"TRENDING"} home={true} />
+            <RowPostComponent axiosUrl={getNewUpdatedPost} title={"NEW UPDATED"} limit={12} />
             <FooterComponents />
         </div>
     )

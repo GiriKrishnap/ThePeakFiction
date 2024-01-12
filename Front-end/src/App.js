@@ -3,7 +3,7 @@
 import { lazy, Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import loading from './components/loading';
+import Loading from './components/loading';
 
 //LINKS.........................................................................................
 
@@ -62,7 +62,7 @@ function App() {
       <div><Toaster /></div>
       <Router>
 
-        <Suspense fallback={loading}>
+        <Suspense fallback={<Loading />}>
 
           <Routes>
 
@@ -81,7 +81,7 @@ function App() {
 
 
             {/* AuthorPart */}
-            < Route exact path={authorHome} element={<AuthorHomePage />} />
+            <Route exact path={authorHome} element={<AuthorHomePage />} />
             <Route exact path={authorCreate} element={<AuthorCreatePage />} />
             <Route exact path={authorNovels} element={<AuthorNovelPage />} />
             <Route exact path={AuthorNovelDetails} element={<AuthorNovelDetailPage />} />
@@ -96,7 +96,7 @@ function App() {
             <Route exact path={adminGenreManagement} element={<AdminGenrePage />} />
             <Route exact path={adminNovelManagement} element={<AdminNovelPage />} />
 
-            <Route path='*' element={<NotFound404 />} />
+            <Route path='*' exact element={<NotFound404 />} />
 
           </Routes>
         </Suspense>

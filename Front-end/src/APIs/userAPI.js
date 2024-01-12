@@ -3,7 +3,7 @@ import {
     AuthorAddChapterPost,
     RatingsPostUrl, addNovelToLibraryPostUrl, adminGetAllGenres, authorCreatePost, checkGCoinSystemUrl, getAllNovelsUsers,
     getAuthorNovels,
-    getFilteredNovelsUsers, getNovelDetailsWithId, getRandomPost, getUserById
+    getFilteredNovelsUsers, getNovelDetailsWithId, getRandomPost, getUserById, paymentEligibleCheckUrl
 } from '../util/constants'
 //---------------------------------
 const user = JSON.parse(localStorage.getItem('user-login'))
@@ -55,3 +55,4 @@ export const getAuthorNovelsAPI = () => axios.get(`${getAuthorNovels}/${userId}`
 
 export const authorNovelCreateAPI = (title, formData) => axios.post(`${authorCreatePost}/${title}`, formData, configFormData);
 export const authorAddChapterAPI = (body) => axios.post(AuthorAddChapterPost, body, configToken);
+export const paymentEligibleCheckAPI = (body) => axios.post(paymentEligibleCheckUrl, body, configToken);

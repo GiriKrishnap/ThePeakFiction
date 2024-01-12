@@ -80,5 +80,21 @@ module.exports = {
 
     //--------------------------------------------------
 
- 
+    paymentEligibleCheck: async (req, res) => {
+        try {
+
+            const { NovelId } = req.body;
+            const novelCheck = await NovelModel.findOne({ _id: NovelId });
+
+            if (novelCheck.views > 1000) {
+                res.json({ status: true });
+            } else {
+                res.json({ status: false });
+            }
+        } catch (error) {
+            res.status(400).json({ status: false, message: "oops catch error ::paymentEligibleCheck serverSide" });
+            console.log('catch error on :: paymentEligibleCheck - ', error.message)
+        }
+    }
+
 }
