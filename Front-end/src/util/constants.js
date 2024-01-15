@@ -23,6 +23,8 @@ export const getRandomPost = '/getRandom'
 export const getLibraryNovelsUrl = '/get-library'
 export const getNewUpdatedPost = '/getNewUpdated'
 export const addNovelToLibraryPostUrl = '/add-To-library'
+export const communityPageUrl = '/community'
+export const chatPageUrl = '/community/chat'
 
 //filter
 export const getFilteredNovelsUsers = '/filterNovels-user'
