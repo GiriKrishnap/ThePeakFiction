@@ -69,3 +69,8 @@ div::-webkit-scrollbar-thumb {
   color: #fff;
   font-family: 'Poppins', sans-serif;
 }
+
+.MESSAGE_PART {
+
+  max-height: 500px;
+}

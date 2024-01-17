@@ -5,6 +5,7 @@ const moment = require('moment');
 //-MODELS--------------------------------------------------
 const UserModel = require('../model/UserModel');
 const NovelModel = require('../model/novelModel')
+const CommunityModel = require('../model/communityModel')
 //---------------------------------------------------------
 module.exports = {
 
@@ -17,7 +18,7 @@ module.exports = {
             const genre = req.body.genre.split(',')
             const currentDate = moment().format('YYYY-MM-DD');
 
-            NovelModel.create({
+            const novelCreate = await NovelModel.create({
 
                 title: title,
                 description: description,
@@ -27,10 +28,20 @@ module.exports = {
                 updated_date: new Date(currentDate),
                 author_id: authorId
 
-            }).then(() => {
-                res.json({ status: true, message: 'Novel Created!' });
             })
+            if (novelCreate.length > 0) {
 
+                await CommunityModel.create({
+                    name: `${novelCreate.title} Community`,
+                    novel_id: novelCreate._id
+                })
+
+                res.json({ status: true, message: 'Novel Created!' });
+
+            } else {
+
+                res.json({ status: false, message: "error on backend!" });
+            }
 
         } catch (error) {
 

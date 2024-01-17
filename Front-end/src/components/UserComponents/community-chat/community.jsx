@@ -30,12 +30,14 @@ export default function Chat() {
             from-gray-600 via-gray-700 to-gray-800 poppins2 p-10 m-1 rounded-lg text-white'>
 
                 {/* ................JOIN A ROOM.................... */}
-                <div className='flex gap-3 justify-center mt-20'>
+                <div className='flex justify-center mt-20 h-12 '>
 
-                    <input type="text" className='pl-3 rounded drop-shadow-lg w-96 bg-gray-200'
+                    <input type="text" className='pl-3 rounded-l drop-shadow-lg w-96 bg-gray-200 focus:rounded-l-full
+                    duration-700'
                         placeholder='enter the community id' />
 
-                    <button className='bg-blue-500 p-1 pr-4 pl-4 rounded'>
+                    <button className='bg-blue-500 p-1 pr-4 pl-4 rounded-r hover:rounded-r-full
+                    hover:bg-blue-600 duration-700'>
                         Join <i className="fa-solid fa-right-to-bracket drop-shadow-lg"></i>
                     </button>
                 </div>

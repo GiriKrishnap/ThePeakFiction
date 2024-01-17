@@ -39,6 +39,11 @@ const User = new mongoose.Schema({
         ref: 'NovelsData'
     }],
     //.....................................
+    community: [{
+        type: ObjectId,
+        ref: 'CommunityData'
+    }],
+    //.....................................
 });
 
 const model = mongoose.model('UserData', User);

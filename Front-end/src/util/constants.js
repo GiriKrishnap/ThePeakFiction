@@ -26,6 +26,10 @@ export const addNovelToLibraryPostUrl = '/add-To-library'
 export const communityPageUrl = '/community'
 export const chatPageUrl = '/community/chat'
 
+export const getAllTheMessageUrl = '/all-message'
+
+export const newMessagePost = '/send-message'
+
 //filter
 export const getFilteredNovelsUsers = '/filterNovels-user'
 export const getAllNovelsUsers = '/getAllNovels-user'

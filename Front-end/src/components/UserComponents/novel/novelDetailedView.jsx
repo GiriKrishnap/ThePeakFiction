@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CoverUrl, readNovel, readerHome } from '../../../util/constants';
+import { CoverUrl, chatPageUrl, readNovel, readerHome } from '../../../util/constants';
 import Comments from '../../Comments/comments';
 import toast from 'react-hot-toast';
 import { RatingPostAPI, addNovelToLibraryAPI, getNovelDetailsWithIdAPI } from '../../../APIs/userAPI';
@@ -125,6 +125,12 @@ export default function NovelDetailedView() {
 
     //.........................................................................
 
+    const handleCommunityButton = async (novelId) => {
+        navigate(`${chatPageUrl}?novelId=${novelId}`);
+    }
+
+    //.........................................................................
+
 
     return (
 
@@ -184,9 +190,21 @@ export default function NovelDetailedView() {
                                 {/* NOVEL VIEWS AND LIBRARY COUNT */}
                                 <div className='w-3/4 flex gap-5 ml-4 mt-3'>
 
-                                    <small className='text-gray-300'>Views {item.views} <i className="fa-solid fa-eye"></i></small>
+                                    <small className='text-gray-300'>
+                                        Views {item.views} <i className="fa-solid fa-eye"></i>
+                                    </small>
+
                                     <small className='text-gray-300'>|</small>
-                                    <small className='text-gray-300'>in {item.in_library} Library <i className="fa-solid fa-book-bookmark"></i></small>
+
+                                    <small className='text-gray-300'>
+                                        in {item.in_library} Library <i className="fa-solid fa-book-bookmark"></i>
+                                    </small>
+
+                                    <p className='text-blue-100 font-mono font-bold cursor-pointer hover:tracking-widest 
+                                    duration-500'
+                                        onClick={() => handleCommunityButton(item._id)}>
+                                        check community <i className="fa-solid fa-arrow-right"></i>
+                                    </p>
 
                                 </div>
                                 {/* NOVEL VIEWS AND LIBRARY COUNT END*/}
@@ -245,6 +263,7 @@ export default function NovelDetailedView() {
                                     </svg>
                                 </div>
                             </div>
+
                             {/* RATING SYSTEM END*/}
 
                         </div>
