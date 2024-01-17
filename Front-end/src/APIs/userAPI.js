@@ -9,14 +9,6 @@ import {
 //---------------------------------
 const user = JSON.parse(localStorage.getItem('user-login'))
 const userId = user.id;
-
-//.....................................................................
-
-const config = {
-    headers: {
-        "Content-Type": "application/json",
-    }
-}
 //------------------------------
 const configToken = {
     headers: {

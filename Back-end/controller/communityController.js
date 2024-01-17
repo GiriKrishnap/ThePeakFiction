@@ -13,7 +13,9 @@ module.exports = {
 
             const { novelId } = req.query
 
-            const communityExist = await CommunityModel.findOne({ novel_id: novelId }).populate('novel_id')
+            const communityExist = await CommunityModel.findOne({ novel_id: novelId })
+                .populate('novel_id')
+                .populate("messages.user_id");
 
             if (!communityExist) {
 
@@ -22,7 +24,7 @@ module.exports = {
                 res.json({ status: false, message: 'community not exist in the given id' });
 
             } else {
- 
+
                 console.log("communityExist.name here - ", communityExist.name);
                 res.json({ status: true, message: communityExist.messages, members: communityExist.members });
             }
@@ -37,18 +39,30 @@ module.exports = {
     newMessage: async (req, res) => {
         try {
 
-            const { message, userId, date, novelId } = req.body;
+            const { message, user_id, date, novelId } = req.body;
 
-            console.log('hello')
 
             const data = {
-                user_id: userId,
+                user_id: user_id,
                 message: message,
                 date: date,
 
             }
+            console.log(data)
 
-            console.log(data, novelId);
+            const addMessage = await CommunityModel.findOneAndUpdate({ novel_id: novelId },
+                { $push: { messages: data } },
+                { new: true }
+            ).populate('messages.user_id')
+
+
+
+            console.log(addMessage.messages);
+            if (addMessage) {
+                res.json({ status: true, data: addMessage.messages });
+            } else {
+                res.json({ status: false });
+            }
 
         } catch (error) {
             console.log('catch error on ::newMessage - ', error.message)

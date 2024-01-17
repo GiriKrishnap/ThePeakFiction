@@ -45,24 +45,23 @@ const server = http.createServer(app);
 //................................................................
 
 const io = new Server(server, {
+    pingTimeout: 60000,
     cors: {
         origin: "http://localhost:3000",
         methods: ["GET", "POST"],
-    }, 
+    },
 });
 
-// Socket connection logic
+// Socket connection logic 
 io.on("connection", (socket) => {
     console.log('connect')
     socket.on("join_room", (room) => {
-        console.log(' - - Joined The Room - - ', room)
         socket.join(room);
     });
-    
+
     // sending new message through socket io
     socket.on("send_message", (data) => {
         const { novelId } = data;
-        console.log("📤📤📤📤📤data is here - ", data.message)
         socket.to(novelId).emit("Message_received", data);
 
     });
@@ -71,7 +70,7 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         console.log("Disconnected:", socket.id);
     });
-    
+
 });
 
 //................................................................

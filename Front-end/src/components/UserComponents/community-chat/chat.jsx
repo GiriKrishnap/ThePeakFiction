@@ -1,15 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { addNovelToLibraryAPI, getAllMessageAPI, getRandomNovelAPI, newMessagePostAPI } from '../../../APIs/userAPI';
-import { CoverUrl, novelDetailedView } from '../../../util/constants';
+import { getAllMessageAPI, newMessagePostAPI, } from '../../../APIs/userAPI';
 import toast from 'react-hot-toast';
-// import { initializeSocket } from '../../../services/socketIo/socket_io'
 import io from 'socket.io-client'
-
+import { CoverUrl } from '../../../util/constants';
 
 
 //.........................................................................
-
 
 export default function Chat() {
 
@@ -17,19 +14,16 @@ export default function Chat() {
 
     const navigate = useNavigate();
     const location = useLocation();
-
+    const socket = useMemo(() => io('http://localhost:4000'), [])
 
     //.........................................................................
 
     const [novelId, setNovelId] = useState('');
-    const [userId, setUserId] = useState('');
-    const [newMessage, setNewMessage] = useState("");
+    const [user_id, setUserId] = useState('');
     const [allMessages, setAllMessages] = useState([]);
     const [currentMessage, setCurrentMessage] = useState('');
-    const [socketConnected, setSocketConnected] = useState(false);
 
     //.........................................................................
-    const socket = useMemo(() => io('http://localhost:4000'), [])
 
     useEffect(() => {
         try {
@@ -52,40 +46,25 @@ export default function Chat() {
 
     }, [])
 
-    useEffect(() => {
-        socket.on("Message_received", (data) => {
-            setAllMessages((list) => {
-                if (Array.isArray(list)) {
-                    return [...list, data];
-                } else {
-                    console.error("Unexpected type for list:", list);
-                    return [data];
-                }
-            });
-        });
-
-
-
-
-    }, [socket]);
-
-
-
     //.........................................................................
 
     const getMessages = async (id) => {
         try {
 
-
             const response = await getAllMessageAPI(id);
-            if (response.data.status) {
-                setAllMessages(response.data.messages);
-                console.log('messages from backend - ', response.data.messages);
-                toast.success('got All messages');
-                await socket.emit("join_room", id);
-            } else {
-                toast.error(response.data?.message);
 
+            if (response.data.status) {
+
+                setAllMessages([...response.data.message]);
+
+                socket.emit("join_room", id)
+
+                toast.success('got All messages');
+
+            } else {
+
+                toast.error(response.data?.message);
+                navigate(-1);
             }
 
         } catch (error) {
@@ -97,6 +76,24 @@ export default function Chat() {
 
     //.........................................................................
 
+    useEffect(() => {
+
+        socket.on("Message_received", (data) => {
+            setAllMessages((list) => {
+                if (Array.isArray(list)) {
+                    return [...list, data];
+                } else {
+                    console.error("Unexpected type for list:", list);
+                    return [allMessages];
+                }
+            });
+            return () => socket.off('Message_received', data);
+        })
+
+    }, [socket]);
+
+    //.........................................................................
+
     const handleSend = async () => {
         try {
 
@@ -104,17 +101,31 @@ export default function Chat() {
 
                 const body = {
                     message: currentMessage,
-                    userId: userId,
+                    user_id: user_id,
                     date: new Date(),
                     novelId: novelId
 
                 }
 
-                await socket.emit("send_message", body);
                 const response = await newMessagePostAPI(body);
 
-                // setAllMessages((list) => [...list, body]);
+                if (response.data.status === true) {
 
+                    await socket.emit("send_message", body);
+
+                    setAllMessages((list) => {
+
+                        if (Array.isArray(list)) {
+                            console.log('erererererererererereere ------ - -- -----', response.data.data[response.data.data.length - 1])
+                            return [...list, response.data.data[response.data.data.length - 1]];
+                        } else {
+
+                            console.error("Unexpected type for list:", list);
+                            return [body];
+                        }
+                    });
+
+                }
             }
 
         } catch (error) {
@@ -122,6 +133,7 @@ export default function Chat() {
             toast.error(error.message);
         }
     }
+
     //.........................................................................
 
     return (
@@ -130,49 +142,46 @@ export default function Chat() {
             <div className='bg-gradient-to-t
              from-gray-700 via-gray-800 to-gray-900 poppins2 m-4 rounded-lg text-white '>
 
-                <div className='chat-header h-20 bg-gray-800 rounded-xl flex place-items-center'>
+                <div className='chat-header h-20 bg-gray-800 rounded-xl flex place-items-center p-3 drop-shadow-2xl'>
 
-                    <img src="https://picsum.photos/200/300" alt='img'
-                        className='rounded-full h-full w-20 ml-2 p-3 shadow-xl' />
+                    <div
+                        className='rounded-2xl h-full w-20 ml-3 mr-3 shadow-xl'
+                        style={{
+                            backgroundImage: `url(${CoverUrl}/${novelId})`,
+                            backgroundSize: 'cover'
+                        }} />
 
                     <p className='text-2xl ml-2 font-mono'>Spy X Family Community</p>
-
 
                 </div>
 
 
                 {/* >>>>>>>>>>>>>>>>> CHAT MIDDLE PART <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */}
                 {
-                    allMessages ?
+                    allMessages.length > 0 ?
 
 
-                        <div className='flex flex-col overflow-y-scroll MESSAGE_PART'>
+                        <div className='flex flex-col min-h-80 overflow-y-scroll MESSAGE_PART'>
 
                             {
                                 allMessages.map((item) => (
-
-
-
                                     < >
 
-
-
-
                                         {
-                                            item.userId === userId ?
+                                            item.user_id?._id === user_id ?
 
-                                                < div className='Left_Chat m-4 mr-10' key={item.userId}>
+                                                < div className='Left_Chat m-4 mr-10' key={item.user_id?._id}>
                                                     <div className='bg-gray-600 max-w-96 p-6 rounded-l-3xl rounded-b-3xl float-right'>
-                                                        <p className='font-mono text-right'> - {item.userId} - </p>
+                                                        <p className='font-mono text-right'> - {item.user_id?.userName} - </p>
 
                                                         <p className='text-left'>
                                                             {item.message}
                                                         </p>
 
                                                     </div>
-                                                </div > : <div className='Right_Chat m-4 ml-10' key={item.userId}>
+                                                </div > : <div className='Right_Chat m-4 ml-10' key={item.user_id?._id}>
                                                     <div className='bg-blue-500 max-w-96 p-6 rounded-r-3xl rounded-b-3xl'>
-                                                        <p className='font-mono'> - {item.userId} - </p>
+                                                        <p className='font-mono'> - {item.user_id?.userName} - </p>
 
                                                         <p>
                                                             {item.message}
@@ -195,7 +204,7 @@ export default function Chat() {
 
                 {/* >>>>>>>>>>>>>>>>>>>>>>>>>> CHAT BOTTOM PART <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */}
 
-                <div className='w-full h-20 bg-gray-800 rounded-xl'>
+                <div className='w-full h-20 bg-gray-800 rounded-xl drop-shadow-2xl'>
 
                     <div className='flex gap-5 p-5 justify-center place-items-center'>
                         <input type="text" className='w-full p-2 pl-4 rounded-xl text-black'
