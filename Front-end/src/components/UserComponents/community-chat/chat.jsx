@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getAllMessageAPI, newMessagePostAPI, } from '../../../APIs/userAPI';
 import toast from 'react-hot-toast';
 import io from 'socket.io-client'
 import { CoverUrl } from '../../../util/constants';
-
+import ScrollableFeed from 'react-scrollable-feed'
 
 //.........................................................................
 
@@ -38,6 +38,7 @@ export default function Chat() {
             setNovelId(NovelId);
 
             getMessages(NovelId);
+            scrollRef.current?.scrollIntoView({ behavior: "smooth" })
 
 
         } catch (error) {
@@ -116,7 +117,7 @@ export default function Chat() {
                     setAllMessages((list) => {
 
                         if (Array.isArray(list)) {
-                            console.log('erererererererererereere ------ - -- -----', response.data.data[response.data.data.length - 1])
+
                             return [...list, response.data.data[response.data.data.length - 1]];
                         } else {
 
@@ -124,6 +125,8 @@ export default function Chat() {
                             return [body];
                         }
                     });
+
+                    setCurrentMessage('');
 
                 }
             }
@@ -134,6 +137,12 @@ export default function Chat() {
         }
     }
 
+    //.........................................................................
+    const scrollRef = useRef()
+
+    useEffect(() => {
+        scrollRef.current?.scrollIntoView({ behavior: "smooth" })
+    }, [allMessages])
     //.........................................................................
 
     return (
@@ -151,18 +160,18 @@ export default function Chat() {
                             backgroundSize: 'cover'
                         }} />
 
-                    <p className='text-2xl ml-2 font-mono'>Spy X Family Community</p>
 
+                    <p className='text-2xl ml-2 font-mono' >Spy X Family Community</p>
                 </div>
 
 
                 {/* >>>>>>>>>>>>>>>>> CHAT MIDDLE PART <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */}
                 {
+
                     allMessages.length > 0 ?
 
 
-                        <div className='flex flex-col min-h-80 overflow-y-scroll MESSAGE_PART'>
-
+                        <div className='flex flex-col min-h-80 overflow-y-scroll MESSAGE_PART' >
                             {
                                 allMessages.map((item) => (
                                     < >
@@ -170,23 +179,23 @@ export default function Chat() {
                                         {
                                             item.user_id?._id === user_id ?
 
-                                                < div className='Left_Chat m-4 mr-10' key={item.user_id?._id}>
+                                                < div className='RIGHT_Chat m-4 mr-10' key={item.user_id?._id}>
+                                                    <p className='font-mono text-right m-1 mr-2'>{item.user_id?.userName}</p>
                                                     <div className='bg-gray-600 max-w-96 p-6 rounded-l-3xl rounded-b-3xl float-right'>
-                                                        <p className='font-mono text-right'> - {item.user_id?.userName} - </p>
 
                                                         <p className='text-left'>
                                                             {item.message}
                                                         </p>
-
                                                     </div>
-                                                </div > : <div className='Right_Chat m-4 ml-10' key={item.user_id?._id}>
+                                                </div >
+                                                :
+                                                <div className='LEFT_Chat m-4 ml-10' key={item.user_id?._id}>
+                                                    <p className='font-mono m-1 ml-2'> {item.user_id?.userName}</p>
                                                     <div className='bg-blue-500 max-w-96 p-6 rounded-r-3xl rounded-b-3xl'>
-                                                        <p className='font-mono'> - {item.user_id?.userName} - </p>
 
                                                         <p>
                                                             {item.message}
                                                         </p>
-
                                                     </div>
                                                 </div>
 
@@ -195,7 +204,9 @@ export default function Chat() {
                                     </>
                                 ))
                             }
+                            <p className='text-center m-1 text-gray-500' ref={scrollRef}> -- end -- </p>
                         </div>
+
 
                         : <p className='m-36 text-center'>There is No Message</p>}
                 {/* >>>>>>>>>>>>>>>>> CHAT MIDDLE PART END <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */}
