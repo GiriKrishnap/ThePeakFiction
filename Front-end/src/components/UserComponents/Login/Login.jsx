@@ -3,8 +3,10 @@ import './Login.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { Signup, loginPost, readerHome } from '../../../util/constants';
+import { Signup, VerifyOptPageUrl, loginPost, readerHome } from '../../../util/constants';
 import axios from '../../../util/axios'
+import { userLoginPostAPI } from '../../../APIs/userAPI';
+import toast from 'react-hot-toast';
 //.........................................................................
 
 
@@ -19,7 +21,6 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, SetPassword] = useState('');
 
-
     //.........................................................................
 
 
@@ -28,25 +29,46 @@ export default function Login() {
             e.preventDefault();
             if (email || password) {
 
-                axios.post(loginPost, { email, password }, {
-                    headers: { "Content-Type": "application/json" }
-                }).then((response) => {
-
-                    if (response.data.status) {
-
-                        localStorage.setItem('user-login', JSON.stringify(response.data.details));
-                        navigate(readerHome);
-
-                    } else {
-
-                        Swal.fire({
-                            icon: "error",
-                            title: "Oops...",
-                            text: response.data.message,
-                        });
-                    }
+                const body = JSON.stringify({
+                    email,
+                    password
                 })
 
+                const response = await userLoginPostAPI(body);
+
+                if (response.data.status) {
+
+                    toast.error(response.data.message, {
+                        icon: '😼✔', style: {
+                            borderRadius: '30px',
+                        },
+                    })
+
+                    await localStorage.setItem('user-login', JSON.stringify(response.data.details))
+                    navigate(readerHome);
+
+                } else if (response.data.need_verify) {
+
+                    toast.error(response.data.message, {
+                        icon: '😿🔒', style: {
+                            borderRadius: '30px',
+                            background: '#444',
+                            color: '#fff',
+                        },
+                    })
+
+                    navigate(`${VerifyOptPageUrl}?email=${email}`);
+
+                } else {
+
+                    toast.error(response.data.message, {
+                        icon: '😿❌', style: {
+                            borderRadius: '30px',
+                            background: '#444',
+                            color: '#fff',
+                        },
+                    })
+                }
             }
 
         } catch (error) {

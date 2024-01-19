@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { CoverUrl, novelDetailedView } from '../../../util/constants';
-import { getAllGenresAPI, getAllNovelsForUsersAPI, getFilteredNovelsAPI } from '../../../APIs/userAPI';
+import { authorGetGenresAPI, getAllNovelsForUsersAPI, getFilteredNovelsAPI } from '../../../APIs/userAPI';
 import toast from 'react-hot-toast';
+import { Pagination } from '@mui/material';
 //.........................................................................
 
 
@@ -16,8 +17,11 @@ export default function Banner() {
     //.........................................................................
 
     const [novels, setNovels] = useState([]);
+    const [currNovels, setCurrNovels] = useState([]);
     const [allGenre, setAllGenre] = useState([]);
     const [search, setSearch] = useState('');
+    const [pageNumber, setPageNumber] = useState([]);
+
 
     //.........................................................................
 
@@ -34,6 +38,8 @@ export default function Banner() {
             const response = await getAllNovelsForUsersAPI();
             if (response.data.status) {
                 setNovels(response.data.novels)
+                setCurrNovels(response.data.novels.slice(0, 6))
+                setPageNumber(Math.ceil(response.data.novels.length / 6))
             }
 
         } catch (error) {
@@ -48,7 +54,7 @@ export default function Banner() {
     const getAllGenres = async () => {
         try {
 
-            const response = await getAllGenresAPI();
+            const response = await authorGetGenresAPI();
 
             if (response.data.status) {
 
@@ -96,6 +102,8 @@ export default function Banner() {
 
             if (response.data.status) {
                 setNovels(response.data.novels);
+                setCurrNovels(response.data.novels.slice(0, 6))
+                setPageNumber(Math.ceil(response.data.novels.length / 6))
             }
 
         } catch (error) {
@@ -112,6 +120,17 @@ export default function Banner() {
         navigate(`${novelDetailedView}?NovelId=${novelId}`, { replace: true });
 
     }
+
+    //.........................................................................
+
+    const [currPage, setCurrPage] = useState(1);
+
+    const handleChange = (event, value) => {
+
+        setCurrNovels(novels.slice((value - 1) * 6, value * 6))
+        setCurrPage(value);
+
+    };
 
     //.........................................................................
 
@@ -197,6 +216,7 @@ export default function Banner() {
                             <input type='text' className="bg-gray-500 border-0 text-white
                              text-sm rounded-lg block p-2 pl-3 w-full" placeholder='Search'
                                 onChange={(e) => setSearch(e.target.value)} />
+
                         </div>
                         {/* --------------------------FILTER BUTTON------------------------- */}
                         <div className='flex gap-2'>
@@ -228,7 +248,7 @@ export default function Banner() {
                 <div className='grid md:grid-cols-2 grid-cols-1 p-5 gap-2'>
 
                     {
-                        novels.map((item, index) => (
+                        currNovels.map((item, index) => (
 
                             <div key={item._id}>
                                 {/* -------------------NOVEL CARD---------------------------- */}
@@ -248,7 +268,7 @@ export default function Banner() {
                                         <div className='text-right'>
                                             <p className='text-white poppins text-right text-lg bg-red-500 
                                                 inline drop-shadow-md p-2 rounded-b-lg'
-                                            >3.4</p>
+                                            >{item.rate}</p>
                                         </div>
 
                                         <div className='flex'>
@@ -364,7 +384,13 @@ export default function Banner() {
 
                 </div>
 
+                <div className='bg-gray-800 justify-center flex p-3'>
 
+
+                    <Pagination count={pageNumber} page={currPage} siblingCount={2} color="primary" size='large'
+                        onChange={handleChange} />
+
+                </div>
 
             </div >
 

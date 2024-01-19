@@ -10,7 +10,7 @@ import Loading from './components/loading';
 import {
   AuthorAddChapter,
   AuthorNovelDetails,
-  Login, PaymentSuccessURL, Signup, adminAuthorManagement, adminDashboard, adminGenreManagement,
+  Login, PaymentSuccessURL, Signup, VerifyOptPageUrl, adminAuthorManagement, adminDashboard, adminGenreManagement,
   adminLogin, adminNovelManagement, adminUserManagement, authorCreate, authorHome, authorNovels,
   chatPageUrl,
   communityPageUrl,
@@ -20,7 +20,7 @@ import {
 
 //Pages.........................................................................................
 
-//reader pages
+//user pages
 const LoginPage = lazy(() => import('./pages/UserPages/LoginPage'));
 const SignupPage = lazy(() => import('./pages/UserPages/SignupPage'))
 const ReaderHomePage = lazy(() => import('./pages/UserPages/HomePage'))
@@ -33,6 +33,7 @@ const TrendingPage = lazy(() => import('./pages/UserPages/TrendingPage'))
 const LibraryPage = lazy(() => import('./pages/UserPages/LibraryPage'))
 const CommunityPage = lazy(() => import('./pages/UserPages/CommunityPage'))
 const ChatPage = lazy(() => import('./pages/UserPages/ChatPage'))
+const VerifyOptPage = lazy(() => import('./pages/UserPages/VerifyOtpPage'))
 
 //author
 const AuthorHomePage = lazy(() => import('./pages/AuthorPages/AuthorHome'))
@@ -84,6 +85,7 @@ function App() {
             <Route exact path={myLibraryUrl} element={<LibraryPage />} />
             <Route exact path={communityPageUrl} element={<CommunityPage />} />
             <Route exact path={chatPageUrl} element={<ChatPage />} />
+            <Route exact path={VerifyOptPageUrl} element={<VerifyOptPage />} />
 
 
             {/* AuthorPart */}

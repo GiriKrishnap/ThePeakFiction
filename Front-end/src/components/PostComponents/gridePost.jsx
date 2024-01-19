@@ -2,7 +2,6 @@ import axios from '../../util/axios'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CoverUrl, novelDetailedView } from '../../util/constants';
-import PaginationComponent from '../../components/pagination/pagination';
 import { gridePostAPI } from '../../APIs/userAPI';
 import toast from 'react-hot-toast';
 import { Pagination } from '@mui/material';

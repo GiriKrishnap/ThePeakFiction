@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast'
 import React, { useEffect, useState } from 'react'
-import { adminGetAllUsersAPI } from '../../APIs/adminAPI';
+import { adminBlockUserAPI, adminGetAllUsersAPI } from '../../APIs/adminAPI';
 //.........................................................................
 
 
@@ -33,6 +33,33 @@ export default function UserManagement() {
 
         } catch (error) {
             console.log("error in getUsersList function client side");
+            toast.error(error.message);
+        }
+    }
+
+    //.........................................................................
+
+    const handleBlockUser = async (userId, isBlock) => {
+        try {
+            const body = JSON.stringify({
+                userId,
+                isBlock
+            })
+
+            const response = await adminBlockUserAPI(body);
+            if (response.data.status) {
+                toast.error("Done", {
+
+                    icon: '😼✔', style: {
+                        borderRadius: '30px',
+                    },
+                })
+                getUsersList();
+            }
+
+
+        } catch (error) {
+            console.log('catch error in :: handleNovelHide on clint side - ', error);
             toast.error(error.message);
         }
     }
@@ -84,7 +111,15 @@ export default function UserManagement() {
                                             "Coming Soon"
                                         </td>
                                         <td className="px-6 py-4">
-                                            <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'>Block</button>
+                                            <button className='bg-red-500 hover:bg-red-700 text-white
+                                             font-bold py-2 px-4 rounded'
+                                                onClick={() => handleBlockUser(user._id, user.is_Block)}>
+                                                {
+                                                    user.is_Block ?
+                                                        <>unBlock <i class="fa-solid fa-user-check"></i></> :
+                                                        <>Block <i class="fa-solid fa-user-lock"></i></>
+                                                }
+                                            </button>
                                         </td>
                                     </tr>
 
@@ -95,7 +130,7 @@ export default function UserManagement() {
                     </table>
                 </div> : <p className='text-2xl rounded-lg text-white font-bold font-mono bg-blue-300'>There is no users</p>
             }
-        </div>
+        </div >
     )
 }
 //.........................................................................

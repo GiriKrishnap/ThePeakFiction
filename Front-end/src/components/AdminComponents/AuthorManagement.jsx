@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
-import { adminGetAllAuthorsAPI } from '../../APIs/adminAPI';
+import { adminBlockUserAPI, adminGetAllAuthorsAPI } from '../../APIs/adminAPI';
 //.........................................................................
 
 
@@ -34,6 +34,33 @@ export default function AuthorManagement() {
 
         } catch (error) {
             console.log("error in getUsersList function client side", error);
+            toast.error(error.message);
+        }
+    }
+
+    //.........................................................................
+
+    const handleBlockUser = async (userId, isBlock) => {
+        try {
+            const body = JSON.stringify({
+                userId,
+                isBlock
+            })
+
+            const response = await adminBlockUserAPI(body);
+            if (response.data.status) {
+                toast.error("Done", {
+
+                    icon: '😼✔', style: {
+                        borderRadius: '30px',
+                    },
+                })
+                getAuthorsList();
+            }
+
+
+        } catch (error) {
+            console.log('catch error in :: handleNovelHide on clint side - ', error);
             toast.error(error.message);
         }
     }
@@ -86,9 +113,14 @@ export default function AuthorManagement() {
                                             "Coming Soon"
                                         </td>
                                         <td className="px-6 py-4">
-                                            <button className='bg-red-500 hover:bg-red-700
-                                             text-white font-bold py-2 px-4 rounded'>
-                                                Block
+                                            <button className='bg-red-500 hover:bg-red-700 text-white
+                                             font-bold py-2 px-4 rounded'
+                                                onClick={() => handleBlockUser(user._id, user.is_Block)}>
+                                                {
+                                                    user.is_Block ?
+                                                        <>unBlock <i class="fa-solid fa-user-check"></i></> :
+                                                        <>Block <i class="fa-solid fa-user-lock"></i></>
+                                                }
                                             </button>
                                         </td>
                                     </tr>

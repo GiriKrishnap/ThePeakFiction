@@ -3,7 +3,7 @@ const multer = require('multer');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 //-MODELS--------------------------------------------------
-const UserModel = require('../model/UserModel');
+const GenreModel = require('../model/genreModel');
 const NovelModel = require('../model/novelModel')
 const CommunityModel = require('../model/communityModel')
 //---------------------------------------------------------
@@ -79,7 +79,7 @@ module.exports = {
                 gcoin: gcoin || 0
             }
 
-            NovelModel.updateOne({ _id: NovelId }, { $push: { chapters: obj }, $inc: { chapter_count: chapterNumber } }).then(() => {
+            NovelModel.updateOne({ _id: NovelId }, { $push: { chapters: obj }, $inc: { chapter_count: 1 } }).then(() => {
                 res.json({ status: true, message: 'created' })
             })
 
@@ -98,14 +98,43 @@ module.exports = {
             const novelCheck = await NovelModel.findOne({ _id: NovelId });
 
             if (novelCheck.views > 1000) {
+
+                await NovelModel.updateOne({ _id: NovelId }, { $set: { gcoin_system: true } });
+
                 res.json({ status: true });
             } else {
                 res.json({ status: false });
             }
         } catch (error) {
             res.status(400).json({ status: false, message: "oops catch error ::paymentEligibleCheck serverSide" });
-            console.log('catch error on :: paymentEligibleCheck - ', error.message)
+            console.log('catch error on :: paymentEligibleCheck - ', error.message);
         }
+    },
+
+    //--------------------------------------------------------
+
+    getAllGenresAuthor: async (req, res) => {
+        try {
+
+            let genres = await GenreModel.find({ is_Hide: false });
+
+            if (genres) {
+
+                res.json({ status: true, genres })
+
+            } else {
+
+                res.json({ status: false })
+                console.log('error on get genres');
+
+            }
+
+        } catch (error) {
+            res.status(400).json({ status: false, message: 'admin catch error server side :: getAllGenres' });
+            console.log("catch error getAllGenre " + error.message);
+        }
+
     }
 
 }
+

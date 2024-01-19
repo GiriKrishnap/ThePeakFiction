@@ -204,7 +204,7 @@ export default function Chat() {
                                     </>
                                 ))
                             }
-                            <p className='text-center m-1 text-gray-500' ref={scrollRef}> -- end -- </p>
+                            <p className='text-center m-1 text-gray-500 opacity-5' ref={scrollRef}> -- end -- </p>
                         </div>
 
 

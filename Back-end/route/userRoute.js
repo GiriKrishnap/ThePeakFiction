@@ -24,6 +24,7 @@ router.get('/all-message', protect, communityController.getAllMessage);
 
 //POST METHODS..........................................................
 router.post('/signup', userController.readerSignup);
+router.post('/verifyUserOtp', userController.verifyOtp);
 router.post('/login', userController.readerLogin);
 router.post('/create-payment-intent', paymentController.createPaymentIntent);
 router.post('/add-To-library', protect, novelController.addToLibrary);

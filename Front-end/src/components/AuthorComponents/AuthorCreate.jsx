@@ -2,7 +2,7 @@ import toast from 'react-hot-toast';
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { authorHome, authorNovels, Login } from '../../util/constants';
-import { authorNovelCreateAPI, getAllGenresAPI } from '../../APIs/userAPI';
+import { authorGetGenresAPI, authorNovelCreateAPI, getAllGenresAPI } from '../../APIs/userAPI';
 //.........................................................................
 
 
@@ -41,7 +41,7 @@ export default function AuthorCreate() {
 
     const getAllGenres = async () => {
         try {
-            const response = await getAllGenresAPI();
+            const response = await authorGetGenresAPI();
             if (response.data.status) {
                 setAllGenre(response.data.genres)
                 allGenre.sort()

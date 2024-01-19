@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 import React, { useEffect, useState } from 'react'
-import { adminGetAllGenreAPI, createGenresAPI } from '../../APIs/adminAPI';
+import { adminGetAllGenreAPI, adminListGenreAPI, createGenresAPI } from '../../APIs/adminAPI';
 //.........................................................................
 
 
@@ -33,6 +33,33 @@ export default function UserManagement() {
             console.log("error in getGenres function client side - ", error);
             toast.error(error.message);
 
+        }
+    }
+
+    //.........................................................................
+
+    const handleGenreList = async (genreId, isHide) => {
+        try {
+            const body = JSON.stringify({
+                genreId,
+                isHide
+            })
+
+            const response = await adminListGenreAPI(body);
+            if (response.data.status) {
+                toast.error("Done", {
+
+                    icon: '😼✔', style: {
+                        borderRadius: '30px',
+                    },
+                })
+                getGenres();
+            }
+
+
+        } catch (error) {
+            console.log('catch error in :: handleGenreHide on clint side - ', error);
+            toast.error(error.message);
         }
     }
 
@@ -151,8 +178,13 @@ export default function UserManagement() {
                                             </button>
 
                                             <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2
-                                             px-4 rounded'>
-                                                {item.is_Hide ? 'unHide' : 'Hide'}
+                                             px-4 rounded'
+                                                onClick={() => handleGenreList(item._id, item.is_Hide)}>
+                                                {
+                                                    item.is_Hide ?
+                                                        <>unListed < i className="fa-solid fa-eye-slash"></i> </> :
+                                                        <>listed < i className="fa-solid fa-eye"></i></>
+                                                }
                                             </button>
 
                                         </th>

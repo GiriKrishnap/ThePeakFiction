@@ -7,6 +7,9 @@ const UserModel = require('../model/UserModel');
 const NovelModel = require('../model/novelModel');
 const GenreModel = require('../model/genreModel');
 const WalletModel = require('../model/walletModel');
+const OtpModel = require('../model/otpModel');
+//----------------------------------------------------------
+const { sendOtp } = require('../util/generateOTP')
 //----------------------------------------------------------
 
 module.exports = {
@@ -20,32 +23,40 @@ module.exports = {
 
             if (emailExist) {
 
-                res.json({ status: false, message: "User Already Exists" });
+                if (emailExist.is_verified) {
+
+                    res.json({ status: false, message: "User Already Exists", });
+                } else {
+
+                    res.json({ status: false, message: "Email Not Verified", need_verify: true });
+                }
 
             } else {
 
                 const securePassword = await bcrypt.hash(req.body.password, 10);
 
-                const userCreate = UserModel.create({
-                    userName: req.body.userName,
-                    email: req.body.email,
+                const { email, userName } = req.body
+
+                const userCreate = await UserModel.create({
+                    userName: userName,
+                    email: email,
                     password: securePassword,
                     is_Author: isAuthor
-                }).then(async (response) => {
-
-                    await WalletModel.create({
-                        user_id: response._id
-                    })
-
-                    let details = {
-                        firstName: req.body.userName,
-                        email: req.body.email,
-                        is_Author: isAuthor
-                    }
-
-                    res.json({ status: true, details });
-
                 })
+
+                await WalletModel.create({
+                    user_id: userCreate._id
+                })
+
+                sendOtp(email);
+
+                let details = {
+                    firstName: userName,
+                    email: email,
+                    is_Author: isAuthor
+                }
+
+                res.json({ status: true, details });
 
             }
 
@@ -69,6 +80,13 @@ module.exports = {
 
                 res.json({ status: false, message: "User Does Not Exist" });
 
+            } else if (emailExist.is_Block) {
+
+                res.json({ status: false, message: "Account Blocked by Admin" });
+
+            } else if (!emailExist.is_verified) {
+
+                res.json({ status: false, message: "Email Not Verified", need_verify: true });
             } else {
 
                 const checkPassword = await bcrypt.compare(req.body.password, emailExist.password);
@@ -88,7 +106,7 @@ module.exports = {
                         isAuthor: emailExist.is_Author
                     }
 
-                    res.json({ status: true, details });
+                    res.json({ status: true, message: 'Login successful', details });
                 }
             }
 
@@ -122,6 +140,38 @@ module.exports = {
         }
     },
 
+    //---------------------------------------------------------
+
+    verifyOtp: async (req, res) => {
+        try {
+
+            const { email, otp } = req.body;
+
+            const otpExist = await OtpModel.findOne({ email: email });
+
+            if (!otpExist) {
+
+                res.json({ status: false, message: 'Create a Account First ‼' })
+
+            } else if (otpExist.otp === otp) {
+
+                await otpExist.deleteOne()
+                await UserModel.updateOne({ email: email }, { $set: { is_verified: true } });
+
+                res.json({ status: true, message: 'Verified' })
+
+            } else {
+
+                res.json({ status: false, message: 'Wrong Otp' })
+            }
+
+
+
+        } catch (error) {
+            res.status(400).json({ status: false, message: 'server catch error :: verifyOtp' });
+            console.log('catch error :: verifyOtp', error.message);
+        }
+    },
     //---------------------------------------------------------
 
 }

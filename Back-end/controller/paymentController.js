@@ -8,7 +8,6 @@ const stripe = require('stripe')(process.env.STRIP_SECRET_KEY);
 const UserModel = require('../model/UserModel');
 const GenreModel = require('../model/genreModel');
 const NovelModel = require('../model/novelModel');
-const AuthorModel = require('../model/authorModel');
 const WalletModel = require('../model/walletModel');
 ///---------------------------
 

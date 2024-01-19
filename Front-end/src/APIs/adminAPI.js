@@ -1,10 +1,7 @@
 import axios from '../util/axios'
 import {
-    AdminGetAllNovels,
-    AuthorAddChapterPost,
-    RatingsPostUrl, adminGenresPost, adminGetAllAuthors, adminGetAllGenres, adminGetAllUsers, adminNovelApprove, adminNovelHide, authorCreatePost, getAllNovelsUsers,
-    getAuthorNovels,
-    getFilteredNovelsUsers, getNovelDetailsWithId, getRandomPost
+    AdminGetAllNovels, adminGenresPost, adminGetAllAuthors, adminGetAllGenres, adminGetAllUsers,
+    adminNovelApprove, adminNovelHide, admin_block_user_Url, admin_list_genre_Url, getRandomPost
 } from '../util/constants'
 //---------------------------------
 const adminToken = localStorage.getItem('adminToken')
@@ -35,3 +32,5 @@ export const adminGetAllUsersAPI = () => axios.get(adminGetAllUsers, configToken
 export const createGenresAPI = (body) => axios.post(adminGenresPost, body, configToken);
 export const adminNovelHideAPI = (body) => axios.post(adminNovelHide, body, configToken);
 export const adminNovelApproveAPI = (body) => axios.post(adminNovelApprove, body, configToken);
+export const adminBlockUserAPI = (body) => axios.post(admin_block_user_Url, body, configToken);
+export const adminListGenreAPI = (body) => axios.post(admin_list_genre_Url, body, configToken);

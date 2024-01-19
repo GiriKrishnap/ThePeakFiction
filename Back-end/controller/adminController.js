@@ -98,6 +98,7 @@ module.exports = {
                 console.log('error on get genres');
 
             }
+
         } catch (error) {
             res.status(400).json({ status: false, message: 'admin catch error server side :: getAllGenres' });
             console.log("catch error getAllGenre " + error.message);
@@ -212,14 +213,12 @@ module.exports = {
     hideNovel: async (req, res) => {
         try {
 
-            const id = req.body.id
-            let isHide = req.body.isHide
+            const { id, isHide } = req.body
 
             if (id) {
-                const response = await NovelModel.findByIdAndUpdate({ _id: id }, { $set: { is_hide: !isHide } })
+                await NovelModel.updateOne({ _id: id }, { $set: { is_hide: !isHide } })
                 res.json({ status: true })
             }
-
 
         } catch (error) {
             res.status(400).json({ status: false, message: 'admin catch error server side :: hideNovel' });
@@ -228,7 +227,37 @@ module.exports = {
     },
 
     ///---------------------------
+    blockUser: async (req, res) => {
+        try {
+
+            const { userId, isBlock } = req.body;
+
+            if (userId) {
+                await UserModel.updateOne({ _id: userId }, { $set: { is_Block: !isBlock } });
+                res.json({ status: true });
+            };
+
+        } catch (error) {
+            res.status(400).json({ status: false, message: 'admin catch error server side :: blockUser' });
+            console.log('catch error at :: blockUser adminController - ' + error.message)
+        }
+    },
     ///---------------------------
+    listGenre: async (req, res) => {
+        try {
+
+            const { genreId, isHide } = req.body;
+
+            if (genreId) {
+                await GenreModel.updateOne({ _id: genreId }, { $set: { is_Hide: !isHide } });
+                res.json({ status: true });
+            };
+
+        } catch (error) {
+            res.status(400).json({ status: false, message: 'admin catch error server side :: blockUser' });
+            console.log('catch error at :: blockUser adminController - ' + error.message)
+        }
+    }
     ///---------------------------
     ///---------------------------
 }

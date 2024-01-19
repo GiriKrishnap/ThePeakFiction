@@ -1,9 +1,10 @@
-import './Signup.css'
 import Swal from 'sweetalert2';
 import axios from '../../../util/axios'
 import React, { useState } from 'react'
-import { Login, signupPost } from '../../../util/constants';
+import { Login, VerifyOptPageUrl, signupPost } from '../../../util/constants';
 import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { userSignUpPostAPI } from '../../../APIs/userAPI';
 
 //.........................................................................
 
@@ -28,45 +29,62 @@ export default function Signup() {
         e.preventDefault();
         if (!userName || !email || !password || !confirmPassword || password !== confirmPassword) {
 
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Please Fill The Field Correctly!',
-                showConfirmButton: false,
-                timer: 1400
+            toast.success("Fill The Form Correctly‼", {
+                icon: '😿', style: {
+                    borderRadius: '30px',
+                    background: '#444',
+                    color: '#fff',
+                },
             })
 
         } else {
 
-            await axios.post(signupPost, { userName, email, password, isAuthor }, {
-                headers: { "Content-Type": "application/json" }
-            }).then((response) => {
-                if (response.data.status) {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Success',
-                        showConfirmButton: false,
-                        timer: 1400
-                    }).then(() => {
-                        navigate(Login);
-                    })
-
-                } else {
-
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'error',
-                        title: response.data.message,
-                        showConfirmButton: false,
-                        timer: 1400
-                    })
-
-                }
+            const body = JSON.stringify({
+                userName,
+                email,
+                password,
+                isAuthor
             })
+
+            const response = await userSignUpPostAPI(body);
+
+            if (response.data.status) {
+
+                toast.success("Check Your Email For OTP", {
+                    icon: '😼✉', style: {
+                        borderRadius: '30px',
+                        background: '#444',
+                        color: '#fff',
+                    },
+                })
+
+                navigate(`${VerifyOptPageUrl}?email=${email}`);
+
+
+            } else if (response.data.need_verify) {
+
+                toast.error(response.data.message, {
+                    icon: '😿🔒', style: {
+                        borderRadius: '30px',
+                        background: '#444',
+                        color: '#fff',
+                    },
+                })
+
+                navigate(`${VerifyOptPageUrl}?email=${email}`);
+
+            } else {
+
+                toast.error(response.data.message, {
+                    icon: '😿', style: {
+                        borderRadius: '30px',
+                        background: '#444',
+                        color: '#fff',
+                    },
+                })
+
+            }
         }
-
-
     }
 
     //.........................................................................

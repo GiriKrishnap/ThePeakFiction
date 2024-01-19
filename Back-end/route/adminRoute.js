@@ -21,6 +21,8 @@ router.post('/login', adminController.adminLogin);
 router.post('/addGenre', protect, adminController.addGenre);
 router.post('/approve', protect, adminController.giveApprove);
 router.post('/hideNovel', protect, adminController.hideNovel);
+router.post('/block-user', protect, adminController.blockUser);
+router.post('/list-genre', protect, adminController.listGenre);
 
 
 module.exports = router;
