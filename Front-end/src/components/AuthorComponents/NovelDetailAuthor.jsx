@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthorAddChapter, CoverUrl } from '../../util/constants';
 import { getNovelDetailsWithIdAPI } from '../../APIs/userAPI';
+import toast from 'react-hot-toast';
 //.........................................................................
 
 export default function NovelDetailAuthor() {
@@ -50,6 +51,25 @@ export default function NovelDetailAuthor() {
 
     //.........................................................................
 
+    const handleAddChapter = async (id) => {
+
+        if (novel[0].status === "pending") {
+            toast.error("Didn't get the admin's Approval", {
+                icon: '😿❌', style: {
+                    borderRadius: '30px',
+                },
+            })
+
+        } else {
+
+            navigate(`${AuthorAddChapter} ? NovelId = ${id}& number=${chapterNumber} `,
+                { replace: true })
+
+        }
+    }
+
+    //.........................................................................
+
     return (
 
         <>
@@ -89,8 +109,7 @@ export default function NovelDetailAuthor() {
 
                                         <button className='bg-blue-500 hover:bg-gray-500 poppins2 p-2
                                           text-white rounded-md pr-2 font-sans drop-shadow-lg'
-                                            onClick={() => navigate(`${AuthorAddChapter}?NovelId=${item._id}&number=${chapterNumber}`,
-                                                { replace: true })}>
+                                            onClick={() => handleAddChapter(item._id)}>
                                             Add Chap
                                             <i class="fa-solid fa-square-plus m-1.5"></i>
                                         </button>
@@ -102,7 +121,8 @@ export default function NovelDetailAuthor() {
                                         </button>
 
                                         <button className='bg-gray-700 hover:bg-red-700 poppins2 p-2
-                                        text-white rounded-md pr-2 font-sans drop-shadow-lg'>
+                                        text-white rounded-md pr-2 font-sans drop-shadow-lg'
+                                            onClick={handleAddChapter}>
                                             Cancel Novel
                                             <i class="fa-solid fa-trash-can-arrow-up m-1.5"></i>
                                         </button>

@@ -38,52 +38,39 @@ export const adminGenreManagement = '/admin/genres'
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<//BACK_END//>>>>>>>>>>>>>>>>>>>>>>>>>>
 //............Reader-side..............
-export const loginPost = '/login'
-export const signupPost = '/signup';
-export const verifyOtpPost = '/verifyUserOtp'
+
 
 export const getLibraryNovelsUrl = '/get-library'
 export const getMostViewedPost = '/getMostViewed'
 export const getTrendingPost = '/getTrending'
-export const getRandomPost = '/getRandom'
 export const getNewUpdatedPost = '/getNewUpdated'
-export const addNovelToLibraryPostUrl = '/add-To-library'
-export const RatingsPostUrl = '/rateNovel'
-export const getUserById = '/getWallet'
 
-export const getAllTheMessageUrl = '/all-message'
-export const newMessagePost = '/send-message'
+
+
+
 //filter
-export const getFilteredNovelsUsers = '/filterNovels-user'
-export const getAllNovelsUsers = '/getAllNovels-user'
+
+
 //PAYMENT
 export const createPaymentIntentURL = '/create-payment-intent'
 export const confirmPaymentURL = '/payment-confirm'
 
-export const checkGCoinSystemUrl = '/check-GCoinSystem?NovelId='
 
 //............Author-side..............
-export const authorGetGenresUrl = '/author/getGenres'
-
-export const authorCreatePost = '/author/create'
-export const getAuthorNovels = '/author/getAuthorNovels'
-export const AuthorAddChapterPost = '/author/addChapter'
-export const paymentEligibleCheckUrl = '/author/payment-Eligible-Check'
 
 //........Admin-side..........................
 export const adminLoginPost = '/admin/login'
 export const adminLogout = '/adminLogout'
 export const adminDashboardPost = '/admin/dashboard'
-export const adminGenresPost = '/admin/addGenre'
-export const adminNovelApprove = '/admin/approve'
-export const adminNovelHide = '/admin/hideNovel'
-export const adminGetAllUsers = '/admin/getAllUsers'
-export const adminGetAllAuthors = '/admin/getAllAuthors'
-export const adminGetAllGenres = '/admin/getAllGenres'
-export const AdminGetAllNovels = '/admin/getAllNovels'
 
-export const admin_block_user_Url = '/admin/block-user'
-export const admin_list_genre_Url = '/admin/list-genre'
+
+
+
+
+
+
+
+
+
 
 export const getNovelCover = '/admin/image/'
-export const getNovelDetailsWithId = '/novelWithId'

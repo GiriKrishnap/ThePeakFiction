@@ -45,9 +45,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.hover-scale{
+  transition: 0.5s;
+
+}
 
 .hover-scale:hover {
-  transform: scale(1.01);
+  transform: scale(1.02);
   box-shadow: rgba(0, 0, 0, 0) 0px 1px 1px;
 }
 

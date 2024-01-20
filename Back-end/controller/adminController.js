@@ -257,9 +257,40 @@ module.exports = {
             res.status(400).json({ status: false, message: 'admin catch error server side :: blockUser' });
             console.log('catch error at :: blockUser adminController - ' + error.message)
         }
+    },
+    ///---------------------------
+    adminDashboard: async (req, res) => {
+        try {
+
+            const users = await UserModel.countDocuments({ is_Author: false });
+            const authors = await UserModel.countDocuments({ is_Author: true });
+            const novels = await NovelModel.countDocuments();
+
+            if (users && authors && novels) {
+                res.json({ status: true, users, authors, novels });
+            };
+
+        } catch (error) {
+            res.status(400).json({ status: false, message: 'admin catch error server side :: adminDashboard' });
+            console.log('catch error at :: adminDashboard adminController - ' + error.message)
+        }
+    },
+    ///---------------------------
+    adminEditGenre: async (req, res) => {
+        try {
+
+            const { genreId, name, description } = req.body;
+
+            await GenreModel.updateOne({ _id: genreId }, { $set: { name: name, description: description } });
+            res.json({ status: true });
+
+        } catch (error) {
+            res.status(400).json({ status: false, message: 'admin catch error server side :: adminEditGenre' });
+            console.log('catch error at :: adminEditGenre adminController - ' + error.message)
+        }
     }
     ///---------------------------
-    ///---------------------------
+
 }
 
 

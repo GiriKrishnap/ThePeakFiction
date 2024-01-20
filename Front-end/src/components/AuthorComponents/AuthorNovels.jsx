@@ -93,7 +93,7 @@ export default function AuthorNovels() {
                                         <div className='text-right'>
                                             <p className='text-white poppins text-right text-lg bg-red-500 
                                                 inline drop-shadow-md p-2 rounded-b-lg'
-                                            >3.4</p>
+                                            >{item.rate}</p>
                                         </div>
 
                                         <div className='flex'>

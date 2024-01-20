@@ -4,6 +4,7 @@ import { CoverUrl, chatPageUrl, readNovel, readerHome } from '../../../util/cons
 import Comments from '../../Comments/comments';
 import toast from 'react-hot-toast';
 import { RatingPostAPI, addNovelToLibraryAPI, getNovelDetailsWithIdAPI } from '../../../APIs/userAPI';
+import { Tooltip } from '@mui/material';
 
 
 //.............................................................................
@@ -63,7 +64,11 @@ export default function NovelDetailedView() {
 
     const handleChapterClick = (novelId, number) => {
 
-        navigate(`${readNovel}?NovelId=${novelId}&number=${number}`)
+        if (novel[0].chapters.length <= 0) {
+            toast.success('No Chapters', { icon: '😿❌' })
+        } else {
+            navigate(`${readNovel}?NovelId=${novelId}&number=${number}`)
+        }
     }
 
     //.........................................................................
@@ -200,12 +205,15 @@ export default function NovelDetailedView() {
                                         in {item.in_library} Library <i className="fa-solid fa-book-bookmark"></i>
                                     </small>
 
-                                    <p className='text-blue-100 font-mono font-bold cursor-pointer hover:tracking-widest 
-                                    duration-500'
-                                        onClick={() => handleCommunityButton(item._id)}>
-                                        check community <i className="fa-solid fa-arrow-right"></i>
-                                    </p>
+                                    <Tooltip title="Official Community " placement="bottom">
 
+                                        <p className='text-blue-100 font-mono font-bold cursor-pointer hover:tracking-widest 
+                                    duration-500'
+                                            onClick={() => handleCommunityButton(item._id)}>
+                                            check community <i className="fa-solid fa-arrow-right"></i>
+                                        </p>
+
+                                    </Tooltip>
                                 </div>
                                 {/* NOVEL VIEWS AND LIBRARY COUNT END*/}
 

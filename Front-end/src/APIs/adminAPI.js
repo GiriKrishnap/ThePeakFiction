@@ -1,8 +1,4 @@
 import axios from '../util/axios'
-import {
-    AdminGetAllNovels, adminGenresPost, adminGetAllAuthors, adminGetAllGenres, adminGetAllUsers,
-    adminNovelApprove, adminNovelHide, admin_block_user_Url, admin_list_genre_Url, getRandomPost
-} from '../util/constants'
 //---------------------------------
 const adminToken = localStorage.getItem('adminToken')
 
@@ -13,24 +9,19 @@ const configToken = {
         Authorization: "Bearer " + adminToken
     }
 }
-//------------------------------
-const configFormData = {
-    headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: "Bearer " + adminToken
-    }
-}
 
 //.....................................................................
 
-export const getRandomNovelAPI = () => axios.get(getRandomPost, configToken);
-export const adminGetAllGenreAPI = () => axios.get(adminGetAllGenres, configToken);
-export const adminGetAllNovelsAPI = () => axios.get(AdminGetAllNovels, configToken);
-export const adminGetAllAuthorsAPI = () => axios.get(adminGetAllAuthors, configToken);
-export const adminGetAllUsersAPI = () => axios.get(adminGetAllUsers, configToken);
+export const getRandomNovelAPI = () => axios.get('/getRandom', configToken);
+export const adminGetAllGenreAPI = () => axios.get('/admin/getAllGenres', configToken);
+export const adminGetAllNovelsAPI = () => axios.get('/admin/getAllNovels', configToken);
+export const adminGetAllAuthorsAPI = () => axios.get('/admin/getAllAuthors', configToken);
+export const adminGetAllUsersAPI = () => axios.get('/admin/getAllUsers', configToken);
+export const getDashboardDataAPI = () => axios.get('/admin/admin-dashboard', configToken);
 
-export const createGenresAPI = (body) => axios.post(adminGenresPost, body, configToken);
-export const adminNovelHideAPI = (body) => axios.post(adminNovelHide, body, configToken);
-export const adminNovelApproveAPI = (body) => axios.post(adminNovelApprove, body, configToken);
-export const adminBlockUserAPI = (body) => axios.post(admin_block_user_Url, body, configToken);
-export const adminListGenreAPI = (body) => axios.post(admin_list_genre_Url, body, configToken);
+export const createGenresAPI = (body) => axios.post('/admin/addGenre', body, configToken);
+export const adminNovelHideAPI = (body) => axios.post('/admin/hideNovel', body, configToken);
+export const adminNovelApproveAPI = (body) => axios.post('/admin/approve', body, configToken);
+export const adminBlockUserAPI = (body) => axios.post('/admin/block-user', body, configToken);
+export const adminListGenreAPI = (body) => axios.post('/admin/list-genre', body, configToken);
+export const adminEditGenreAPI = (body) => axios.post("/admin/edit-genre", body, configToken);

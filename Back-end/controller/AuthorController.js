@@ -13,6 +13,7 @@ module.exports = {
         try {
 
             const { title, description, authorId } = req.body;
+            console.log(title, description, authorId);
 
             const CoverPath = req.file.path;
             const genre = req.body.genre.split(',')
@@ -29,7 +30,7 @@ module.exports = {
                 author_id: authorId
 
             })
-            if (novelCreate.length > 0) {
+            if (novelCreate) {
 
                 await CommunityModel.create({
                     name: `${novelCreate.title} Community`,
