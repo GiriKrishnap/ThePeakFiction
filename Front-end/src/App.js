@@ -14,7 +14,7 @@ import {
   adminLogin, adminNovelManagement, adminUserManagement, authorCreate, authorHome, authorNovels,
   chatPageUrl,
   communityPageUrl,
-  filter, getUpdatedUrl, myLibraryUrl, novelDetailedView, profileUrl, readNovel, readerHome, trendingUrl
+  filter, getUpdatedUrl, myLibraryUrl, newPasswordUrl, novelDetailedView, profileUrl, readNovel, readerHome, trendingUrl
 } from './util/constants';
 
 
@@ -34,6 +34,7 @@ const LibraryPage = lazy(() => import('./pages/UserPages/LibraryPage'))
 const CommunityPage = lazy(() => import('./pages/UserPages/CommunityPage'))
 const ChatPage = lazy(() => import('./pages/UserPages/ChatPage'))
 const VerifyOptPage = lazy(() => import('./pages/UserPages/VerifyOtpPage'))
+const NewPasswordPage = lazy(() => import('./pages/UserPages/NewPasswordPage'))
 
 //author
 const AuthorHomePage = lazy(() => import('./pages/AuthorPages/AuthorHome'))
@@ -86,6 +87,7 @@ function App() {
             <Route exact path={communityPageUrl} element={<CommunityPage />} />
             <Route exact path={chatPageUrl} element={<ChatPage />} />
             <Route exact path={VerifyOptPageUrl} element={<VerifyOptPage />} />
+            <Route exact path={newPasswordUrl} element={<NewPasswordPage />} />
 
 
             {/* AuthorPart */}

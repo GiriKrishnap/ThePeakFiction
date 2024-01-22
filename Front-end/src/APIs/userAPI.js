@@ -27,7 +27,7 @@ const configFormData = {
 }
 //.....................................................................
 
-//Novel-Apis
+//user-Apis
 export const getRandomNovelAPI = () => axios.get('/getRandom', configToken);
 export const getAllNovelsForUsersAPI = () => axios.get('/getAllNovels-user', configToken);
 export const getAllGenresAPI = () => axios.get('/admin/getAllGenres', configToken);
@@ -45,6 +45,8 @@ export const getFilteredNovelsAPI = (body) => axios.post('/filterNovels-user', b
 export const RatingPostAPI = (body) => axios.post('/rateNovel', body, configToken);
 export const addNovelToLibraryAPI = (novelId) => axios.post('/add-To-library', { novelId, userId }, configToken);
 export const newMessagePostAPI = (body) => axios.post('/send-message', body, configToken);
+export const changePasswordRequestAPI = (body) => axios.post('/changePassword-request', body, configToken);
+export const changePasswordAPI = (body) => axios.post('/changePassword', body, configToken);
 
 //...............................................................................................
 

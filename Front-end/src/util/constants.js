@@ -5,6 +5,7 @@ export const CoverUrl = "http://localhost:4000/admin/image";
 export const Login = '/'
 export const Signup = '/signup';
 export const VerifyOptPageUrl = '/verify'
+export const newPasswordUrl = '/new-password'
 
 export const readerHome = '/Home'
 export const getUpdatedUrl = '/updated'

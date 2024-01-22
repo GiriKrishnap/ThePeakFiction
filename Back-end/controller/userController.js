@@ -9,7 +9,7 @@ const GenreModel = require('../model/genreModel');
 const WalletModel = require('../model/walletModel');
 const OtpModel = require('../model/otpModel');
 //----------------------------------------------------------
-const { sendOtp } = require('../util/generateOTP')
+const { sendOtp, changePasswordEmail } = require('../util/generateOTP')
 //----------------------------------------------------------
 
 module.exports = {
@@ -172,6 +172,70 @@ module.exports = {
             console.log('catch error :: verifyOtp', error.message);
         }
     },
+    //---------------------------------------------------------
+    changePasswordRequest: async (req, res) => {
+        try {
+
+            const { email } = req.body;
+            console.log(email);
+
+            const user = await UserModel.findOne({ email: email });
+            if (!user) {
+                res.json({ status: false, message: 'email not found' });
+            } else if (user.is_verified === false) {
+
+                res.json({ status: false, message: 'Email Not Verified' });
+
+            } else {
+
+                if (user) {
+                    const userId = user._id;
+                    const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY, {
+                        expiresIn: "10m"
+                    })
+
+                    if (token) {
+                        const link = `http://localhost:3000/new-password?token=${token}`;
+                        changePasswordEmail(email, link);
+                        res.json({ status: true });
+                    }
+                }
+            }
+
+        } catch (error) {
+            console.log('catch error :: changePasswordRequest', error.message);
+            res.status(400).json({ status: false, message: 'server catch error :: changePasswordRequest' });
+        }
+    },
+    //---------------------------------------------------------
+    changePassword: async (req, res) => {
+        try {
+
+            const { token, password } = req.body;
+            console.log('token - ', token, 'password - ', password);
+            jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
+
+                if (err) {
+
+                    console.error('Token verification failed:', err.message);
+                    res.json({ status: false, message: 'Link Expired' });
+
+                } else {
+
+                    const userIdFromToken = decoded.userId;
+                    const securePassword = await bcrypt.hash(password, 10);
+
+                    await UserModel.updateOne({ _id: userIdFromToken }, { $set: { password: securePassword } });
+                    res.json({ status: true, message: 'password changed' });
+
+                }
+            });
+
+        } catch (error) {
+            res.status(400).json({ status: false, message: 'server catch error :: changePassword' });
+            console.log('catch error :: changePassword', error.message);
+        }
+    }
     //---------------------------------------------------------
 
 }

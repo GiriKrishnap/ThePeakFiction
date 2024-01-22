@@ -17,9 +17,10 @@ const transporter = nodemailer.createTransport({
 
 //................................................
 
+
 const sendOtp = async (email) => {
     try {
-    
+
         const generatedOtp = Math.floor(1000 + Math.random() * 9000);
 
         await OtpModel.create({
@@ -53,4 +54,31 @@ const sendOtp = async (email) => {
     }
 }
 
-module.exports = { sendOtp }
+const changePasswordEmail = async (email, link) => {
+    try {
+
+        const mailOptions = {
+            from: 'yt4smallgames@gmail',
+            to: email,
+            subject: 'ThePeakFiction change Password Link',
+            html: `<P> Hello,<br><br>
+           This email is to provide you the link to change your Password<br><br>
+            Your Link - <h4><a href=${link}>click here to change password</a></h4><br><br>
+            Thanks for the visit ! - <h3>ThePeakFiction team ☺</h3></P>`
+        }
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log("email has been send:- ", info.response);
+            }
+        })
+
+    } catch (error) {
+        console.log("catch error on sendOtp - ", error.message);
+    }
+}
+
+
+module.exports = { sendOtp, changePasswordEmail }

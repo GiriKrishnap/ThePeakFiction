@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './Login.css'
-import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import { Signup, VerifyOptPageUrl, loginPost, readerHome } from '../../../util/constants';
-import axios from '../../../util/axios'
-import { userLoginPostAPI } from '../../../APIs/userAPI';
+import { Signup, VerifyOptPageUrl, readerHome } from '../../../util/constants';
+import { changePasswordRequestAPI, userLoginPostAPI } from '../../../APIs/userAPI';
 import toast from 'react-hot-toast';
 //.........................................................................
 
@@ -78,6 +75,32 @@ export default function Login() {
 
     //.........................................................................
 
+
+    const handleChangePassword = async () => {
+        try {
+            if (!email) {
+                toast.error('Fill the Email Field')
+            } else {
+                const body = {
+                    email: email
+                }
+
+                const response = await changePasswordRequestAPI(body);
+                if (response.data.status) {
+
+                    toast.success('Check Your Mail', { icon: "😼✉" })
+                } else {
+                    toast.error(response.data.message);
+                }
+            }
+        } catch (error) {
+            toast.error(error.message)
+            console.log('catch error frontEnd :: handleChangePassword - ', error)
+        }
+    }
+
+    //.........................................................................
+
     return (
         <>
             <div className='outerDiv-login md:flex md:flex-col md:mt-16'>
@@ -102,6 +125,10 @@ export default function Login() {
                                         onChange={e => SetPassword(e.target.value)} value={password} required />
                                     <button type='submit' className='button-login mb-3'>Login Now</button>
                                 </form>
+                                <p className='text-blue-900 font-mono cursor-pointer'
+                                    onClick={handleChangePassword}>
+                                    forgot your Password?
+                                </p>
                                 <Link to={Signup}> <p className='aTag-login'>No Account?</p> </Link>
                             </div>
                         </div>

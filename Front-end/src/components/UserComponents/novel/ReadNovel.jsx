@@ -34,7 +34,7 @@ export default function ReadNovel() {
 
             getNovelWithId(NovelId);
         }
-        
+
     }, [])
 
     //.........................................................................
@@ -116,7 +116,7 @@ export default function ReadNovel() {
 
 
                 {/* --------------------------CONTENT------------------------------ */}
-                <div className='w-full p-10 text-xl novelFont'>
+                <div className='w-full p-10 text-xl novelFont select-none'>
                     <p style={{ whiteSpace: 'pre-wrap' }}>
                         {novel[0]?.chapters[chapterNumber]?.content}
                     </p>
