@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthorAddChapter, CoverUrl } from '../../util/constants';
-import { getNovelDetailsWithIdAPI } from '../../APIs/userAPI';
+import { cancelNovelAPI, deleteChapterAPI, getNovelDetailsWithIdAPI } from '../../APIs/userAPI';
 import toast from 'react-hot-toast';
+import Swal from 'sweetalert2';
 //.........................................................................
 
 export default function NovelDetailAuthor() {
@@ -60,13 +61,78 @@ export default function NovelDetailAuthor() {
                 },
             })
 
+
+        } else if (novel[0].status === "cancelled") {
+            toast.error("You Cancelled This Novel", {
+                icon: '😿❌', style: {
+                    borderRadius: '30px',
+                },
+            })
         } else {
 
-            navigate(`${AuthorAddChapter} ? NovelId = ${id}& number=${chapterNumber} `,
+            navigate(`${AuthorAddChapter}?NovelId=${id}&number=${chapterNumber}`,
                 { replace: true })
 
         }
     }
+
+    //.........................................................................
+
+    const handleCancelButton = async (novelId) => {
+        try {
+            Swal.fire({
+                title: 'Cancel your Novel?',
+                text: "Do you want to Cancel?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Cancel'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const response = await cancelNovelAPI(novelId);
+                    if (response.data.status) {
+                        toast.success(response.data.message);
+                        getNovelWithId(novelId);
+                    }
+                }
+            })
+        } catch (error) {
+            console.log('catch error on handleCancelButton', error);
+        }
+    }
+
+    //.........................................................................
+
+    const handleDeleteChapter = async (novelId, chapterId) => {
+        try {
+
+            Swal.fire({
+                title: 'Delete This Chapter?',
+                text: "Do you want to Delete?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const body = {
+                        novelId,
+                        chapterId
+                    }
+                    const response = await deleteChapterAPI(body);
+                    if (response.data.status) {
+                        toast.success(response.data.message);
+                        getNovelWithId(novelId);
+                    }
+                }
+            })
+        } catch (error) {
+            console.log('catch error on handleCancelButton', error);
+        }
+    }
+
 
     //.........................................................................
 
@@ -105,29 +171,35 @@ export default function NovelDetailAuthor() {
                                     <p className='text-blue-400 font-mono tracking-widest'>{item.status}</p>
 
                                     {/* READ NOW AND ADD TO LIBRARY BUTTONS */}
-                                    <div className='md:w-3/4 flex gap-1.5 mt-3 w-full'>
+                                    {
+                                        item.status !== "cancelled" ?
+                                            <div className='md:w-3/4 flex gap-1.5 mt-3 w-full'>
 
-                                        <button className='bg-blue-500 hover:bg-gray-500 poppins2 p-2
+                                                <button className='bg-blue-500 hover:bg-gray-500 poppins2 p-2
                                           text-white rounded-md pr-2 font-sans drop-shadow-lg'
-                                            onClick={() => handleAddChapter(item._id)}>
-                                            Add Chap
-                                            <i class="fa-solid fa-square-plus m-1.5"></i>
-                                        </button>
+                                                    onClick={() => handleAddChapter(item._id)}>
+                                                    Add Chap
+                                                    <i class="fa-solid fa-square-plus m-1.5"></i>
+                                                </button>
 
-                                        <button className='bg-blue-700 hover:bg-gray-500 poppins2 p-2
+                                                <button className='bg-blue-700 hover:bg-gray-500 poppins2 p-2
                                         text-white rounded-md pr-2 font-sans drop-shadow-lg'>
-                                            Edit Novel
-                                            <i class="fa-solid fa-pen-to-square m-1.5"></i>
-                                        </button>
+                                                    Edit Novel
+                                                    <i class="fa-solid fa-pen-to-square m-1.5"></i>
+                                                </button>
 
-                                        <button className='bg-gray-700 hover:bg-red-700 poppins2 p-2
+                                                <button className='bg-gray-700 hover:bg-red-700 poppins2 p-2
                                         text-white rounded-md pr-2 font-sans drop-shadow-lg'
-                                            onClick={handleAddChapter}>
-                                            Cancel Novel
-                                            <i class="fa-solid fa-trash-can-arrow-up m-1.5"></i>
-                                        </button>
+                                                    onClick={() => handleCancelButton(item._id)}>
+                                                    Cancel Novel
+                                                    <i class="fa-solid fa-trash-can-arrow-up m-1.5"></i>
+                                                </button>
 
-                                    </div>
+                                            </div> : <div className='md:w-3/4 flex gap-1.5 mt-3 w-full text-red-600 
+                                            font-bold tracking-wider text-2xl'>
+                                                THIS NOVEL IS CANCELLED
+                                            </div>
+                                    }
                                     {/* READ NOW AND ADD TO LIBRARY BUTTONS END*/}
 
 
@@ -237,7 +309,11 @@ export default function NovelDetailAuthor() {
 
                                             <div className='md:flex gap-5'>
                                                 <p className='hover:underline lg:text-xl text-gray-300'>Edit</p>
-                                                <p className='hover:underline lg:text-xl text-red-600'>Delete</p>
+                                                {
+                                                    chapter.number === item.chapter_count ?
+                                                        < p className='hover:underline lg:text-xl text-red-600'
+                                                            onClick={() => handleDeleteChapter(item._id, chapter._id)}>Delete</p> : ''
+                                                }
                                             </div>
 
                                         </div>
@@ -249,11 +325,11 @@ export default function NovelDetailAuthor() {
                         </div>
                         {/* -----------------------NOVEL CHAPTERS END-------------------- */}
 
-                        <div className='w-full max-h-96 flex flex-col gap-3 p-5 mt-10 overflow-y-scroll scroll'>
+                        < div className='w-full max-h-96 flex flex-col gap-3 p-5 mt-10 overflow-y-scroll scroll' >
 
-                        </div>
+                        </div >
 
-                    </div>
+                    </div >
                 ))
             }
 

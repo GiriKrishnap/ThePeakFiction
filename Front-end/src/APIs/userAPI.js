@@ -52,6 +52,8 @@ export const newMessagePostAPI = (body) => axios.post('/send-message', body, con
 export const getAuthorNovelsAPI = () => axios.get(`/author/getAuthorNovels/${userId}`, configToken);
 export const authorGetGenresAPI = () => axios.get('/author/getGenres', configToken);
 
+export const cancelNovelAPI = (novelId) => axios.post('/author/cancel-novel', { novelId }, configToken);
+export const deleteChapterAPI = (body) => axios.post('/author/delete-chapter', body, configToken);
 export const authorNovelCreateAPI = (title, formData) => axios.post(`/author/create/${title}`, formData, configFormData);
 export const authorAddChapterAPI = (body) => axios.post('/author/addChapter', body, configToken);
 export const paymentEligibleCheckAPI = (body) => axios.post('/author/payment-Eligible-Check', body, configToken);

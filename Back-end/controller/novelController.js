@@ -78,6 +78,8 @@ module.exports = {
             const random = await NovelModel.aggregate([
                 { $match: { status: { $ne: "pending" } } },
                 { $match: { status: { $ne: "hide" } } },
+                { $match: { status: { $ne: "cancelled" } } },
+                { $match: { chapter_count: { $gte: 1 } } },
                 { $sample: { size: 1 } },
                 {
                     $lookup: {
@@ -315,9 +317,12 @@ module.exports = {
             res.json({ status: false, message: 'Not Eligible for Coin System' });
 
         } catch (error) {
-            res.status(400).json({ status: false, message: "oops catch error ::checkGCoinSystem serverSide" });
             console.log('catch error on :: checkGCoinSystem - ', error.message)
+            res.status(400).json({ status: false, message: "oops catch error ::checkGCoinSystem serverSide" });
         }
-    }
+    },
+    //---------------------------------------------------------
+   
+
 }
 //---------------------------------------------------------

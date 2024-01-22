@@ -135,6 +135,45 @@ module.exports = {
             console.log("catch error getAllGenre " + error.message);
         }
 
+    },
+    //---------------------------------------------------------
+    cancelNovel: async (req, res) => {
+        try {
+
+            const { novelId } = req.body
+            console.log(novelId);
+            const novelCancel = await NovelModel.updateOne({ _id: novelId }, { $set: { status: 'cancelled' } });
+            if (novelCancel) {
+                res.json({ status: true, message: 'Novel Cancelled' });
+            }
+
+        } catch (error) {
+            console.log('catch error on :: cancelNovel - ', error.message)
+            res.status(400).json({ status: false, message: "oops catch error ::cancelNovel serverSide" });
+        }
+    },
+    //---------------------------------------------------------
+    deleteChapter: async (req, res) => {
+        try {
+
+            const { novelId, chapterId } = req.body
+            console.log(novelId, chapterId);
+
+            const novelCancel = await NovelModel.updateOne({ _id: novelId },
+                {
+                    $pull: { chapters: { _id: chapterId } },
+                    $inc: { chapter_count: -1 }
+                }
+            );
+
+            if (novelCancel) {
+                res.json({ status: true, message: 'Chapter Deleted' });
+            }
+
+        } catch (error) {
+            console.log('catch error on :: cancelNovel - ', error.message)
+            res.status(400).json({ status: false, message: "oops catch error ::cancelNovel serverSide" });
+        }
     }
 
 }

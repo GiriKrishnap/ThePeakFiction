@@ -7,6 +7,7 @@ const { protect } = require('../middlewares/verifyToken');
 const novelExistChecker = require('../middlewares/novelCreateMiddleware');
 //.................................................................
 const authorController = require('../controller/AuthorController');
+const novelController = require('../controller/novelController');
 
 
 //GET METHODS..........................................................
@@ -17,6 +18,8 @@ router.get('/getGenres', protect, authorController.getAllGenresAuthor);
 router.post('/create/:title', protect, novelExistChecker, multer.single('photo'), authorController.authorCreate);
 router.post('/addChapter', protect, authorController.addChapter);
 router.post('/payment-Eligible-Check', protect, authorController.paymentEligibleCheck);
+router.post('/cancel-novel', protect, authorController.cancelNovel);
+router.post('/delete-chapter', protect, authorController.deleteChapter);
 
 
 module.exports = router;

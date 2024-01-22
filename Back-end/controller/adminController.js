@@ -281,8 +281,15 @@ module.exports = {
 
             const { genreId, name, description } = req.body;
 
-            await GenreModel.updateOne({ _id: genreId }, { $set: { name: name, description: description } });
-            res.json({ status: true });
+            const exist = await GenreModel.findOne({ name: name });
+
+            if (!exist) {
+
+                await GenreModel.updateOne({ _id: genreId }, { $set: { name: name, description: description } });
+                res.json({ status: true });
+            } else {
+                res.json({ status: false, message: "Already Exist" });
+            }
 
         } catch (error) {
             res.status(400).json({ status: false, message: 'admin catch error server side :: adminEditGenre' });
