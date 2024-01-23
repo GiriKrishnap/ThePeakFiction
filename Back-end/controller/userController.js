@@ -85,7 +85,7 @@ module.exports = {
                 res.json({ status: false, message: "Account Blocked by Admin" });
 
             } else if (!emailExist.is_verified) {
-
+                sendOtp(emailExist.email);
                 res.json({ status: false, message: "Email Not Verified", need_verify: true });
             } else {
 
@@ -235,8 +235,40 @@ module.exports = {
             res.status(400).json({ status: false, message: 'server catch error :: changePassword' });
             console.log('catch error :: changePassword', error.message);
         }
-    }
+    },
     //---------------------------------------------------------
+    editProfile: async (req, res) => {
+        try {
+
+            const { userId, userName, email } = req.body;
+
+            if (userId && userName && email) {
+                const emailExist = await UserModel.findOne({ email: email });
+
+                if (emailExist) {
+
+                    if (emailExist._id.toString() !== userId) {
+                        res.json({ status: false, message: "email already exist" })
+                    } else {
+
+                        await UserModel.updateOne({ _id: userId }, {
+                            $set: { userName: userName }
+                        })
+                        res.json({ status: true, message: "UserName Updated" });
+                    }
+                } else {
+
+                    await UserModel.updateOne({ _id: userId }, {
+                        $set: { userName: userName, email: email, is_verified: false }
+                    })
+                    res.json({ status: true, need_verify: true, message: "verify your new email" });
+                }
+            }
+        } catch (error) {
+            res.status(400).json({ status: false, message: 'server catch error :: editProfile' });
+            console.log('catch error :: editProfile', error.message);
+        }
+    }
 
 }
 

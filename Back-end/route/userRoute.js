@@ -34,6 +34,7 @@ router.post('/rateNovel', protect, novelController.addRating);
 router.post('/send-message', protect, communityController.newMessage);
 router.post('/changePassword-request', userController.changePasswordRequest);
 router.post('/changePassword', userController.changePassword);
+router.post('/edit-profile', userController.editProfile);
 
 ///---------------------------
 module.exports = router;

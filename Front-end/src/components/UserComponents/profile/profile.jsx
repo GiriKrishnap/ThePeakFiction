@@ -1,9 +1,7 @@
-import axios from '../../../util/axios'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AuthorAddChapter, CoverUrl, getNovelDetailsWithId } from '../../../util/constants';
 import toast from 'react-hot-toast';
-import { changePasswordRequestAPI } from '../../../APIs/userAPI';
+import { changePasswordRequestAPI, editProfileAPI } from '../../../APIs/userAPI';
 //.........................................................................
 
 export default function ProfileComponent() {
@@ -43,9 +41,34 @@ export default function ProfileComponent() {
         if (edit === false) {
             setEdit(!edit)
         } else {
+            try {
 
+                const body = {
+                    userId,
+                    userName,
+                    email
+                }
+
+                const response = await editProfileAPI(body);
+                if (response.data.status) {
+
+                    toast.success(response.data.message);
+
+                    localStorage.removeItem("user-login");
+                    navigate('/');
+
+                } else {
+                    toast.error(response.data.message);
+                }
+                setEdit(!edit)
+            } catch (error) {
+                console.log('catch error on handleEdit :: profile', error);
+                toast.error(error.message);
+            }
         }
     }
+
+    //.........................................................................
 
     const handleChangePassword = async () => {
         try {
@@ -97,6 +120,7 @@ export default function ProfileComponent() {
                                 onClick={handleEdit}>
                                 Edit Profile
                             </button>
+
                             <p className='text-center mt-3 underline text-gray-300 cursor-pointer'
                                 onClick={handleChangePassword}>Change Password</p>
                         </div>
@@ -107,3 +131,4 @@ export default function ProfileComponent() {
     )
 }
 //.........................................................................
+

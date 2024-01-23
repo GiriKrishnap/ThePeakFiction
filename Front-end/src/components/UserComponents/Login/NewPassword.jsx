@@ -1,10 +1,8 @@
 
 import React, { useEffect, useState } from 'react'
 import './Login.css'
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import axios from '../../../util/axios'
-import { changePasswordAPI, userLoginPostAPI } from '../../../APIs/userAPI';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { changePasswordAPI } from '../../../APIs/userAPI';
 import toast from 'react-hot-toast';
 //.........................................................................
 
