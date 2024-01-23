@@ -10,7 +10,7 @@ import Loading from './components/loading';
 import {
   AuthorAddChapter,
   AuthorNovelDetails,
-  Login, PaymentSuccessURL, Signup, VerifyOptPageUrl, adminAuthorManagement, adminDashboard, adminGenreManagement,
+  Login, PayToReadPageUrl, PaymentSuccessURL, Signup, VerifyOptPageUrl, adminAuthorManagement, adminDashboard, adminGenreManagement,
   adminLogin, adminNovelManagement, adminUserManagement, authorCreate, authorHome, authorNovels,
   chatPageUrl,
   communityPageUrl,
@@ -35,6 +35,7 @@ const CommunityPage = lazy(() => import('./pages/UserPages/CommunityPage'))
 const ChatPage = lazy(() => import('./pages/UserPages/ChatPage'))
 const VerifyOptPage = lazy(() => import('./pages/UserPages/VerifyOtpPage'))
 const NewPasswordPage = lazy(() => import('./pages/UserPages/NewPasswordPage'))
+const PayToReadPage = lazy(() => import('./pages/UserPages/PayToReadPage'))
 
 //author
 const AuthorHomePage = lazy(() => import('./pages/AuthorPages/AuthorHome'))
@@ -88,6 +89,7 @@ function App() {
             <Route exact path={chatPageUrl} element={<ChatPage />} />
             <Route exact path={VerifyOptPageUrl} element={<VerifyOptPage />} />
             <Route exact path={newPasswordUrl} element={<NewPasswordPage />} />
+            <Route exact path={PayToReadPageUrl} element={<PayToReadPage />} />
 
 
             {/* AuthorPart */}

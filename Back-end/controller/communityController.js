@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const moment = require('moment');
 //-MODELS--------------------------------------------------
 const UserModel = require('../model/UserModel');
-const NovelModel = require('../model/novelModel');
 const CommunityModel = require('../model/communityModel');
 //---------------------------------------------------------
 
@@ -46,9 +45,8 @@ module.exports = {
                 user_id: user_id,
                 message: message,
                 date: date,
-
             }
-            console.log(data)
+
 
             const addMessage = await CommunityModel.findOneAndUpdate({ novel_id: novelId },
                 { $push: { messages: data } },
@@ -57,7 +55,7 @@ module.exports = {
 
 
 
-            console.log(addMessage.messages);
+
             if (addMessage) {
                 res.json({ status: true, data: addMessage.messages });
             } else {

@@ -87,7 +87,8 @@ export default function NovelDetailAuthor() {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Cancel'
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes'
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     const response = await cancelNovelAPI(novelId);

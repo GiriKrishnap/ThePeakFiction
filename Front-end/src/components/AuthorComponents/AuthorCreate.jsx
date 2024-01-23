@@ -2,7 +2,7 @@ import toast from 'react-hot-toast';
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { authorHome, authorNovels, Login } from '../../util/constants';
-import { authorGetGenresAPI, authorNovelCreateAPI, getAllGenresAPI } from '../../APIs/userAPI';
+import { authorGetGenresAPI, authorNovelCreateAPI } from '../../APIs/userAPI';
 //.........................................................................
 
 
@@ -108,7 +108,7 @@ export default function AuthorCreate() {
                 }
 
             } else {
-                toast.error('Upload Cover Photo', { icon: "😿❌" })
+                toast.error('Upload Cover Photo', { icon: "😿❌" });
             }
 
         } catch (error) {

@@ -210,6 +210,32 @@ module.exports = {
     },
 
     ///---------------------------
+    giveRejection: async (req, res) => {
+        try {
+
+            const { novelId, reason } = req.body
+
+            const novel = await NovelModel.updateOne({ _id: novelId }, {
+                $set:
+                    { status: 'rejected', reason: reason }
+            });
+
+            if (novel) {
+
+                res.json({ status: true, message: 'Approved' });
+
+            } else {
+
+                res.json({ status: false, message: 'Can\'t Approve' });
+            }
+
+        } catch (error) {
+            res.status(400).json({ status: false, message: 'admin catch error server side :: giveRejection' });
+            console.log('catch error at :: giveRejection adminController ' + error.message);
+        }
+    },
+
+    ///---------------------------
     hideNovel: async (req, res) => {
         try {
 

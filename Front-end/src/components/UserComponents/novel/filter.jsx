@@ -182,7 +182,7 @@ export default function Banner() {
                                 <option value={''}>Status</option>
                                 <option value={'completed'}>Completed</option>
                                 <option value={'ongoing'}>Ongoing</option>
-                                <option value={'canceled'}>Canceled</option>
+                                <option value={'cancelled'}>Cancelled</option>
                             </select>
                         </div>
                         {/* ------------------------------YEAR---------------------- */}
@@ -231,11 +231,7 @@ export default function Banner() {
                                 Get All
                             </button>
                         </div>
-
                     </div>
-
-
-
                 </div>
 
 

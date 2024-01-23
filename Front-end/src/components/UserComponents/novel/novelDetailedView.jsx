@@ -8,6 +8,24 @@ import { Tooltip } from '@mui/material';
 
 
 //.............................................................................
+//formate Large Numbers
+const formatNumber = (num) => {
+    if (num >= 1000000) {
+        return (num / 1000000).toFixed(1) + 'M';
+    } else if (num >= 1000) {
+        return (num / 1000).toFixed(1) + 'K';
+    } else {
+        return num.toString();
+    }
+};
+
+const NumberFormatter = ({ value }) => {
+    const formattedValue = formatNumber(value);
+
+    return <span>{formattedValue}</span>;
+};
+
+//.............................................................................
 
 
 export default function NovelDetailedView() {
@@ -149,12 +167,12 @@ export default function NovelDetailedView() {
             from-gray-600 via-gray-700 to-gray-800 m-1 p-2' key={item._id}>
 
                     {/*--------------------- NOVEL DETAILS -----------------*/}
-                    <div className='m-3 p-1 sm:flex-row flex flex-col gap-5'>
+                    <div className='m-3 p-1 md:flex-row flex flex-col gap-5'>
 
-                        <div className='sm:w-4/6 sm:flex-row flex flex-col gap-5'>
+                        <div className='md:w-4/6 md:flex-row flex flex-col gap-5'>
 
                             {/* ------------ NOVEL COVER DIV ------------- */}
-                            <div className='sm:w-2/6 h-full flex justify-center items-center'>
+                            <div className='md:w-2/6 h-full flex justify-center items-center'>
 
                                 <div className='h-80 w-60 bg-black rounded-lg text-white
                         drop-shadow-lg hover:border-4 border-blue-500 hover:rotate-2 duration-200'
@@ -167,7 +185,7 @@ export default function NovelDetailedView() {
                             {/* ------------ NOVEL COVER DIV END ------------- */}
 
                             {/* ------------ NOVEL NAME AND DESCRIPTION ------------- */}
-                            <div className='sm:w-4/6 h-full flex flex-col justify-center'>
+                            <div className='md:w-4/6 h-full flex flex-col justify-center'>
                                 <h1 className='text-white poppins2 text-3xl'>{item.title}</h1>
                                 <p className='text-blue-400 font-mono tracking-widest'>{item.status}</p>
 
@@ -193,24 +211,26 @@ export default function NovelDetailedView() {
 
 
                                 {/* NOVEL VIEWS AND LIBRARY COUNT */}
-                                <div className='w-3/4 flex gap-5 ml-4 mt-3'>
+                                <div className='w-3/4 flex gap-5 ml-4 mt-3 select-none'>
 
                                     <small className='text-gray-300'>
-                                        Views {item.views} <i className="fa-solid fa-eye"></i>
+                                        Views <NumberFormatter value={item.views} /> <i className="fa-solid fa-eye"></i>
                                     </small>
 
                                     <small className='text-gray-300'>|</small>
 
                                     <small className='text-gray-300'>
-                                        in {item.in_library} Library <i className="fa-solid fa-book-bookmark"></i>
+                                        in <NumberFormatter value={item.in_library} /> Library <i className="fa-solid fa-book-bookmark"></i>
                                     </small>
+
+                                    <small className='text-gray-300'>|</small>
 
                                     <Tooltip title="Official Community " placement="bottom">
 
                                         <p className='text-blue-100 font-mono font-bold cursor-pointer hover:tracking-widest 
                                     duration-500'
                                             onClick={() => handleCommunityButton(item._id)}>
-                                            check community <i className="fa-solid fa-arrow-right"></i>
+                                            community <i className="fa-solid fa-arrow-right"></i>
                                         </p>
 
                                     </Tooltip>
@@ -232,7 +252,7 @@ export default function NovelDetailedView() {
                         </div>
 
                         {/* ------------ NOVEL REVIEW AND DETAILS ------------- */}
-                        <div className='sm:w-2/6 flex flex-col pl-12 justify-center
+                        <div className='md:w-2/6 flex flex-col pl-12 justify-center
                                     text-white text-left font-mono'>
                             <p><b className='font-sans'>Author:</b> {item.author_id.userName}</p>
                             <p><b className='font-sans'>Publish Date:</b> {new Date(item.publish_date).toLocaleDateString("en-GB")}</p>

@@ -14,6 +14,7 @@ export const myLibraryUrl = '/my-library'
 export const filter = '/filter'
 export const profileUrl = '/profile'
 export const PaymentSuccessURL = '/profile/success'
+export const PayToReadPageUrl = '/pay-to-read'
 
 export const novelDetailedView = '/novelDetailed'
 export const readNovel = '/novel/read'

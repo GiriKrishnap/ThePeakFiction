@@ -40,6 +40,9 @@ export default function Chat() {
             getMessages(NovelId);
             scrollRef.current?.scrollIntoView({ behavior: "smooth" })
 
+            return () => {
+                socket.disconnect();
+            }
 
         } catch (error) {
             toast.error(error.message);

@@ -22,6 +22,7 @@ export const getDashboardDataAPI = () => axios.get('/admin/admin-dashboard', con
 export const createGenresAPI = (body) => axios.post('/admin/addGenre', body, configToken);
 export const adminNovelHideAPI = (body) => axios.post('/admin/hideNovel', body, configToken);
 export const adminNovelApproveAPI = (body) => axios.post('/admin/approve', body, configToken);
+export const adminNovelRejectAPI = (body) => axios.post('/admin/reject', body, configToken);
 export const adminBlockUserAPI = (body) => axios.post('/admin/block-user', body, configToken);
 export const adminListGenreAPI = (body) => axios.post('/admin/list-genre', body, configToken);
 export const adminEditGenreAPI = (body) => axios.post("/admin/edit-genre", body, configToken);

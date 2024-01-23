@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2';
 import { CoverUrl } from '../../util/constants';
 import React, { useEffect, useState } from 'react'
-import { adminGetAllNovelsAPI, adminNovelApproveAPI, adminNovelHideAPI } from '../../APIs/adminAPI';
+import { adminGetAllNovelsAPI, adminNovelApproveAPI, adminNovelHideAPI, adminNovelRejectAPI } from '../../APIs/adminAPI';
 import toast from 'react-hot-toast';
 //.........................................................................
 
@@ -45,23 +45,38 @@ export default function NovelManagement() {
             const response = await adminNovelApproveAPI(body);
 
             if (response.data.status) {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: response.data.message,
-                    showConfirmButton: false,
-                    timer: 1500
-                })
+                toast.success(response.data.message)
+
                 getAllNovels();
 
             } else {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: response.data.message,
-                    showConfirmButton: false,
-                    timer: 1500
-                })
+                toast.error(response.data.message)
+            }
+
+        } catch (error) {
+            toast.error(error.message);
+            console.log(error)
+        }
+    }
+
+    //.........................................................................
+
+    const handleReject = async (novelId) => {
+        try {
+
+            const body = JSON.stringify({
+                novelId
+            })
+
+
+            const response = await adminNovelRejectAPI(body);
+
+            if (response.data.status) {
+                toast.success(response.data.message)
+                getAllNovels();
+
+            } else {
+                toast.error(response.data.message)
             }
 
         } catch (error) {
@@ -150,7 +165,9 @@ export default function NovelManagement() {
                                                     <img src={`${CoverUrl}/${novel._id}`}
                                                         alt="" className='h-52 rounded-lg m-2 drop-shadow-md' />
 
-                                                    <h3 className="font-bold tracking-wide mb-2 poppins text-4xl">{novel.title}</h3>
+                                                    <h3 className="font-bold tracking-wide mb-2 poppins text-4xl">
+                                                        {novel.title}
+                                                    </h3>
                                                     <p className="py-4 inline text-gray-200">{novel.description}</p> <br />
 
                                                     <hr className='m-2 border-blue-400' />
@@ -196,21 +213,32 @@ export default function NovelManagement() {
                                                 </div>
                                             </dialog>
 
-                                            {novel.status === 'pending' ? <button className='bg-green-500 hover:bg-green-700
-                                             text-white font-bold py-2 px-4 rounded ml-2'
-                                                onClick={() => handleApprove(novel._id)}>
-                                                Approve <i className="fa-solid fa-check"></i>
-                                            </button> : ''}
+                                            {novel.status === 'pending' ?
+                                                <>
+                                                    <button className='bg-green-500 hover:bg-green-700
+                                                     text-white font-bold py-2 px-4 rounded ml-2'
+                                                        onClick={() => handleApprove(novel._id)}>
+                                                        Approve <i className="fa-solid fa-check"></i>
+                                                    </button>
 
-                                            <button className='bg-red-500 hover:bg-red-700
-                                             text-white font-bold py-2 px-4 rounded ml-2'
-                                                onClick={() => handleNovelHide(novel._id, novel.is_hide)}>
-                                                {
-                                                    novel.is_hide ?
-                                                        <>unListed < i className="fa-solid fa-eye"></i></> :
-                                                        <>listed < i className="fa-solid fa-eye-slash"></i></>
-                                                }
-                                            </button>
+                                                    <button className='bg-red-500 hover:bg-red-700
+                                                     text-white font-bold py-2 px-4 rounded ml-2'
+                                                        onClick={() => handleReject(novel._id)}>
+                                                        Reject <i className="fa-solid fa-check"></i>
+                                                    </button>
+
+                                                </> :
+
+                                                <button className='bg-red-500 hover:bg-red-700
+                                            text-white font-bold py-2 px-4 rounded ml-2'
+                                                    onClick={() => handleNovelHide(novel._id, novel.is_hide)}>
+                                                    {
+                                                        novel.is_hide ?
+                                                            <>unListed < i className="fa-solid fa-eye"></i></> :
+                                                            <>listed < i className="fa-solid fa-eye-slash"></i></>
+                                                    }
+                                                </button>
+                                            }
                                         </td>
                                     </tr>
                                 ))
