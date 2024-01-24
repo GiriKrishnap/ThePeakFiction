@@ -214,19 +214,25 @@ module.exports = {
         try {
 
             const { novelId, reason } = req.body
+            console.log(novelId, reason)
+            if (novelId, reason) {
 
-            const novel = await NovelModel.updateOne({ _id: novelId }, {
-                $set:
-                    { status: 'rejected', reason: reason }
-            });
 
-            if (novel) {
+                const novel = await NovelModel.updateOne({ _id: novelId },
+                    {
+                        $set: { status: 'rejected', reason: reason },
+                    });
 
-                res.json({ status: true, message: 'Approved' });
+                if (novel) {
 
+                    res.json({ status: true, message: 'Rejected' });
+
+                } else {
+
+                    res.json({ status: false, message: 'Can\'t reject' });
+                }
             } else {
-
-                res.json({ status: false, message: 'Can\'t Approve' });
+                res.json({ status: false, message: "give the reason" });
             }
 
         } catch (error) {

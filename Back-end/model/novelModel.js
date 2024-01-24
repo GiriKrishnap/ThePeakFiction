@@ -103,6 +103,10 @@ const novelSchema = mongoose.Schema({
     gcoin_system: {
         type: Boolean,
         default: false
+    },
+    //..................................
+    reason: {
+        type: String,
     }
     //..................................
 })

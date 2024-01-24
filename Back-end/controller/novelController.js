@@ -14,7 +14,7 @@ module.exports = {
     getMostViewed: async (req, res) => {
         try {
 
-            const novels = await NovelModel.find({ status: { $ne: "pending" }, is_hide: false })
+            const novels = await NovelModel.find({ status: { $nin: ["pending", "rejected"] }, is_hide: false })
                 .sort({ 'views': -1 });
 
             if (novels) {
@@ -33,7 +33,7 @@ module.exports = {
 
     getTrending: async (req, res) => {
         try {
-            const novels = await NovelModel.find({ status: { $ne: "pending" }, is_hide: false })
+            const novels = await NovelModel.find({ status: { $nin: ["pending", "rejected"] }, is_hide: false })
                 .populate('author_id')
                 .populate('genre')
                 .sort({ 'in_library': -1 })
@@ -54,7 +54,7 @@ module.exports = {
 
     getNewUpdated: async (req, res) => {
         try {
-            const novels = await NovelModel.find({ status: { $ne: "pending" }, is_hide: false })
+            const novels = await NovelModel.find({ status: { $nin: ["pending", "rejected"] }, is_hide: false })
                 .populate('author_id')
                 .populate('genre')
                 .sort({ 'updated_date': -1 })
@@ -79,6 +79,7 @@ module.exports = {
                 { $match: { status: { $ne: "pending" } } },
                 { $match: { status: { $ne: "hide" } } },
                 { $match: { status: { $ne: "cancelled" } } },
+                { $match: { status: { $ne: "rejected" } } },
                 { $match: { chapter_count: { $gte: 1 } } },
                 { $sample: { size: 1 } },
                 {
@@ -108,7 +109,7 @@ module.exports = {
     getAllNovels: async (req, res) => {
         try {
 
-            const novels = await NovelModel.find({ status: { $ne: "pending" }, is_hide: false })
+            const novels = await NovelModel.find({ status: { $nin: ["pending", "rejected"] }, is_hide: false })
                 .sort({ 'publish_date': -1 })
                 .populate('genre')
                 .populate('author_id');
@@ -153,7 +154,7 @@ module.exports = {
             const query = {
                 $and: [
                     { is_hide: false },
-                    { status: { $ne: "pending" } },
+                    { status: { $nin: ["pending", "rejected"] } },
                     genre.length > 0 ? { genre: { $all: genre } } : {},
                     year ? { publish_date: { $gte: startDate, $lt: endDate } } : {},
                     status ? { status: status } : {},
@@ -322,7 +323,7 @@ module.exports = {
         }
     },
     //---------------------------------------------------------
-   
+
 
 }
 //---------------------------------------------------------

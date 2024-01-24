@@ -35,6 +35,50 @@ export default function NovelManagement() {
 
     //.........................................................................
 
+    function showInputSweetAlert(novelId) {
+        Swal.fire({
+            title: 'Enter Text',
+            input: 'text',
+            showCancelButton: true,
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            preConfirm: (text) => {
+                // Handle the text entered by the user
+                if (!text) {
+                    Swal.showValidationMessage('Please enter some text');
+                }
+                return text;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Make API call with the entered text
+                const enteredText = result.value;
+                makeApiCall(enteredText, novelId);
+            }
+        });
+    }
+
+    // Function to make API call
+    async function makeApiCall(text, novelId) {
+        // Replace this with your actual API endpoint and logic
+        const body = JSON.stringify({
+            novelId,
+            reason: text
+        })
+
+        const response = await adminNovelRejectAPI(body);
+
+        if (response.data.status) {
+            toast.success(response.data.message)
+            getAllNovels();
+
+        } else {
+            toast.error(response.data.message)
+        }
+    }
+
+    //.........................................................................
+
     const handleApprove = async (novelId) => {
         try {
 
@@ -65,7 +109,8 @@ export default function NovelManagement() {
         try {
 
             const body = JSON.stringify({
-                novelId
+                novelId,
+
             })
 
 
@@ -103,6 +148,7 @@ export default function NovelManagement() {
             toast.error(error.message);
         }
     }
+
 
     //.........................................................................
 
@@ -187,6 +233,10 @@ export default function NovelManagement() {
                                                     <p className="py-4 inline text-md font-medium
                                                      text-blue-400 poppins">
                                                         Status:</p> {novel.status} <br />
+                                                        
+                                                    <p className='text-red-500 font-mono'>
+                                                        {novel.status === 'reject' ? '' : novel.reason}
+                                                    </p>
 
                                                     <p className="py-4 inline text-md font-medium
                                                      text-blue-400 poppins">
@@ -223,8 +273,8 @@ export default function NovelManagement() {
 
                                                     <button className='bg-red-500 hover:bg-red-700
                                                      text-white font-bold py-2 px-4 rounded ml-2'
-                                                        onClick={() => handleReject(novel._id)}>
-                                                        Reject <i className="fa-solid fa-check"></i>
+                                                        onClick={() => showInputSweetAlert(novel._id)}>
+                                                        Reject <i className="fa-solid fa-xmark"></i>
                                                     </button>
 
                                                 </> :
