@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AuthorAddChapter, CoverUrl } from '../../util/constants';
+import { AuthorAddChapter, AuthorEditChapter, CoverUrl } from '../../util/constants';
 import { cancelNovelAPI, deleteChapterAPI, getNovelDetailsWithIdAPI } from '../../APIs/userAPI';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
@@ -147,6 +147,31 @@ export default function NovelDetailAuthor() {
                         toast.success(response.data.message);
                         getNovelWithId(novelId);
                     }
+                }
+            })
+        } catch (error) {
+            console.log('catch error on handleCancelButton', error);
+        }
+    }
+
+
+    //.........................................................................
+
+    const handleEditChapter = async (novelId, chapterId) => {
+        try {
+
+            Swal.fire({
+                title: 'Edit This Chapter?',
+                text: "Do you want to Edit?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+
+                    navigate(`${AuthorEditChapter}?novelId=${novelId}&chapterId=${chapterId}`);
                 }
             })
         } catch (error) {
@@ -333,7 +358,8 @@ export default function NovelDetailAuthor() {
                                             </p>
 
                                             <div className='md:flex gap-5'>
-                                                <p className='hover:underline lg:text-xl text-gray-300'>Edit</p>
+                                                <p className='hover:underline lg:text-xl text-gray-300'
+                                                    onClick={() => handleEditChapter(item._id, chapter._id)}>Edit</p>
                                                 {
                                                     chapter.number === item.chapter_count ?
                                                         < p className='hover:underline lg:text-xl text-red-600'

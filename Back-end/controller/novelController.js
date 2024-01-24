@@ -33,7 +33,11 @@ module.exports = {
 
     getTrending: async (req, res) => {
         try {
-            const novels = await NovelModel.find({ status: { $nin: ["pending", "rejected"] }, is_hide: false })
+            const novels = await NovelModel.find({
+                status: { $nin: ["pending", "rejected"] },
+                is_hide: false,
+                chapter_count: { $gt: 1 }
+            })
                 .populate('author_id')
                 .populate('genre')
                 .sort({ 'in_library': -1 })
@@ -54,7 +58,11 @@ module.exports = {
 
     getNewUpdated: async (req, res) => {
         try {
-            const novels = await NovelModel.find({ status: { $nin: ["pending", "rejected"] }, is_hide: false })
+            const novels = await NovelModel.find({
+                status: { $nin: ["pending", "rejected"] },
+                is_hide: false,
+                chapter_count: { $gt: 1 }
+            })
                 .populate('author_id')
                 .populate('genre')
                 .sort({ 'updated_date': -1 })
@@ -110,7 +118,7 @@ module.exports = {
         try {
 
             const novels = await NovelModel.find({ status: { $nin: ["pending", "rejected"] }, is_hide: false })
-                .sort({ 'publish_date': -1 })
+                .sort({ 'views': -1 })
                 .populate('genre')
                 .populate('author_id');
 

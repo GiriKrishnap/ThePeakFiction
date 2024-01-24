@@ -174,7 +174,57 @@ module.exports = {
             console.log('catch error on :: cancelNovel - ', error.message)
             res.status(400).json({ status: false, message: "oops catch error ::cancelNovel serverSide" });
         }
+    },
+
+    //---------------------------------------------------------
+
+    chapterEditDetails: async (req, res) => {
+        try {
+
+            const { novelId, chapterId } = req.query
+            console.log(novelId, chapterId);
+
+            const chapter = await NovelModel.findOne(
+                { _id: novelId, "chapters._id": chapterId },
+                { "chapters.$": 1 }
+            );
+
+
+
+            if (chapter) {
+                res.json({ status: true, content: chapter.chapters[0].content, title: chapter.chapters[0].title });
+            }
+
+        } catch (error) {
+            console.log('catch error on :: chapterEditDetails - ', error.message)
+            res.status(400).json({ status: false, message: "oops catch error ::chapterEditDetails serverSide" });
+        }
+    },
+    //---------------------------------------------------------
+
+    chapterEditPost: async (req, res) => {
+        try {
+
+            const { NovelId, chapterId, title, content } = req.body;
+
+            const result = await NovelModel.updateOne(
+                { _id: NovelId, "chapters._id": chapterId },
+                { $set: { "chapters.$.title": title, "chapters.$.content": content } }
+            );
+
+            if (result) {
+                res.json({ status: true });
+            } else {
+                res.json({ status: false });
+            }
+
+        } catch (error) {
+            console.log('catch error on :: chapterEditDetails - ', error.message)
+            res.status(400).json({ status: false, message: "oops catch error ::chapterEditDetails serverSide" });
+        }
     }
+
+    //---------------------------------------------------------
 
 }
 
