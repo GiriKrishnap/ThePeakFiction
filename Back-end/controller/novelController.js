@@ -36,7 +36,7 @@ module.exports = {
             const novels = await NovelModel.find({
                 status: { $nin: ["pending", "rejected"] },
                 is_hide: false,
-                chapter_count: { $gt: 1 }
+                chapter_count: { $gte: 1 }
             })
                 .populate('author_id')
                 .populate('genre')
@@ -61,7 +61,7 @@ module.exports = {
             const novels = await NovelModel.find({
                 status: { $nin: ["pending", "rejected"] },
                 is_hide: false,
-                chapter_count: { $gt: 1 }
+                chapter_count: { $gte: 1 }
             })
                 .populate('author_id')
                 .populate('genre')
