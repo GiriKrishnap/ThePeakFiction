@@ -21,6 +21,7 @@ router.get('/getRandom', protect, novelController.getRandom);
 router.get('/getWallet', protect, userController.getWallet);
 router.get('/check-GCoinSystem', protect, novelController.checkGCoinSystem);
 router.get('/all-message', protect, communityController.getAllMessage);
+router.get('/checkPayToRead', protect, novelController.checkPayToRead);
 
 //POST METHODS..........................................................
 router.post('/signup', userController.readerSignup);
@@ -35,6 +36,7 @@ router.post('/send-message', protect, communityController.newMessage);
 router.post('/changePassword-request', userController.changePasswordRequest);
 router.post('/changePassword', userController.changePassword);
 router.post('/edit-profile', userController.editProfile);
+router.post('/PayToReadPost', novelController.PayToReadPost);
 
 ///---------------------------
 module.exports = router;

@@ -37,6 +37,8 @@ export const gridePostAPI = (url) => axios.get(`${url}?userId=${userId}`, config
 export const getWalletAPI = () => axios.get(`/getWallet?userId=${userId}`, configToken);
 export const checkGCoinSystemAPI = (novelId) => axios.get(`/check-GCoinSystem?NovelId=${novelId}`, configToken);
 export const getAllMessageAPI = (novelId) => axios.get(`/all-message?novelId=${novelId}`, configToken);
+export const checkPayToReadAPI = (novelId, chapterNo, userId) => axios.get(`/checkPayToRead?novelId=${novelId}&chapterNo=${chapterNo}&userId=${userId}`, configToken);
+
 
 export const userSignUpPostAPI = (body) => axios.post('/signup', body, config);
 export const userLoginPostAPI = (body) => axios.post('/login', body, config);
@@ -48,6 +50,7 @@ export const newMessagePostAPI = (body) => axios.post('/send-message', body, con
 export const changePasswordRequestAPI = (body) => axios.post('/changePassword-request', body, configToken);
 export const changePasswordAPI = (body) => axios.post('/changePassword', body, configToken);
 export const editProfileAPI = (body) => axios.post('/edit-profile', body, configToken);
+export const PayToReadPostAPI = (body) => axios.post('/PayToReadPost', body, configToken);
 
 //...............................................................................................
 
@@ -55,6 +58,7 @@ export const editProfileAPI = (body) => axios.post('/edit-profile', body, config
 export const getAuthorNovelsAPI = () => axios.get(`/author/getAuthorNovels/${userId}`, configToken);
 export const authorGetGenresAPI = () => axios.get('/author/getGenres', configToken);
 export const getChapterEditDetailsAPI = (novelId, chapterId) => axios.get(`/author/edit-chapter-details?novelId=${novelId}&chapterId=${chapterId}`, configToken);
+
 
 export const cancelNovelAPI = (novelId) => axios.post('/author/cancel-novel', { novelId }, configToken);
 export const deleteChapterAPI = (body) => axios.post('/author/delete-chapter', body, configToken);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { novelDetailedView, readNovel } from '../../../util/constants';
 import Comments from '../../Comments/comments';
-import { getNovelDetailsWithIdAPI } from '../../../APIs/userAPI';
+import { checkPayToReadAPI, getNovelDetailsWithIdAPI } from '../../../APIs/userAPI';
 import toast from 'react-hot-toast';
 //.........................................................................
 
@@ -26,6 +26,7 @@ export default function ReadNovel() {
 
         const queryParams = new URLSearchParams(location.search);
         const NovelId = queryParams.get('NovelId');
+        const Number = queryParams.get('number');
 
 
         if (!NovelId) {
@@ -33,9 +34,32 @@ export default function ReadNovel() {
         } else {
 
             getNovelWithId(NovelId);
+            checkDetails(NovelId, Number)
         }
 
-    }, [])
+    }, [chapterNumber])
+
+    //.........................................................................
+
+
+    const checkDetails = async (novelId, chapterNo) => {
+        try {
+            if (novel[0]?.gcoin > 0) {
+
+                const userId = JSON.parse(localStorage.getItem("user-login")).id;
+
+                const response = await checkPayToReadAPI(novelId, chapterNo, userId);
+
+                if (response.data.status) {
+                    if (!response.data.paid) {
+                        navigate(`/pay-to-read?NovelId=${novelId}&ChapterNo=${chapterNo}`);
+                    }
+                }
+            }
+        } catch (error) {
+            toast.error(error.message);
+        }
+    }
 
     //.........................................................................
 

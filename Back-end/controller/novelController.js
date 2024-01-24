@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const generateToken = require('../util/generateToken');
+const moment = require('moment');
 
 //-MODELS---------------------------------------------------
 const UserModel = require('../model/UserModel');
@@ -331,6 +332,98 @@ module.exports = {
         }
     },
     //---------------------------------------------------------
+
+    checkPayToRead: async (req, res) => {
+        try {
+
+            const { novelId, chapterNo, userId } = req.query
+
+            console.log('userId is here -  ', userId)
+
+            const walletData = await WalletModel.findOne({ user_id: userId });
+
+            const alreadyPaid = walletData.amountUse.find(obj => obj.novelId === novelId);
+
+            if (alreadyPaid) {
+
+                res.json({ status: true, paid: true, message: "already Paid" });
+
+            } else {
+
+
+                const chapter = await NovelModel.findOne(
+                    { _id: novelId, "chapters.number": chapterNo },
+                    { "chapters.$": 1 }
+                );
+
+                if (chapter) {
+                    res.json({ status: true, price: chapter.chapters[0].gcoin });
+                }
+            }
+
+        } catch (error) {
+            console.log('catch error on :: chapterEditDetails - ', error.message)
+            res.status(400).json({ status: false, message: "oops catch error ::chapterEditDetails serverSide" });
+        }
+    },
+
+    //---------------------------------------------------------
+
+    PayToReadPost: async (req, res) => {
+        try {
+
+            const { novelId, chapterNumber, userId, password, price } = req.body
+
+            const userData = await UserModel.findOne({ _id: userId });
+
+            const checkPassword = await bcrypt.compare(password, userData.password);
+
+            if (!checkPassword) {
+
+                res.json({ status: false, message: 'Wrong Password' })
+
+            } else {
+
+                const walletData = await WalletModel.findOne({ user_id: userId });
+
+                if (walletData.walletAmount < price) {
+
+                    res.json({ status: false, message: 'Not Enough Money' });
+
+                } else {
+
+                    const currentDate = moment().format('YYYY-MM-DD');
+
+                    const history = {
+                        amount: price,
+                        novelId: novelId,
+                        chapterNo: chapterNumber,
+                        date: new Date(currentDate)
+                    }
+
+                    const walletUpdate = await WalletModel.updateOne({ user_id: userId },
+                        {
+                            $inc: { walletAmount: -price },
+                            $push: { amountUse: history }
+
+                        })
+
+                    if (walletUpdate) {
+                        res.json({ status: true, message: 'Paid' });
+                    }
+                }
+
+            }
+
+        } catch (error) {
+            console.log('catch error on :: chapterEditDetails - ', error.message)
+            res.status(400).json({ status: false, message: "oops catch error ::chapterEditDetails serverSide" });
+        }
+    },
+
+    //---------------------------------------------------------
+
+
 
 
 }

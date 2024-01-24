@@ -27,18 +27,22 @@ const Wallet = new mongoose.Schema({
     amountUse: [{
         amount: {
             type: Number,
+            require: true
         },
         //----------------
-        novel: {
-            type: mongoose.Schema.Types.ObjectId,
+        novelId: {
+            type: String,
+            require: true
         },
         //----------------
         chapterNo: {
-            type: Number
+            type: Number,
+            require: true
         },
         //----------------
         date: {
             type: Date,
+            require: true
         }
         //----------------
     }],

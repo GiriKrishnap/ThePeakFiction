@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CoverUrl, chatPageUrl, readNovel, readerHome } from '../../../util/constants';
+import { CoverUrl, PayToReadPageUrl, chatPageUrl, readNovel, readerHome } from '../../../util/constants';
 import Comments from '../../Comments/comments';
 import toast from 'react-hot-toast';
 import { RatingPostAPI, addNovelToLibraryAPI, getNovelDetailsWithIdAPI } from '../../../APIs/userAPI';
@@ -80,12 +80,12 @@ export default function NovelDetailedView() {
 
     //.........................................................................
 
-    const handleChapterClick = (novelId, number) => {
-
+    const handleChapterClick = (novelId, chapterNo) => {
         if (novel[0].chapters.length <= 0) {
             toast.success('No Chapters', { icon: '😿❌' })
         } else {
-            navigate(`${readNovel}?NovelId=${novelId}&number=${number}`)
+            navigate(`${PayToReadPageUrl}?NovelId=${novelId}&ChapterNo=${chapterNo}`)
+            // navigate(`${readNovel}?NovelId=${novelId}&number=${number}`)
         }
     }
 
@@ -194,7 +194,7 @@ export default function NovelDetailedView() {
 
                                     <button className='bg-blue-500 hover:bg-gray-500 poppins2 p-1.5
                                     text-white rounded-md pr-2 font-sans w-full drop-shadow-lg'
-                                        onClick={() => handleChapterClick(item._id, 1)}>
+                                        onClick={() => handleChapterClick(item._id, item.chapters[0]._id)}>
                                         Read Now
                                         <i className="fa-solid fa-caret-right m-1.5"></i>
                                     </button>
