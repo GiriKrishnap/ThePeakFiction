@@ -45,7 +45,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-.hover-scale{
+
+.hover-scale {
   transition: 0.5s;
 
 }
@@ -77,4 +78,9 @@ div::-webkit-scrollbar-thumb {
 .MESSAGE_PART {
 
   max-height: 500px;
+}
+
+.BANNER_PHOTO {
+  -webkit-backface-visibility: hidden;
+
 }

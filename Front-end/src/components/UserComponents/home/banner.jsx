@@ -109,7 +109,7 @@ export default function Banner() {
                             <div
                                 style={{ backgroundImage: `url(${CoverUrl}/${novel._id})`, backgroundSize: 'cover' }}
                                 className='md:h-64 h-44 m-4 rounded-lg drop-shadow-2xl -rotate-6 bg-black md:w-44
-                        hover:rotate-0 hover:scale-95 duration-500 md:ml-36' ></div> : ''
+                        hover:rotate-0 hover:scale-95 duration-500 md:ml-36 BANNER_PHOTO' ></div> : ''
                     }
 
                     {/* //////////////// */}
