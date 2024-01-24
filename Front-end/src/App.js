@@ -8,13 +8,10 @@ import Loading from './components/loading';
 //LINKS.........................................................................................
 
 import {
-  AuthorAddChapter,
-  AuthorNovelDetails,
-  Login, PayToReadPageUrl, PaymentSuccessURL, Signup, VerifyOptPageUrl, adminAuthorManagement, adminDashboard, adminGenreManagement,
-  adminLogin, adminNovelManagement, adminUserManagement, authorCreate, authorHome, authorNovels,
-  chatPageUrl,
-  communityPageUrl,
-  filter, getUpdatedUrl, myLibraryUrl, newPasswordUrl, novelDetailedView, profileUrl, readNovel, readerHome, trendingUrl
+  AuthorNovelDetails, Login, PayToReadPageUrl, PaymentSuccessURL, Signup, VerifyOptPageUrl, adminAuthorManagement,
+  adminDashboard, adminGenreManagement, adminLogin, adminNovelManagement, adminUserManagement, AuthorAddChapter,
+  authorCreate, authorHome, authorNovels, chatPageUrl, communityPageUrl, filter, getUpdatedUrl, trendingUrl,
+  myLibraryUrl, newPasswordUrl, novelDetailedView, profileUrl, readNovel, readerHome,
 } from './util/constants';
 
 

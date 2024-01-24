@@ -96,7 +96,7 @@ export default function GridPost({ axiosUrl, title, home = false }) {
                                  from-gray-600 via-gray-700 to-gray-800 lg:h-64 h-80 rounded-lg flex overflow-hidden'
                                     onClick={() => handleClick(item._id)}>
 
-                                    <div className='w-1/2 hover:scale-105 duration-500'
+                                    <div className='w-1/2 hover:scale-105 duration-500 BANNER_PHOTO'
                                         style={{
                                             backgroundImage: `url(${CoverUrl}/${item._id})`,
                                             backgroundSize: 'cover'
@@ -203,9 +203,7 @@ export default function GridPost({ axiosUrl, title, home = false }) {
                                                         no chapters yet..
                                                     </p>
                                                 </div> : ''
-
                                         }
-
 
                                     </div>
 

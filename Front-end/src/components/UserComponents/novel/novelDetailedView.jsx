@@ -175,7 +175,7 @@ export default function NovelDetailedView() {
                             <div className='md:w-2/6 h-full flex justify-center items-center'>
 
                                 <div className='h-80 w-60 bg-black rounded-lg text-white
-                        drop-shadow-lg hover:border-4 border-blue-500 hover:rotate-2 duration-200'
+                        drop-shadow-lg hover:border-4 border-blue-500 hover:rotate-2 duration-200 BANNER_PHOTO'
                                     style={{
                                         backgroundImage: `url(${CoverUrl}/${item._id})`,
                                         backgroundSize: 'cover'

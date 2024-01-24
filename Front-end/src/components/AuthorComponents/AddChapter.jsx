@@ -161,29 +161,29 @@ export default function AuthorCreate() {
 
                             /* ----------Add Payment system end----------------------- */
                             :
-                            <div className='flex gap-2 text-white font-mono text-center'>
+                            <div className='flex gap-2 text-white font-mono text-center pt-5'>
 
-                                <p className='p-3 bg-gray-500 rounded grow hover:scale-105 shadow-md hover:shadow-2xl
+                                <p className='p-3 bg-gray-500 rounded-2xl grow hover:scale-105 shadow-md hover:shadow-2xl
                                  hover:bg-gray-800'
                                     onClick={() => setGcoin(0)}>
                                     none
                                 </p>
-                                <p className='p-3 bg-blue-800 rounded grow hover:scale-105 shadow-md hover:shadow-2xl
+                                <p className='p-3 bg-blue-600 rounded-2xl grow hover:scale-105 shadow-md hover:shadow-2xl
                                  hover:bg-blue-700'
                                     onClick={() => setGcoin(2)}>
                                     2rs
                                 </p>
-                                <p className='p-3 bg-blue-800 rounded grow hover:scale-105 shadow-md hover:shadow-2xl
+                                <p className='p-3 bg-blue-600 rounded-2xl grow hover:scale-105 shadow-md hover:shadow-2xl
                                  hover:bg-blue-700'
                                     onClick={() => setGcoin(5)}>
                                     5rs
                                 </p>
-                                <p className='p-3 bg-blue-800 rounded grow hover:scale-105 shadow-md hover:shadow-2xl
+                                <p className='p-3 bg-blue-600 rounded-2xl grow hover:scale-105 shadow-md hover:shadow-2xl
                                  hover:bg-blue-700'
                                     onClick={() => setGcoin(10)}>
                                     10rs
                                 </p>
-                                <p className='p-3 bg-blue-800 rounded grow hover:scale-105 shadow-md hover:shadow-2xl
+                                <p className='p-3 bg-blue-600 rounded-2xl grow hover:scale-105 shadow-md hover:shadow-2xl
                                  hover:bg-blue-700'
                                     onClick={() => setGcoin(15)}>
                                     15rs

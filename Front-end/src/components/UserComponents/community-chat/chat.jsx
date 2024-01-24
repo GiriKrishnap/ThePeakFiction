@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
 import { getAllMessageAPI, newMessagePostAPI, } from '../../../APIs/userAPI';
-import toast from 'react-hot-toast';
-import io from 'socket.io-client'
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { CoverUrl } from '../../../util/constants';
-import ScrollableFeed from 'react-scrollable-feed'
+import toast from 'react-hot-toast';
+import io from 'socket.io-client';
 
 //.........................................................................
 
@@ -62,8 +61,6 @@ export default function Chat() {
                 setAllMessages([...response.data.message]);
 
                 socket.emit("join_room", id)
-
-                toast.success('got All messages');
 
             } else {
 
@@ -141,11 +138,13 @@ export default function Chat() {
     }
 
     //.........................................................................
+
     const scrollRef = useRef()
 
     useEffect(() => {
         scrollRef.current?.scrollIntoView({ behavior: "smooth" })
     }, [allMessages])
+
     //.........................................................................
 
     return (
@@ -218,7 +217,7 @@ export default function Chat() {
 
                 {/* >>>>>>>>>>>>>>>>>>>>>>>>>> CHAT BOTTOM PART <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */}
 
-                <div className='w-full h-20 bg-gray-800 rounded-xl drop-shadow-2xl'>
+                <div className='w-full h-20 bg-gray-800 rounded-xl drop-shadow-xl'>
 
                     <div className='flex gap-5 p-5 justify-center place-items-center'>
                         <input type="text" className='w-full p-2 pl-4 rounded-xl text-black'
@@ -239,11 +238,10 @@ export default function Chat() {
 
                 {/* >>>>>>>>>>>>>>>>>>>>>>>>>> CHAT BOTTOM PART END<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */}
 
-
-
             </div >
 
         </>
     )
 }
+
 //............................................................................

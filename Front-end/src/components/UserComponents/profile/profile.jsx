@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { changePasswordRequestAPI, editProfileAPI } from '../../../APIs/userAPI';
 //.........................................................................
@@ -8,7 +8,6 @@ export default function ProfileComponent() {
 
     //.........................................................................
 
-    const location = useLocation();
     const navigate = useNavigate();
 
     //.........................................................................

@@ -4,7 +4,27 @@ import { AuthorAddChapter, CoverUrl } from '../../util/constants';
 import { cancelNovelAPI, deleteChapterAPI, getNovelDetailsWithIdAPI } from '../../APIs/userAPI';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
-//.........................................................................
+
+//.............................................................................
+//formate Large Numbers
+const formatNumber = (num) => {
+    if (num >= 1000000) {
+        return (num / 1000000).toFixed(1) + 'M';
+    } else if (num >= 1000) {
+        return (num / 1000).toFixed(1) + 'K';
+    } else {
+        return num.toString();
+    }
+};
+
+const NumberFormatter = ({ value }) => {
+    const formattedValue = formatNumber(value);
+
+    return <span>{formattedValue}</span>;
+};
+
+//.............................................................................
+
 
 export default function NovelDetailAuthor() {
 
@@ -208,10 +228,14 @@ export default function NovelDetailAuthor() {
                                     <div className='w-3/4 flex gap-5 ml-4 mt-3'>
 
                                         <small className='text-gray-300'>
-                                            Views {item.views} <i class="fa-solid fa-eye"></i></small>
+                                            Views <NumberFormatter value={item.views} /> <i className="fa-solid fa-eye"></i>
+                                        </small>
+
                                         <small className='text-gray-300'>|</small>
+
                                         <small className='text-gray-300'>
-                                            in {item.in_library} Library <i class="fa-solid fa-book-bookmark"></i></small>
+                                            in <NumberFormatter value={item.in_library} /> Library <i className="fa-solid fa-book-bookmark"></i>
+                                        </small>
 
                                     </div>
                                     {/* NOVEL VIEWS AND LIBRARY COUNT END*/}
