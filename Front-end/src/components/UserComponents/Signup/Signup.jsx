@@ -92,43 +92,73 @@ export default function Signup() {
 
     return (
         <>
-            <div className='outerDiv-login'>
-                <div className='mainBody-login'>
-                    <div className="row flex flex-col md:flex-row">
-                        <div className='right-login w-full md:w-1/2'>
 
-                            <div>
-                                <form action="" onSubmit={handleSubmit}>
-                                    <h1 className='font-sans text-4xl font-medium mb-5'>Signup</h1>
-                                    <input type="text" name="userName" className='input-login d-block' placeholder='userName'
-                                        onChange={e => setUserName(e.target.value)} value={userName} required />
-                                    <input type="email" name="email" className='input-login d-block' placeholder='Email'
-                                        onChange={e => setEmail(e.target.value)} value={email} required />
-                                    <input type="password" name="password" className='input-login d-block' placeholder='Password'
-                                        onChange={e => SetPassword(e.target.value)} value={password} required />
-                                    <input type="password" name="ConfirmPassword" className='input-login d-block' placeholder='Confirm Password'
-                                        onChange={e => SetConfirmPassword(e.target.value)} value={confirmPassword} required />
-                                    <div className='flex flex-row'>
-                                        <input type="checkbox" className='mb-3 ml-3 cursor-pointer w-4'
-                                            onClick={() => isAuthor ? setIsAuthor(false) : setIsAuthor(true)}
-                                        />
-                                        <label className='mb-3 ml-2 font-mono'>Are You An Author?</label>
-                                    </div>
-                                    <button type='submit' className='button-login mb-3'>Signup Now</button>
-                                </form>
-                                <Link to={Login}> <p className='aTag-login'>You Have Account?</p> </Link>
-                            </div>
-                        </div>
+            <div className='flex justify-center h-full place-items-center text-black select-none'>
 
-                        <div className='left-login hover-scale w-full md:w-1/2 flex flex-col place-items-center bg-gray-800'>
+                <div className='md:w-1/2 w-full md:m-10 m-4 h-1/2 bg-white rounded-2xl drop-shadow-xl 
+                     flex flex-col justify-center place-items-center md:p-14 md:pl-20 md:pr-20 p-10 hover:shadow-2xl '>
 
-                            <img src="../assets/logo/webLogo.png" alt="logo" className='logo-login' />
-                            <h1 className='text-white handwrite-font text-3xl'>ThePeakFiction</h1>
-                            <p className='text-white dancing-font mb-6'>"Unlock worlds, one page at a time."</p>
-                        </div>
+                    <div className='flex'>
+                        <h1 className='poppins2 font-bold md:text-4xl text-2xl mb-4'>SignUp</h1>
+                        <img src="../assets/logo/webLogo.png" alt="logo" className='w-12 h-12' />
                     </div>
+
+                    <input type="text" className='w-full p-3 rounded-xl bg-gray-200
+                        focus:bg-gray-600 focus:text-white tracking-widest text-center poppins2 font-extrabold
+                        focus:shadow-xl m-2'
+                        placeholder='userName'
+                        onChange={e => setUserName(e.target.value)}
+                        value={userName}
+                        required />
+
+                    <input type="email" name="email" className='w-full p-3 rounded-xl bg-gray-200
+                        focus:bg-gray-600 focus:text-white tracking-widest text-center poppins2 font-extrabold
+                        focus:shadow-xl m-2'
+                        placeholder='Email'
+                        onChange={e => setEmail(e.target.value)}
+                        value={email}
+                        required />
+
+                    <input type="password" name="password" className='w-full p-3 rounded-xl bg-gray-200
+                        focus:bg-gray-600 focus:text-white tracking-widest text-center poppins2 font-extrabold
+                        focus:shadow-xl m-2'
+                        placeholder='Password'
+                        onChange={e => SetPassword(e.target.value)}
+                        value={password}
+                        required />
+
+                    <input type="password" className='w-full p-3 rounded-xl bg-gray-200
+                        focus:bg-gray-600 focus:text-white tracking-widest text-center poppins2 font-extrabold
+                        focus:shadow-xl m-2'
+                        placeholder='Confirm Password'
+                        onChange={e => SetConfirmPassword(e.target.value)}
+                        value={confirmPassword}
+                        required />
+
+                    <div className='flex'>
+                        <input type="checkbox" className='mb-3 ml-3 cursor-pointer w-4'
+                            onClick={() => isAuthor ? setIsAuthor(false) : setIsAuthor(true)}
+                        />
+                        <label className='mb-3 ml-2 font-mono'>Are You An Author?</label>
+                    </div>
+
+                    <button onClick={handleSubmit} className='w-full p-3 mb-1 bg-blue-400 text-white
+                        rounded-xl hover:bg-blue-950 hover:shadow-xl' >Signup Now</button>
+
+                    <hr />
+
+                    <button type='submit' className='w-full p-3 mt-2 mb-1 text-black border border-black
+                     rounded-xl hover:shadow-xl poppins2 text-center hover:bg-slate-700 hover:text-white'>
+                        <i class="fa-brands fa-lg fa-google mr-2"></i>Login with google
+                    </button>
+
+                    <Link to={Login}> <p className='font-mono tracking-widest text-lg
+                    hover:text-blue-500 mt-3'>You Have Account?</p> </Link>
+
                 </div>
-            </div>
+
+            </div >
+
         </>
     )
 }

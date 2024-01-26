@@ -7,13 +7,14 @@ dotenv.config()
 
 const protect = asyncHandler(async (req, res, next) => {
 
-    let token;
+
 
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
 
         try {
 
-            token = req.headers.authorization.split(" ")[1];
+            const token = req.headers.authorization.split(" ")[1];
+
             const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
             next();
 
@@ -23,6 +24,7 @@ const protect = asyncHandler(async (req, res, next) => {
         }
     } else {
 
+        console.log('THERE IS NO TOKEN IS HERE>>>>>>>');
         res.status(401).json("Token not found")
 
     }

@@ -84,3 +84,12 @@ div::-webkit-scrollbar-thumb {
   -webkit-backface-visibility: hidden;
 
 }
+
+hr {
+  border: solid 1px black;
+  width: 96%;
+  color: #FFFF00;
+  height: 1px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

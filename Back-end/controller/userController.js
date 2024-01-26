@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const generateToken = require('../util/generateToken');
+const axios = require("axios")
 
 //-MODELS---------------------------------------------------
 const UserModel = require('../model/UserModel');
@@ -71,42 +72,100 @@ module.exports = {
     readerLogin: async (req, res) => {
         try {
 
+            if (req.body.googleAccessToken) {
+                const { googleAccessToken } = req.body;
 
-            console.log('email is here login', req.body.email)
-            const emailExist = await UserModel.findOne({ email: req.body.email })
-
-
-            if (!emailExist) {
-
-                res.json({ status: false, message: "User Does Not Exist" });
-
-            } else if (emailExist.is_Block) {
-
-                res.json({ status: false, message: "Account Blocked by Admin" });
-
-            } else if (!emailExist.is_verified) {
-                sendOtp(emailExist.email);
-                res.json({ status: false, message: "Email Not Verified", need_verify: true });
-            } else {
-
-                const checkPassword = await bcrypt.compare(req.body.password, emailExist.password);
-
-                if (!checkPassword) {
-
-                    res.json({ status: false, message: "Wrong Password" })
-
-                } else {
-
-                    const details = {
-
-                        id: emailExist._id,
-                        userName: emailExist.userName,
-                        email: emailExist.email,
-                        token: generateToken(emailExist._id),
-                        isAuthor: emailExist.is_Author
+                axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+                    headers: {
+                        "Authorization": `Bearer ${googleAccessToken}`
                     }
 
-                    res.json({ status: true, message: 'Login successful', details });
+                }).then(async (response) => {
+
+                    const email = response.data.email;
+                    console.log("userData is here", response.data);
+
+                    const emailExist = await UserModel.findOne({ email: email });
+
+                    if (!emailExist) {
+
+                        res.json({ status: false, message: 'Email Not Exist' });
+
+                    } else if (!emailExist.is_verified) {
+
+                        res.json({ status: false, message: 'Email Not Verified', need_verify: true });
+
+                    } else {
+
+                        const token = generateToken(emailExist._id);
+
+                        const details = {
+                            id: emailExist._id,
+                            userName: emailExist.userName,
+                            email: emailExist.email,
+                            token,
+                            isAuthor: emailExist.is_Author
+                        }
+
+                        res.cookie('access_token', token, {
+                            httpOnly: false, // Prevent client-side JavaScript access
+                            secure: process.env.NODE_ENV === 'production', // Transmit only over HTTPS in production
+                            sameSite: 'lax', // Mitigate CSRF attacks
+                            path: '/', // Accessible from all paths on your domain
+                            maxAge: 900000, // Set expiration time (in milliseconds)
+                        });
+
+                        res.json({ status: true, message: 'Login successful', details });
+                    }
+
+                })
+
+            } else {
+
+                const emailExist = await UserModel.findOne({ email: req.body.email })
+
+                if (!emailExist) {
+
+                    res.json({ status: false, message: "User Does Not Exist" });
+
+                } else if (emailExist.is_Block) {
+
+                    res.json({ status: false, message: "Account Blocked by Admin" });
+
+                } else if (!emailExist.is_verified) {
+                    sendOtp(emailExist.email);
+                    res.json({ status: false, message: "Email Not Verified", need_verify: true });
+                } else {
+
+                    const checkPassword = await bcrypt.compare(req.body.password, emailExist.password);
+
+                    if (!checkPassword) {
+
+                        res.json({ status: false, message: "Wrong Password" })
+
+                    } else {
+
+                        const token = generateToken(emailExist._id);
+
+                        const details = {
+
+                            id: emailExist._id,
+                            userName: emailExist.userName,
+                            email: emailExist.email,
+                            token,
+                            isAuthor: emailExist.is_Author
+                        }
+
+
+                        res.cookie('ACCESS_TOKEN', token, {
+                            httpOnly: false, // Prevent client-side JavaScript access
+                            sameSite: 'None', // Mitigate CSRF attacks
+                            maxAge: 7 * 24 * 60 * 60 * 1000, // Set expiration time (in milliseconds)
+                            withCredentials: true
+                        });
+
+                        res.json({ status: true, message: 'Login successful', details });
+                    }
                 }
             }
 

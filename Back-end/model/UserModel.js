@@ -8,6 +8,10 @@ const User = new mongoose.Schema({
         require: true
     },
     //..................................
+    googleId: {
+        type: String,
+    },
+    //..................................
     email: {
         type: String,
         unique: true,

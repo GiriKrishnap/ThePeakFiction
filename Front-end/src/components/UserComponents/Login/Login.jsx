@@ -15,10 +15,43 @@ export default function Login() {
     const handleGoogleLoginSuccess = async (tokenResponse) => {
 
         const accessToken = tokenResponse.access_token;
-
         const response = await userGoogleLoginAPI(accessToken);
 
+        if (response.data.status) {
 
+            localStorage.setItem('user-login', JSON.stringify(response.data.details));
+
+            toast.error(response.data.message, {
+                icon: '😼✔', style: {
+                    borderRadius: '30px',
+                },
+            })
+
+
+            navigate(readerHome);
+
+        } else if (response.data.need_verify) {
+
+            toast.error(response.data.message, {
+                icon: '😿🔒', style: {
+                    borderRadius: '30px',
+                    background: '#444',
+                    color: '#fff',
+                },
+            })
+
+            navigate(`${VerifyOptPageUrl}?email=${email}`);
+
+        } else {
+
+            toast.error(response.data.message, {
+                icon: '😿❌', style: {
+                    borderRadius: '30px',
+                    background: '#444',
+                    color: '#fff',
+                },
+            })
+        }
 
     }
 
@@ -65,8 +98,6 @@ export default function Login() {
                     if (response.data.status) {
 
                         localStorage.setItem('user-login', JSON.stringify(response.data.details));
-
-
 
                         toast.error(response.data.message, {
                             icon: '😼✔', style: {
@@ -115,18 +146,6 @@ export default function Login() {
         } catch (error) {
             console.log(error)
         }
-    }
-
-    //.........................................................................
-
-
-    const apiCalling = async (google = false, tokenResponse, body) => {
-
-        let response
-        if (google === false) {
-
-        }
-
     }
 
     //.........................................................................
