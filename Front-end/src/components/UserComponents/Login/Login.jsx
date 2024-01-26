@@ -2,13 +2,27 @@ import React, { useState } from 'react'
 import './Login.css'
 import { Link, useNavigate } from 'react-router-dom';
 import { Signup, VerifyOptPageUrl, readerHome } from '../../../util/constants';
-import { changePasswordRequestAPI, userLoginPostAPI } from '../../../APIs/userAPI';
+import { changePasswordRequestAPI, userGoogleLoginAPI, userLoginPostAPI } from '../../../APIs/userAPI';
 import toast from 'react-hot-toast';
 //.........................................................................
+import { useGoogleLogin } from '@react-oauth/google';
 
 
 export default function Login() {
 
+    //.........................................................................
+
+    const handleGoogleLoginSuccess = async (tokenResponse) => {
+
+        const accessToken = tokenResponse.access_token;
+
+        const response = await userGoogleLoginAPI(accessToken);
+
+
+
+    }
+
+    const login = useGoogleLogin({ onSuccess: handleGoogleLoginSuccess })
     //.........................................................................
 
     const navigate = useNavigate();
@@ -26,51 +40,93 @@ export default function Login() {
             e.preventDefault();
             if (email || password) {
 
-                const body = JSON.stringify({
-                    email,
-                    password
-                })
+                const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                const validEmail = emailRegex.test(email);
 
-                const response = await userLoginPostAPI(body);
+                if (!validEmail) {
 
-                if (response.data.status) {
-
-                    toast.error(response.data.message, {
-                        icon: '😼✔', style: {
-                            borderRadius: '30px',
-                        },
-                    })
-
-                    await localStorage.setItem('user-login', JSON.stringify(response.data.details))
-                    navigate(readerHome);
-
-                } else if (response.data.need_verify) {
-
-                    toast.error(response.data.message, {
-                        icon: '😿🔒', style: {
+                    toast.error("Invalid Email Address", {
+                        icon: '😿', style: {
                             borderRadius: '30px',
                             background: '#444',
                             color: '#fff',
                         },
                     })
-
-                    navigate(`${VerifyOptPageUrl}?email=${email}`);
 
                 } else {
 
-                    toast.error(response.data.message, {
-                        icon: '😿❌', style: {
-                            borderRadius: '30px',
-                            background: '#444',
-                            color: '#fff',
-                        },
+                    const body = JSON.stringify({
+                        email,
+                        password
                     })
+
+                    const response = await userLoginPostAPI(body);
+
+                    if (response.data.status) {
+
+                        localStorage.setItem('user-login', JSON.stringify(response.data.details));
+
+
+
+                        toast.error(response.data.message, {
+                            icon: '😼✔', style: {
+                                borderRadius: '30px',
+                            },
+                        })
+
+
+                        navigate(readerHome);
+
+                    } else if (response.data.need_verify) {
+
+                        toast.error(response.data.message, {
+                            icon: '😿🔒', style: {
+                                borderRadius: '30px',
+                                background: '#444',
+                                color: '#fff',
+                            },
+                        })
+
+                        navigate(`${VerifyOptPageUrl}?email=${email}`);
+
+                    } else {
+
+                        toast.error(response.data.message, {
+                            icon: '😿❌', style: {
+                                borderRadius: '30px',
+                                background: '#444',
+                                color: '#fff',
+                            },
+                        })
+                    }
                 }
+
+            } else {
+
+                toast.error("Fill The Form Correctly‼", {
+                    icon: '😿', style: {
+                        borderRadius: '30px',
+                        background: '#444',
+                        color: '#fff',
+                    },
+                })
             }
 
         } catch (error) {
             console.log(error)
         }
+    }
+
+    //.........................................................................
+
+
+    const apiCalling = async (google = false, tokenResponse, body) => {
+
+        let response
+        if (google === false) {
+
+        }
+
     }
 
     //.........................................................................
@@ -103,38 +159,54 @@ export default function Login() {
 
     return (
         <>
-            <div className='outerDiv-login md:flex md:flex-col md:mt-16'>
-                <div className='mainBody-login'>
-                    <div className="flex flex-col md:flex-row">
 
-                        <div className='left-login hover-scale w-full md:w-1/2 flex flex-col place-items-center bg-gray-800'>
-                            <img src="../assets/logo/webLogo.png" alt="logo" className='logo-login ' />
-                            <h1 className='text-white handwrite-font text-3xl'>ThePeakFiction</h1>
-                            <p className='text-white dancing-font mb-6'>"Unlock worlds, one page at a time."</p>
 
-                        </div>
+            <div className='flex justify-center h-full place-items-center text-black select-none'>
 
-                        <div className='right-login w-full md:w-1/2 '>
+                <div className='md:w-1/2 w-full m-10 h-1/2 bg-white rounded-2xl drop-shadow-xl 
+                      flex flex-col justify-center place-items-center p-20 hover:shadow-2xl '>
 
-                            <div>
-                                <h1 className='font-sans text-4xl font-medium mb-3'>Login</h1>
-                                <form action="" onSubmit={handleSubmit}>
-                                    <input type="email" name="email" className='input-login d-block' placeholder='Email'
-                                        onChange={e => setEmail(e.target.value)} value={email} required />
-                                    <input type="password" name="password" className='input-login d-block' placeholder='Password'
-                                        onChange={e => SetPassword(e.target.value)} value={password} required />
-                                    <button type='submit' className='button-login mb-3'>Login Now</button>
-                                </form>
-                                <p className='text-blue-900 font-mono cursor-pointer'
-                                    onClick={handleChangePassword}>
-                                    forgot your Password?
-                                </p>
-                                <Link to={Signup}> <p className='aTag-login'>No Account?</p> </Link>
-                            </div>
-                        </div>
+                    <div className='flex'>
+                        <h1 className='poppins2 font-bold md:text-4xl text-2xl mb-4'>Login</h1>
+                        <img src="../assets/logo/webLogo.png" alt="logo" className='w-12 h-12' />
                     </div>
+
+                    <input type="email" name="email" className='w-full p-3 rounded-xl bg-gray-200
+                        focus:bg-gray-600 focus:text-white tracking-widest text-center poppins2 font-extrabold
+                        focus:shadow-xl m-2'
+                        placeholder='Email'
+                        onChange={e => setEmail(e.target.value)} value={email} required />
+
+
+                    <input type="password" name="password" className='w-full p-3 rounded-xl bg-gray-200
+                        focus:bg-gray-600 focus:text-white tracking-widest text-center poppins2 font-extrabold
+                        focus:shadow-xl m-2'
+                        placeholder='Password'
+                        onChange={e => SetPassword(e.target.value)} value={password} required />
+
+                    <p className='text-blue-900 font-mono cursor-pointer hover:tracking-widest duration-500'
+                        onClick={handleChangePassword}>
+                        forgot your Password?
+                    </p>
+
+                    <button type='submit' className='w-full p-3 mt-3 mb-1 bg-blue-400 text-white
+                        rounded-xl hover:bg-blue-950 hover:shadow-xl'
+                        onClick={handleSubmit}>Login Now</button>
+
+                    <hr />
+
+                    <button type='submit' className='w-full p-3 mt-2 mb-1 text-black border border-black
+                        rounded-xl hover:shadow-xl poppins2 text-center hover:bg-slate-700 hover:text-white'
+                        onClick={() => login()}>
+                        <i class="fa-brands fa-lg fa-google mr-2"></i>Login with google
+                    </button>
+
+                    <Link to={Signup}> <p className='font-mono tracking-widest text-lg mt-5
+                    hover:text-blue-500'>No Account?</p> </Link>
+
                 </div>
-            </div>
+            </div >
+
         </>
     )
 }
