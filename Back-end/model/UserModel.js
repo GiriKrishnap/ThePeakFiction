@@ -44,8 +44,7 @@ const User = new mongoose.Schema({
     }],
     //.....................................
     community: [{
-        type: ObjectId,
-        ref: 'CommunityData'
+        type: String,
     }],
     //.....................................
 });

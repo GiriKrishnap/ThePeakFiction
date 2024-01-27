@@ -44,7 +44,6 @@ export const checkPayToReadAPI = (novelId, chapterNo, userId) => axios.get(`/che
 export const userSignUpPostAPI = (body) => axios.post('/signup', body, config);
 export const userLoginPostAPI = (body) => axios.post('/login', body, config);
 export const userGoogleLoginAPI = (accessToken) => axios.post('/login', { googleAccessToken: accessToken });
-
 export const verifyOtpPostAPI = (body) => axios.post('/verifyUserOtp', body, config);
 export const getFilteredNovelsAPI = (body) => axios.post('/filterNovels-user', body, configToken);
 export const RatingPostAPI = (body) => axios.post('/rateNovel', body, configToken);
@@ -54,6 +53,7 @@ export const changePasswordRequestAPI = (body) => axios.post('/changePassword-re
 export const changePasswordAPI = (body) => axios.post('/changePassword', body, configToken);
 export const editProfileAPI = (body) => axios.post('/edit-profile', body, configToken);
 export const PayToReadPostAPI = (body) => axios.post('/PayToReadPost', body, configToken);
+export const joinCommunityAPI = (body) => axios.post('/join-community', body, configToken);
 
 //...............................................................................................
 

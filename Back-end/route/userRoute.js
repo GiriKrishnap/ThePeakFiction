@@ -37,6 +37,7 @@ router.post('/changePassword-request', userController.changePasswordRequest);
 router.post('/changePassword', userController.changePassword);
 router.post('/edit-profile', userController.editProfile);
 router.post('/PayToReadPost', novelController.PayToReadPost);
+router.post('/join-community', protect, communityController.joinCommunity);
 
 ///---------------------------
 module.exports = router;

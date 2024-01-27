@@ -1,10 +1,11 @@
-import { getAllMessageAPI, newMessagePostAPI, } from '../../../APIs/userAPI';
+import { getAllMessageAPI, joinCommunityAPI, newMessagePostAPI, } from '../../../APIs/userAPI';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CoverUrl } from '../../../util/constants';
 import toast from 'react-hot-toast';
 import io from 'socket.io-client';
-
+import data from '@emoji-mart/data'
+import Picker from '@emoji-mart/react'
 //.........................................................................
 
 export default function Chat() {
@@ -17,9 +18,10 @@ export default function Chat() {
 
     //.........................................................................
 
-    const [novelId, setNovelId] = useState('');
-    const [name, setName] = useState('');
     const [user_id, setUserId] = useState('');
+    const [name, setName] = useState('');
+    const [showEmoji, setShowEmoji] = useState(false);
+    const [novelId, setNovelId] = useState('');
     const [allMessages, setAllMessages] = useState([]);
     const [currentMessage, setCurrentMessage] = useState('');
 
@@ -90,7 +92,9 @@ export default function Chat() {
                     return [allMessages];
                 }
             });
-            return () => socket.off('Message_received', data);
+            return () => {
+                socket.off('Message_received', data);
+            }
         })
 
     }, [socket]);
@@ -149,24 +153,62 @@ export default function Chat() {
 
     //.........................................................................
 
+    const handleEmoteSelect = (e) => {
+        const sym = e.unified.split("_");
+        const codeArray = [];
+        sym.forEach((el) => codeArray.push("0x" + el));
+        let emoji = String.fromCodePoint(...codeArray);
+        setCurrentMessage(currentMessage + emoji)
+    }
+    //.........................................................................
+
+    const handleJoinButton = async () => {
+        try {
+
+            const body = {
+                userId: user_id,
+                communityName: name
+
+            };
+            const response = await joinCommunityAPI(body);
+            if (response.data.status) {
+                toast.success(response.data.message);
+            } else {
+                toast.error(response.message);
+            }
+        } catch (error) {
+            console.log('catch err in JOIN BUTTON - ', error);
+            toast.error(error.message);
+        }
+    }
+
+
+    //.........................................................................
+
     return (
         <>
 
             <div className='bg-gradient-to-t
-             from-gray-700 via-gray-800 to-gray-900 poppins2 m-4 rounded-lg text-white '>
+             from-gray-700 via-gray-800 to-gray-900 poppins2 md:m-4 md:rounded-lg text-white '>
 
                 <div className='chat-header h-20 bg-gray-800 rounded-xl flex place-items-center p-3
                  drop-shadow-2xl shadow-black'>
 
                     <div
-                        className='rounded-2xl h-full w-20 ml-3 mr-3 shadow-xl'
+                        className='h-full w-20 rounded-3xl ml-3 shadow-xl'
                         style={{
                             backgroundImage: `url(${CoverUrl}/${novelId})`,
                             backgroundSize: 'cover'
                         }} />
 
 
-                    <p className='text-2xl ml-2 ' >{name}</p>
+                    <p className='text-2xl ml-2 grow' >{name}</p>
+
+                    <button className='hover:bg-blue-400 hover:text-black p-3 rounded-xl font-mono mr-3 bg-gray-600
+                     text-white hover:w-32 duration-700'
+                        onClick={handleJoinButton}>
+                        JOIN <i class="fa-solid fa-angles-right"></i>
+                    </button>
                 </div>
 
 
@@ -176,7 +218,7 @@ export default function Chat() {
                     allMessages.length > 0 ?
 
 
-                        <div className='flex flex-col min-h-80 overflow-y-scroll MESSAGE_PART' >
+                        <div className='flex flex-col min-h-80 overflow-y-scroll MESSAGE_PART z-0' >
                             {
                                 allMessages.map((item) => (
                                     < >
@@ -184,8 +226,8 @@ export default function Chat() {
                                         {
                                             item.user_id?._id === user_id ?
 
-                                                < div className='RIGHT_Chat m-4 mr-10' key={item.user_id?._id}>
-                                                    <p className='font-mono text-right m-1 mr-2'>{item.user_id?.userName}</p>
+                                                < div className='RIGHT_Chat m-4 md:mr-10' key={item.user_id?._id}>
+                                                    {/* <p className='font-mono text-right m-1 mr-2'>{item.user_id?.userName}</p> */}
                                                     <div className='bg-gray-600 max-w-96 p-6 rounded-l-3xl rounded-b-3xl
                                                      float-right shadow-2xl shadow-black'>
 
@@ -195,10 +237,10 @@ export default function Chat() {
                                                     </div>
                                                 </div >
                                                 :
-                                                <div className='LEFT_Chat m-4 ml-10' key={item.user_id?._id}>
+                                                <div className='LEFT_Chat m-4 md:ml-10' key={item.user_id?._id}>
                                                     <p className='font-mono m-1 ml-2'> {item.user_id?.userName}</p>
-                                                    <div className='bg-blue-500 max-w-96 p-6 rounded-r-3xl rounded-b-3xl
-                                                    shadow-2xl shadow-black'>
+                                                    <div className='bg-blue-600 max-w-96 p-6 rounded-r-3xl rounded-b-3xl
+                                                    shadow-2xl shadow-black float-left'>
 
                                                         <p>
                                                             {item.message}
@@ -215,25 +257,39 @@ export default function Chat() {
                         </div>
 
 
-                        : <p className='m-36 text-center'>There is No Message</p>}
+                        : <p className='m-48 animate-pulse text-center'>There is No Message</p>}
                 {/* >>>>>>>>>>>>>>>>> CHAT MIDDLE PART END <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */}
 
+                {
+                    showEmoji ?
+                        <div className='m-4 absolute flex justify-center bottom-0  md:right-44 md:mr-10 
+                        shadow-black shadow-xl rounded-xl'>
+                            <Picker data={data} onEmojiSelect={handleEmoteSelect} />
+                        </div> : ''
 
+                }
 
                 {/* >>>>>>>>>>>>>>>>>>>>>>>>>> CHAT BOTTOM PART <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */}
 
                 <div className='w-full h-20 bg-gray-800 rounded-xl shadow-xl shadow-black'>
 
-                    <div className='flex gap-5 p-5 justify-center place-items-center'>
-                        <input type="text" className='w-full p-2 pl-4 rounded-xl text-black'
+                    <div className='flex gap-1.5 p-4 justify-center place-items-center'>
+                        <input type="text" className='w-full p-2.5 pl-5 rounded-xl text-black'
                             onChange={(e) => setCurrentMessage(e.target.value)}
                             value={currentMessage}
                             onKeyPress={(event) => {
                                 event.key === "Enter" && handleSend();
                             }}
+                            placeholder='message'
+                            maxLength={200}
                         />
+                        <button className='bg-slate-600 p-3 rounded-2xl hover:bg-blue-500 text-gray-400
+                         hover:text-white'
+                            onClick={() => setShowEmoji(!showEmoji)}>
+                            <i class="fa-solid fa-2xl fa-face-smile"></i>
+                        </button>
 
-                        <button className='w-32 p-2 bg-blue-300 text-black hover:text-white
+                        <button className='w-32 p-2.5 bg-blue-300 text-black hover:text-white
                          hover:bg-gray-700 rounded-lg font-semibold'
                             onClick={handleSend}>
                             send <i className='fa-solid fa-paper-plane '></i>
