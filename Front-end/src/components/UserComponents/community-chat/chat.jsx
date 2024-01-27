@@ -18,6 +18,7 @@ export default function Chat() {
     //.........................................................................
 
     const [novelId, setNovelId] = useState('');
+    const [name, setName] = useState('');
     const [user_id, setUserId] = useState('');
     const [allMessages, setAllMessages] = useState([]);
     const [currentMessage, setCurrentMessage] = useState('');
@@ -59,6 +60,7 @@ export default function Chat() {
             if (response.data.status) {
 
                 setAllMessages([...response.data.message]);
+                setName(response.data.name)
 
                 socket.emit("join_room", id)
 
@@ -153,7 +155,8 @@ export default function Chat() {
             <div className='bg-gradient-to-t
              from-gray-700 via-gray-800 to-gray-900 poppins2 m-4 rounded-lg text-white '>
 
-                <div className='chat-header h-20 bg-gray-800 rounded-xl flex place-items-center p-3 drop-shadow-2xl'>
+                <div className='chat-header h-20 bg-gray-800 rounded-xl flex place-items-center p-3
+                 drop-shadow-2xl shadow-black'>
 
                     <div
                         className='rounded-2xl h-full w-20 ml-3 mr-3 shadow-xl'
@@ -163,7 +166,7 @@ export default function Chat() {
                         }} />
 
 
-                    <p className='text-2xl ml-2 font-mono' >Spy X Family Community</p>
+                    <p className='text-2xl ml-2 ' >{name}</p>
                 </div>
 
 
@@ -183,7 +186,8 @@ export default function Chat() {
 
                                                 < div className='RIGHT_Chat m-4 mr-10' key={item.user_id?._id}>
                                                     <p className='font-mono text-right m-1 mr-2'>{item.user_id?.userName}</p>
-                                                    <div className='bg-gray-600 max-w-96 p-6 rounded-l-3xl rounded-b-3xl float-right'>
+                                                    <div className='bg-gray-600 max-w-96 p-6 rounded-l-3xl rounded-b-3xl
+                                                     float-right shadow-2xl shadow-black'>
 
                                                         <p className='text-left'>
                                                             {item.message}
@@ -193,7 +197,8 @@ export default function Chat() {
                                                 :
                                                 <div className='LEFT_Chat m-4 ml-10' key={item.user_id?._id}>
                                                     <p className='font-mono m-1 ml-2'> {item.user_id?.userName}</p>
-                                                    <div className='bg-blue-500 max-w-96 p-6 rounded-r-3xl rounded-b-3xl'>
+                                                    <div className='bg-blue-500 max-w-96 p-6 rounded-r-3xl rounded-b-3xl
+                                                    shadow-2xl shadow-black'>
 
                                                         <p>
                                                             {item.message}
@@ -217,7 +222,7 @@ export default function Chat() {
 
                 {/* >>>>>>>>>>>>>>>>>>>>>>>>>> CHAT BOTTOM PART <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */}
 
-                <div className='w-full h-20 bg-gray-800 rounded-xl drop-shadow-xl'>
+                <div className='w-full h-20 bg-gray-800 rounded-xl shadow-xl shadow-black'>
 
                     <div className='flex gap-5 p-5 justify-center place-items-center'>
                         <input type="text" className='w-full p-2 pl-4 rounded-xl text-black'
@@ -228,9 +233,10 @@ export default function Chat() {
                             }}
                         />
 
-                        <button className='w-32 p-2 bg-blue-500 hover:bg-blue-600 rounded-lg'
+                        <button className='w-32 p-2 bg-blue-300 text-black hover:text-white
+                         hover:bg-gray-700 rounded-lg font-semibold'
                             onClick={handleSend}>
-                            send <i className='fa-solid fa-paper-plane'></i>
+                            send <i className='fa-solid fa-paper-plane '></i>
                         </button>
                     </div>
 

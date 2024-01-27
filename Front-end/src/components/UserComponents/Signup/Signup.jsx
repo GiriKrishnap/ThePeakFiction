@@ -145,12 +145,12 @@ export default function Signup() {
                     <button onClick={handleSubmit} className='w-full p-3 mb-1 bg-blue-400 text-white
                         rounded-xl hover:bg-blue-950 hover:shadow-xl' >Signup Now</button>
 
-                    <hr />
+                    {/* <hr />
 
                     <button type='submit' className='w-full p-3 mt-2 mb-1 text-black border border-black
                      rounded-xl hover:shadow-xl poppins2 text-center hover:bg-slate-700 hover:text-white'>
                         <i class="fa-brands fa-lg fa-google mr-2"></i>Login with google
-                    </button>
+                    </button> */}
 
                     <Link to={Login}> <p className='font-mono tracking-widest text-lg
                     hover:text-blue-500 mt-3'>You Have Account?</p> </Link>

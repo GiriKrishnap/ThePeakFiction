@@ -21,7 +21,10 @@ module.exports = {
             } else {
 
                 console.log("communityExist.name here - ", communityExist.name);
-                res.json({ status: true, message: communityExist.messages, members: communityExist.members });
+                res.json({
+                    status: true, message: communityExist.messages, members: communityExist.members,
+                    name: communityExist.name
+                });
             }
 
         } catch (error) {
