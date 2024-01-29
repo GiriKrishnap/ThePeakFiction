@@ -370,7 +370,7 @@ export default function NovelDetailAuthor() {
                                         </div>
 
                                     )) : <p className='text-white text-center bg-blue-500 p-2 
-                                            rounded font-mono'>There is Chapters</p>
+                                            rounded font-mono'>no chapters yet..</p>
                             }
 
                         </div>

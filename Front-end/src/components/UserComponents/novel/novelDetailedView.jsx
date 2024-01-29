@@ -326,7 +326,7 @@ export default function NovelDetailedView() {
                                     </div>
 
                                 )) : <p className='text-white text-center bg-blue-500 p-2 
-                                            rounded font-mono'>There is Chapters</p>
+                                            rounded font-mono'>There is No Chapters</p>
                         }
 
                     </div>
