@@ -63,6 +63,7 @@ export default function NovelDetailedView() {
 
             const response = await getNovelDetailsWithIdAPI(novelId);
             if (response.data.status) {
+
                 setNovel([response.data.novel]);
                 setRate([response.data.novel.rate]);
             } else {
@@ -74,7 +75,7 @@ export default function NovelDetailedView() {
         } catch (error) {
             console.log('catch error in ::getNovelWithId - ' + error.message)
             toast.error(error.message);
-
+            navigate(readerHome)
         }
     }
 
@@ -194,7 +195,7 @@ export default function NovelDetailedView() {
 
                                     <button className='bg-blue-500 hover:bg-gray-500 poppins2 p-1.5
                                     text-white rounded-md pr-2 font-sans w-full drop-shadow-lg'
-                                        onClick={() => handleChapterClick(item._id, item.chapters[0]._id)}>
+                                        onClick={() => handleChapterClick(item._id, item.chapters[0].number)}>
                                         Read Now
                                         <i className="fa-solid fa-caret-right m-1.5"></i>
                                     </button>

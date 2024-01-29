@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { addNovelToLibraryAPI, getRandomNovelAPI } from '../../../APIs/userAPI';
-import { CoverUrl, novelDetailedView } from '../../../util/constants';
+import { addNovelToLibraryAPI, getCommunityAPI, getRandomNovelAPI } from '../../../APIs/userAPI';
+import { CoverUrl, chatPageUrl, novelDetailedView } from '../../../util/constants';
 import toast from 'react-hot-toast';
 //.........................................................................
 
@@ -10,17 +10,43 @@ export default function Chat() {
 
     //.........................................................................
 
+
     const navigate = useNavigate();
 
     //.........................................................................
 
+    const [community, setCommunity] = useState([]);
 
+    //.........................................................................
 
+    const getCommunity = async () => {
+        try {
 
+            const userId = JSON.parse(localStorage.getItem("user-login")).id
+            const response = await getCommunityAPI(userId);
 
+            if (response.data.status) {
+                setCommunity(response.data.community.community);
+            }
 
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message);
+        }
+    }
 
+    //.........................................................................
 
+    useEffect(() => {
+        getCommunity();
+        console.log(community)
+    }, []);
+    //.........................................................................
+
+    const handleCommunityClick = (novelId) => {
+        navigate(`${chatPageUrl}?novelId=${novelId}`);
+
+    }
     //.........................................................................
 
     return (
@@ -29,38 +55,43 @@ export default function Chat() {
             <div className='bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))]
             from-gray-600 via-gray-700 to-gray-800 poppins2 p-10 m-1 rounded-lg text-white'>
 
-                {/* ................JOIN A ROOM.................... */}
-                <div className='flex justify-center mt-20 h-12 '>
-
-                    <input type="text" className='pl-3 rounded-l drop-shadow-lg w-96 bg-gray-200 focus:rounded-l-full
-                    duration-700'
-                        placeholder='enter the community id' />
-
-                    <button className='bg-blue-500 p-1 pr-4 pl-4 rounded-r hover:rounded-r-full
-                    hover:bg-blue-600 duration-700'>
-                        Join <i className="fa-solid fa-right-to-bracket drop-shadow-lg"></i>
-                    </button>
-                </div>
 
                 <div className='max-h-screen m-10 pt-5 overflow-y-scroll'>
 
                     <p className='text-center font-mono text-xl'>All Joined Community</p>
                     <div className='w-full h-full mt-5 p-2'>
 
-                        <div className='h-20 bg-gray-600 rounded-2xl mb-3 flex overflow-hidden'>
-                            <img src="https://picsum.photos/200/300" alt='img'
-                                className='w-24 rounded-r-full shadow-xl' />
-                            <div className='flex flex-col place-content-center ml-2'>
-                                <p className='text-2xl'>Spy x Family Community</p>
-                                <p className='font-mono text-gray-300'>John:hello there</p>
-                            </div>
-                        </div>
+                        {
+                            community.map((item) => (
+
+                                <div className='h-20 bg-gray-600 rounded-2xl mb-3 flex overflow-hidden
+                                shadow-black shadow-lg hover:bg-gray-700 cursor-pointer'
+                                    key={item.name}
+                                    onClick={() => handleCommunityClick(item.novel_id)}>
+
+                                    <div
+                                        className='w-24 rounded-r-full shadow-xl'
+                                        style={{
+                                            backgroundImage: `url(${CoverUrl}/${item.novel_id})`,
+                                            backgroundSize: 'cover'
+                                        }} />
+
+                                    <div className='flex flex-col place-content-center ml-2'>
+                                        <p className='text-2xl'>{item.name}</p>
+                                        <p className='font-mono text-gray-400 ml-1'>
+                                            official Community
+                                        </p>
+                                    </div>
+                                </div>
+                            ))
+                        }
+
 
                     </div>
 
                 </div>
 
-            </div>
+            </div >
 
         </>
     )

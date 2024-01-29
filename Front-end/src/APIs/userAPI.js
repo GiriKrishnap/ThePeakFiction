@@ -37,8 +37,9 @@ export const getMostViewedNovelsAPI = (url) => axios.get(url, configToken);
 export const gridePostAPI = (url) => axios.get(`${url}?userId=${userId}`, configToken);
 export const getWalletAPI = () => axios.get(`/getWallet?userId=${userId}`, configToken);
 export const checkGCoinSystemAPI = (novelId) => axios.get(`/check-GCoinSystem?NovelId=${novelId}`, configToken);
-export const getAllMessageAPI = (novelId) => axios.get(`/all-message?novelId=${novelId}`, configToken);
 export const checkPayToReadAPI = (novelId, chapterNo, userId) => axios.get(`/checkPayToRead?novelId=${novelId}&chapterNo=${chapterNo}&userId=${userId}`, configToken);
+export const getAllMessageAPI = (novelId) => axios.get(`/all-message?novelId=${novelId}`, configToken);
+export const getCommunityAPI = (userId) => axios.get(`/get-community?userId=${userId}`, configToken);
 
 
 export const userSignUpPostAPI = (body) => axios.post('/signup', body, config);

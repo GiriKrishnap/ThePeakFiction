@@ -19,6 +19,7 @@ export default function Chat() {
     //.........................................................................
 
     const [user_id, setUserId] = useState('');
+    const [communityId, setCommunityId] = useState('');
     const [name, setName] = useState('');
     const [showEmoji, setShowEmoji] = useState(false);
     const [novelId, setNovelId] = useState('');
@@ -63,6 +64,7 @@ export default function Chat() {
 
                 setAllMessages([...response.data.message]);
                 setName(response.data.name)
+                setCommunityId(response.data.communityId);
 
                 socket.emit("join_room", id)
 
@@ -166,8 +168,8 @@ export default function Chat() {
         try {
 
             const body = {
-                userId: user_id,
-                communityName: name
+                communityId,
+                userId: user_id
 
             };
             const response = await joinCommunityAPI(body);
@@ -195,16 +197,16 @@ export default function Chat() {
                  drop-shadow-2xl shadow-black'>
 
                     <div
-                        className='h-full w-20 rounded-3xl ml-3 shadow-xl'
+                        className='h-full md:w-20 w-10 rounded-3xl ml-3 shadow-xl'
                         style={{
                             backgroundImage: `url(${CoverUrl}/${novelId})`,
                             backgroundSize: 'cover'
                         }} />
 
 
-                    <p className='text-2xl ml-2 grow' >{name}</p>
+                    <p className='md:text-2xl text-xl ml-2 grow' >{name}</p>
 
-                    <button className='hover:bg-blue-400 hover:text-black p-3 rounded-xl font-mono mr-3 bg-gray-600
+                    <button className='hover:bg-blue-400 hover:text-black md:p-3 p-2 rounded-xl font-mono mr-3 bg-gray-600
                      text-white hover:w-32 duration-700'
                         onClick={handleJoinButton}>
                         JOIN <i class="fa-solid fa-angles-right"></i>

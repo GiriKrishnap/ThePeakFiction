@@ -1,3 +1,4 @@
+const { json } = require('express');
 const CommunityModel = require('../model/communityModel');
 const UserModel = require('../model/UserModel');
 //---------------------------------------------------------
@@ -24,7 +25,7 @@ module.exports = {
                 console.log("communityExist.name here - ", communityExist.name);
                 res.json({
                     status: true, message: communityExist.messages, members: communityExist.members,
-                    name: communityExist.name
+                    name: communityExist.name, communityId: communityExist._id
                 });
             }
 
@@ -67,19 +68,18 @@ module.exports = {
     //------------------------------------------------
     joinCommunity: async (req, res) => {
         try {
-            const { communityName, userId } = req.body;
-
+            const { communityId, userId } = req.body;
             const userData = await UserModel.findOne({ _id: userId });
-            const exist = userData.community.find((item) => item === communityName)
+            const exist = userData.community.find((item) => item.toString() === communityId)
 
             if (!exist) {
-                await UserModel.updateOne({ _id: userId }, { $push: { community: communityName } })
+                await UserModel.updateOne({ _id: userId }, { $push: { community: communityId } })
 
                 res.json({ status: true, message: "joined to community" });
 
             } else {
 
-                await UserModel.updateOne({ _id: userId }, { $pull: { community: communityName } })
+                await UserModel.updateOne({ _id: userId }, { $pull: { community: communityId } })
                 res.json({ status: true, message: "Exited From community" });
 
             }
@@ -87,6 +87,18 @@ module.exports = {
         } catch (error) {
             console.log('catch error on ::joinCommunity - ', error.message)
             res.status(400).json({ status: false, message: "oops catch error on joinCommunity backend" })
+        }
+    },
+    //------------------------------------------------
+    getCommunity: async (req, res) => {
+        try {
+            const { userId } = req.query;
+            const community = await UserModel.findOne({ _id: userId }, { _id: 0, community: 1 }).populate('community');
+            res.json({ status: true, community });
+
+        } catch (error) {
+            console.log('catch error on ::getCommunity - ', error.message)
+            res.status(400).json({ status: false, message: "oops catch error on getCommunity backend" });
         }
     }
     //------------------------------------------------

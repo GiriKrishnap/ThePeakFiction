@@ -196,12 +196,11 @@ module.exports = {
 
             if (novelId) {
 
-                NovelModel.findOne({ _id: novelId })
+                const response = await NovelModel.findOne({ _id: novelId })
                     .populate('author_id')
                     .populate('genre')
-                    .then((response) => {
-                        res.json({ status: true, novel: response });
-                    })
+
+                res.json({ status: true, novel: response });
 
             } else {
                 res.status(400);

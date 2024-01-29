@@ -22,6 +22,7 @@ router.get('/getWallet', protect, userController.getWallet);
 router.get('/check-GCoinSystem', protect, novelController.checkGCoinSystem);
 router.get('/all-message', protect, communityController.getAllMessage);
 router.get('/checkPayToRead', protect, novelController.checkPayToRead);
+router.get('/get-community', protect, communityController.getCommunity);
 
 //POST METHODS..........................................................
 router.post('/signup', userController.readerSignup);
