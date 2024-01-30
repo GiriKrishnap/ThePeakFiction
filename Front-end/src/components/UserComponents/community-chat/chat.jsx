@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import io from 'socket.io-client';
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
+import { Cloudinary } from "@cloudinary/url-gen";
 //.........................................................................
 
 export default function Chat() {
@@ -25,6 +26,11 @@ export default function Chat() {
     const [novelId, setNovelId] = useState('');
     const [allMessages, setAllMessages] = useState([]);
     const [currentMessage, setCurrentMessage] = useState('');
+
+    const [showUpload, setShowUpload] = useState(false)
+    const [currentImage, setCurrentImage] = useState(false);
+    const [coverPreview, setCoverPreview] = useState(null);
+
 
     //.........................................................................
 
@@ -95,11 +101,14 @@ export default function Chat() {
                 }
             });
             return () => {
-                socket.off('Message_received', data);
+
             }
         })
 
     }, [socket]);
+
+    //.........................................................................
+    //Cloudinary
 
     //.........................................................................
 
@@ -108,13 +117,35 @@ export default function Chat() {
 
             if (currentMessage.length > 0) {
 
+
+                let image_url = '';
+
+                if (currentImage) {
+
+                    const formData = new FormData();
+                    formData.append('file', currentImage);
+                    formData.append('upload_preset', 'l2f4rwfe'); // Replace with your upload preset
+
+                    const response = await fetch('https://api.cloudinary.com/v1_1/dtksuxkqf/image/upload', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    const data = await response.json();
+                    image_url = data.secure_url
+                    setCurrentImage(false);
+                    setCoverPreview(null);
+                }
+
+
                 const body = {
                     message: currentMessage,
                     user_id: user_id,
                     date: new Date(),
-                    novelId: novelId
-
+                    novelId: novelId,
+                    image_url: image_url
                 }
+
 
                 const response = await newMessagePostAPI(body);
 
@@ -135,6 +166,8 @@ export default function Chat() {
                     });
 
                     setCurrentMessage('');
+                    setShowEmoji(false);
+                    setShowUpload(false);
 
                 }
             }
@@ -186,6 +219,35 @@ export default function Chat() {
 
 
     //.........................................................................
+    const HandleButton = (name) => {
+        if (name === 'emoji') {
+            setShowEmoji(!showEmoji);
+            setShowUpload(false);
+        } else if (name === 'upload') {
+            setShowEmoji(false);
+            setShowUpload(!showUpload);
+        }
+    }
+    //.........................................................................
+
+
+    const handleCoverChange = (e) => {
+
+        const selectedCover = e.target.files[0] ?? null
+
+        setCurrentImage(selectedCover);
+        console.log('cover is here ', selectedCover);
+
+        if (selectedCover) {
+            const previewURL = URL.createObjectURL(selectedCover);
+            setCoverPreview(previewURL);
+        } else {
+            setCoverPreview(null);
+        }
+
+    }
+
+    //.........................................................................
 
     return (
         <>
@@ -230,8 +292,13 @@ export default function Chat() {
 
                                                 < div className='RIGHT_Chat m-4 md:mr-10' key={item.user_id?._id}>
                                                     {/* <p className='font-mono text-right m-1 mr-2'>{item.user_id?.userName}</p> */}
+
+
                                                     <div className='bg-gray-600 max-w-96 p-6 rounded-l-3xl rounded-b-3xl
                                                      float-right shadow-2xl shadow-black'>
+
+                                                        <img src={item.image_url} alt="" className=' rounded drop-shadow-md
+                                                         mb-2' />
 
                                                         <p className='text-left'>
                                                             {item.message}
@@ -240,9 +307,15 @@ export default function Chat() {
                                                 </div >
                                                 :
                                                 <div className='LEFT_Chat m-4 md:ml-10' key={item.user_id?._id}>
+
+
+
                                                     <p className='font-mono m-1 ml-2'> {item.user_id?.userName}</p>
                                                     <div className='bg-blue-600 max-w-96 p-6 rounded-r-3xl rounded-b-3xl
                                                     shadow-2xl shadow-black float-left'>
+
+                                                        <img src={item.image_url} alt="" className=' rounded drop-shadow-md 
+                                                        mb-2' />
 
                                                         <p>
                                                             {item.message}
@@ -256,10 +329,41 @@ export default function Chat() {
                                 ))
                             }
                             <p className='text-center m-1 text-gray-500 opacity-5' ref={scrollRef}> -- end -- </p>
+
+
                         </div>
 
 
                         : <p className='m-48 animate-pulse text-center'>There is No Message</p>}
+
+
+                {/* {{{{{{{{{{{{{{{{{{{{{PHOTO UPLOAD AND PREVIEW}}}}}}}}}}}}}}}}}}}}} */}
+                {
+                    !showUpload ||
+                    <div className='flex md:flex md:flex-grow flex-row-reverse space-x-1 pr-7 pb-7 hover:animate-pulse '>
+                        <div class="flex w-96 ">
+                            <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                    </svg>
+                                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                </div>
+                                <input id="dropzone-file" type="file" class="hidden" onChange={handleCoverChange} />
+                            </label>
+                            {coverPreview && (
+                                <div>
+
+                                    <img src={coverPreview} className='rounded-lg content-center' alt="Selected"
+                                        style={{ maxWidth: '100%', maxHeight: '340px' }} />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                }
+                {/* {{{{{{{{{{{{{{{{{{{{{PHOTO UPLOAD AND PREVIEW END}}}}}}}}}}}}}}}}}}}}} */}
+
                 {/* >>>>>>>>>>>>>>>>> CHAT MIDDLE PART END <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */}
 
                 {
@@ -283,12 +387,18 @@ export default function Chat() {
                                 event.key === "Enter" && handleSend();
                             }}
                             placeholder='message'
-                            maxLength={200}
+                            maxLength={600}
                         />
                         <button className='bg-slate-600 p-3 rounded-2xl hover:bg-blue-500 text-gray-400
                          hover:text-white'
-                            onClick={() => setShowEmoji(!showEmoji)}>
+                            onClick={() => HandleButton('emoji')}>
                             <i class="fa-solid fa-2xl fa-face-smile"></i>
+                        </button>
+
+                        <button className='bg-slate-600 p-3 rounded-2xl hover:bg-blue-500 text-gray-400
+                         hover:text-white'
+                            onClick={() => HandleButton('upload')}>
+                            <i class="fa-solid fa-2xl fa-file-image"></i>
                         </button>
 
                         <button className='w-32 p-2.5 bg-blue-300 text-black hover:text-white

@@ -34,6 +34,10 @@ const communitySchema = mongoose.Schema({
         date: {
             type: Date,
             require: true,
+        },
+        //-----------
+        image_url: {
+            type: String
         }
     }],
     //..................................

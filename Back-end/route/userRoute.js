@@ -33,7 +33,7 @@ router.post('/add-To-library', protect, novelController.addToLibrary);
 router.post('/filterNovels-user', protect, novelController.filterNovel);
 router.post('/payment-confirm', paymentController.confirmPayment);
 router.post('/rateNovel', protect, novelController.addRating);
-router.post('/send-message', protect, communityController.newMessage);
+router.post('/send-message', communityController.newMessage);
 router.post('/changePassword-request', userController.changePasswordRequest);
 router.post('/changePassword', userController.changePassword);
 router.post('/edit-profile', userController.editProfile);

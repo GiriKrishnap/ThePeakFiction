@@ -40,12 +40,16 @@ module.exports = {
     newMessage: async (req, res) => {
         try {
 
-            const { message, user_id, date, novelId } = req.body;
+            const { message, user_id, date, novelId, image_url } = req.body;
+
+            console.log(message, user_id, novelId, '\n', image_url);
+
 
             const data = {
                 user_id: user_id,
                 message: message,
                 date: date,
+                image_url
             }
 
             const addMessage = await CommunityModel.findOneAndUpdate({ novel_id: novelId },

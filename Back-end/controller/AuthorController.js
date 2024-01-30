@@ -13,7 +13,6 @@ module.exports = {
         try {
 
             const { title, description, authorId } = req.body;
-            console.log(title, description, authorId);
 
             const CoverPath = req.file.path;
             const genre = req.body.genre.split(',')
