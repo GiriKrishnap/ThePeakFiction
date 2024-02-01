@@ -7,7 +7,7 @@ import { getTrendingPost } from '../../util/constants.js';
 export default function Updated() {
     return (
         <div>
-            <HeaderComponents />
+            <HeaderComponents name={'Trending'} />
             <NewUpdatedComponents axiosUrl={getTrendingPost} title={"TRENDING"} />
             <FooterComponents />
         </div>

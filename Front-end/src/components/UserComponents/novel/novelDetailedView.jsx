@@ -130,10 +130,19 @@ export default function NovelDetailedView() {
 
             if (response.data.status) {
                 if (response.data.message === 'Novel added to library') {
-                    toast.success('Novel added to library');
+                    toast.success('Novel added to library', {
+                        position: "bottom-right",
+                        style: {
+                            borderRadius: '17px',
+                        }
+                    });
                 } else {
                     toast(response.data.message, {
                         icon: '📤',
+                        position: "bottom-right",
+                        style: {
+                            borderRadius: '17px',
+                        }
                     });
                 }
 

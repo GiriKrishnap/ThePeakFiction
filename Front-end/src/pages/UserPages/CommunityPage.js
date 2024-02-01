@@ -7,7 +7,7 @@ import CommunityComponent from '../../components/UserComponents/community-chat/c
 function ChatPage() {
     return (
         <div>
-            <HeaderComponents />
+            <HeaderComponents name={'Community'} />
             <CommunityComponent />
             <FooterComponents />
         </div>

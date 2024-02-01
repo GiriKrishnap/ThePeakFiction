@@ -6,6 +6,7 @@ require('dotenv/config');
 const UserModel = require('../model/UserModel');
 const GenreModel = require('../model/genreModel');
 const NovelModel = require('../model/novelModel');
+const generateToken = require('../util/generateToken');
 ///---------------------------
 
 
@@ -24,9 +25,7 @@ module.exports = {
 
             } else {
 
-                const adminToken = jwt.sign({
-                    email: email,
-                }, 'secret123', { expiresIn: '7d' });
+                const adminToken = generateToken(email);
 
                 res.json({ status: true, message: 'the login is completed', adminToken });
             }
@@ -313,7 +312,11 @@ module.exports = {
 
             const { genreId, name, description } = req.body;
 
-            const exist = await GenreModel.findOne({ name: name });
+            const exist = await GenreModel.findOne({
+                name: { $regex: new RegExp(name, 'i') },
+                _id: { $ne: genreId }
+            });
+
 
             if (!exist) {
 

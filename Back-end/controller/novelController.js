@@ -8,6 +8,7 @@ const UserModel = require('../model/UserModel');
 const NovelModel = require('../model/novelModel');
 const GenreModel = require('../model/genreModel');
 const WalletModel = require('../model/walletModel');
+const novelModel = require('../model/novelModel');
 //----------------------------------------------------------
 
 module.exports = {
@@ -337,8 +338,6 @@ module.exports = {
 
             const { novelId, chapterNo, userId } = req.query
 
-            console.log('userId is here -  ', userId)
-
             const walletData = await WalletModel.findOne({ user_id: userId });
 
             const alreadyPaid = walletData.amountUse.find(obj => obj.novelId === novelId);
@@ -352,11 +351,14 @@ module.exports = {
 
                 const chapter = await NovelModel.findOne(
                     { _id: novelId, "chapters.number": chapterNo },
-                    { "chapters.$": 1 }
+                    { "chapters.$": 1, author_id: 1 }
                 );
 
+
+
+
                 if (chapter) {
-                    res.json({ status: true, price: chapter.chapters[0].gcoin });
+                    res.json({ status: true, price: chapter.chapters[0].gcoin, authorId: chapter.author_id.toString() });
                 }
             }
 
@@ -405,7 +407,14 @@ module.exports = {
                             $inc: { walletAmount: -price },
                             $push: { amountUse: history }
 
-                        })
+                        });
+
+                    const authorId = await NovelModel.findOne({ _id: novelId }, { _id: 0, author_id: 1 }).toString();
+
+                    console.log('HERE AUTHOR ID --> ', authorId);
+
+                    // const authorWalletUpdate = await WalletModel.updateOne({ user_id: authorId },
+                    //     { $inc: { walletAmount: price } });
 
                     if (walletUpdate) {
                         res.json({ status: true, message: 'Paid' });

@@ -53,12 +53,12 @@ export default function Chat() {
         <>
 
             <div className='bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))]
-            from-gray-600 via-gray-700 to-gray-800 poppins2 p-10 m-1 rounded-lg text-white'>
+            from-gray-600 via-gray-700 to-gray-800 poppins2 p-10 m-1 rounded-lg text-white min-h-96'>
 
 
                 <div className='max-h-screen m-10 pt-5 overflow-y-scroll'>
 
-                    <p className='text-center font-mono text-xl'>All Joined Community</p>
+                    <p className='text-center font-mono mb-5 text-xl'>All Joined Community</p>
                     <div className='w-full h-full mt-5 p-2'>
 
                         {

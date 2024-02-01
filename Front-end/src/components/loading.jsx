@@ -1,10 +1,12 @@
 
 function loading() {
     return (
-        <div class="flex items-center justify-center min-h-screen p-5 min-w-screen">
+        <div class="flex items-center justify-center min-h-screen p-5 min-w-screen bg-slate-600">
 
             <div class="flex space-x-2 animate-pulse">
                 <div class="w-7 h-16 bg-gray-100 rounded-full"></div>
+                <div class="w-7 h-14 bg-gray-100 rounded-full"></div>
+                <img src="../assets/logo/webLogo.png" alt="logo" className='w-24 h-240' />
                 <div class="w-7 h-14 bg-gray-100 rounded-full"></div>
                 <div class="w-7 h-16 bg-gray-100 rounded-full"></div>
             </div>

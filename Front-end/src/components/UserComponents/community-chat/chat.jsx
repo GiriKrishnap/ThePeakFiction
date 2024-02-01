@@ -6,7 +6,6 @@ import toast from 'react-hot-toast';
 import io from 'socket.io-client';
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
-import { Cloudinary } from "@cloudinary/url-gen";
 //.........................................................................
 
 export default function Chat() {
@@ -328,8 +327,7 @@ export default function Chat() {
                                     </>
                                 ))
                             }
-                            <p className='text-center m-1 text-gray-500 opacity-5' ref={scrollRef}> -- end -- </p>
-
+                            <p className='text-center text-transparent' ref={scrollRef}> -- end -- </p>
 
                         </div>
 
@@ -340,8 +338,8 @@ export default function Chat() {
                 {/* {{{{{{{{{{{{{{{{{{{{{PHOTO UPLOAD AND PREVIEW}}}}}}}}}}}}}}}}}}}}} */}
                 {
                     !showUpload ||
-                    <div className='flex md:flex md:flex-grow flex-row-reverse space-x-1 pr-7 pb-7 hover:animate-pulse '>
-                        <div class="flex w-96 ">
+                    <div className='flex md:flex md:flex-grow flex-row-reverse space-x-1 pr-7 pb-5'>
+                        <div class="w-96 hover:animate-pulse">
                             <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                     <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -363,6 +361,7 @@ export default function Chat() {
                     </div>
                 }
                 {/* {{{{{{{{{{{{{{{{{{{{{PHOTO UPLOAD AND PREVIEW END}}}}}}}}}}}}}}}}}}}}} */}
+
 
                 {/* >>>>>>>>>>>>>>>>> CHAT MIDDLE PART END <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */}
 

@@ -99,7 +99,7 @@ export default function Signup() {
                      flex flex-col justify-center place-items-center md:p-14 md:pl-20 md:pr-20 p-10 hover:shadow-2xl '>
 
                     <div className='flex'>
-                        <h1 className='poppins2 font-bold md:text-4xl text-2xl mb-4'>SignUp</h1>
+                        <h1 className={`'poppins2 font-bold md:text-4xl text-2xl mb-4' ${!isAuthor || "text-blue-500 font-bold"}`}>SignUp</h1>
                         <img src="../assets/logo/webLogo.png" alt="logo" className='w-12 h-12' />
                     </div>
 
@@ -139,7 +139,7 @@ export default function Signup() {
                         <input type="checkbox" className='mb-3 ml-3 cursor-pointer w-4'
                             onClick={() => isAuthor ? setIsAuthor(false) : setIsAuthor(true)}
                         />
-                        <label className='mb-3 ml-2 font-mono'>Are You An Author?</label>
+                        <label className={`mb-3 ml-2 font-mono ${!isAuthor || "text-blue-500 font-bold"}`}>Are You An Author?</label>
                     </div>
 
                     <button onClick={handleSubmit} className='w-full p-3 mb-1 bg-blue-400 text-white

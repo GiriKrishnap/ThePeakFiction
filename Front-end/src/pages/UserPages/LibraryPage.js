@@ -4,10 +4,10 @@ import FooterComponents from '../../components/UserComponents/header-footer/foot
 import GridePostComponent from '../../components/PostComponents/gridePost.jsx';
 import { getLibraryNovelsUrl } from '../../util/constants.js';
 
-export default function Updated() {
+export default function Library() {
     return (
         <div>
-            <HeaderComponents />
+            <HeaderComponents name={'My Library'} />
             <GridePostComponent axiosUrl={getLibraryNovelsUrl} title={"My Library"} />
             <FooterComponents />
         </div>

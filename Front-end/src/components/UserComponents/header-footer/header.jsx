@@ -1,9 +1,12 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { Login, authorHome, filter, getUpdatedUrl, myLibraryUrl, profileUrl, trendingUrl } from '../../../util/constants';
+import toast from 'react-hot-toast';
+import { useSocket } from '../../../util/NotifiSoketContext';
+//...........................................................................................
 
 const navigationObj = [
     { name: 'Home', link: '/home', current: false },
@@ -13,15 +16,26 @@ const navigationObj = [
     { name: 'Community', link: '/community', current: false }
 ]
 
+//...........................................................................................
+
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
-//-----------------------------------------------------------
-export default function Header() {
+
+//...........................................................................................
+
+export default function Header({ name }) {
+
+    //...........................................................................................
+
+    const navigate = useNavigate();
+    const socket = useSocket();
+
+    //...........................................................................................
 
     const [isAuthor, setIsAuthor] = useState(false);
 
-    const navigate = useNavigate();
+    //...........................................................................................
 
     const handleLogout = (e) => {
         e.preventDefault();
@@ -36,19 +50,37 @@ export default function Header() {
         }).then((result) => {
             if (result.isConfirmed) {
                 localStorage.removeItem("user-login");
+                socket.disconnect();
                 navigate('/');
             }
         })
     }
+
+    //...........................................................................................
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user-login'));
         if (!user) {
             navigate(Login)
         } else {
-            setIsAuthor(user.isAuthor)
+            setIsAuthor(user.isAuthor);
         }
+
     }, [])
+
+
+    //...........................................................................................
+
+    // useEffect(() => {
+
+    //     socket.on("notification_received", (data) => {
+    //         toast.success(data, { icon: "😼🚀" });
+    //     })
+
+    // }, [socket]);
+
+
+    //...........................................................................................
 
     return (
         <Disclosure as="nav" className="bg-gray-800">
@@ -84,7 +116,7 @@ export default function Header() {
                                                 key={item.name}
                                                 to={item.link}
                                                 className={classNames(
-                                                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                    item.name === name ? 'bg-gray-600 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                                                     'rounded-md px-3 py-2 text-sm font-medium'
                                                 )}
                                                 aria-current={item.current ? 'page' : undefined}
@@ -97,8 +129,6 @@ export default function Header() {
                             </div>
 
 
-
-
                             <div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto
                              md:ml-6 md:pr-0">
 
@@ -109,6 +139,8 @@ export default function Header() {
                                         <i className="fa-solid fa-circle-nodes"></i> Filter
                                     </button>
                                 </Link>
+
+
 
                                 {/* Profile dropdown */}
                                 <Menu as="div" className="relative ml-3">

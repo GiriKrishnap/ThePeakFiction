@@ -9,7 +9,7 @@ import { getMostViewedPost, getNewUpdatedPost, getTrendingPost } from '../../uti
 function HomePage() {
     return (
         <div>
-            <HeaderComponents />
+            <HeaderComponents name={'Home'} />
             <BannerComponents />
             <RowPostComponent axiosUrl={getMostViewedPost} title={"MOST VIEWED"} limit={6} />
             <NewUpdatedComponents axiosUrl={getTrendingPost} limit={4} title={"TRENDING"} home={true} />

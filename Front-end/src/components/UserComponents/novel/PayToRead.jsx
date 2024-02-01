@@ -1,9 +1,11 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PayToReadPostAPI, checkPayToReadAPI } from '../../../APIs/userAPI';
 import toast from 'react-hot-toast';
 import { novelDetailedView, readNovel } from '../../../util/constants';
+import io from 'socket.io-client';
+
 //.........................................................................
 
 
@@ -13,10 +15,12 @@ export default function PayToRead() {
 
     const navigate = useNavigate();
     const location = useLocation();
+    const socket = useMemo(() => io('http://localhost:4000'), [])
 
     //.........................................................................
 
     const [novelId, setNovelId] = useState('');
+    const [authorId, setAuthorId] = useState('');
     const [chapterNumber, setChapterNumber] = useState('');
     const [price, setPrice] = useState(0);
     const [password, setPassword] = useState('');
@@ -24,8 +28,6 @@ export default function PayToRead() {
     //.........................................................................
 
     useEffect(() => {
-
-        const user = JSON.parse(localStorage.getItem('user-login')).id;
 
         const queryParams = new URLSearchParams(location.search);
         const NovelIdQuery = queryParams.get('NovelId');
@@ -37,6 +39,9 @@ export default function PayToRead() {
             setNovelId(NovelIdQuery);
             setChapterNumber(ChapterNoQuery);
             checkDetails(NovelIdQuery, ChapterNoQuery)
+        }
+        return () => {
+            socket.disconnect();
         }
 
     }, [])
@@ -57,6 +62,7 @@ export default function PayToRead() {
                 } else if (response.data.price) {
 
                     setPrice(response.data.price);
+                    setAuthorId(response.data.authorId)
 
                 } else {
                     navigate(`${readNovel}?NovelId=${novelId}&number=${chapterNo}`);
@@ -92,6 +98,7 @@ export default function PayToRead() {
                 const response = await PayToReadPostAPI(body);
                 if (response.data.status) {
                     toast.success(response.data.message);
+                    socket.emit("notification_purchase", authorId);
                     navigate(`${readNovel}?NovelId=${novelId}&number=${chapterNumber}`);
 
                 } else {
