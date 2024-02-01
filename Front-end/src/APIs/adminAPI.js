@@ -1,7 +1,6 @@
 import axios from '../util/axios'
 //---------------------------------
 const adminToken = localStorage.getItem('adminToken')
-console.log('herte is admin token - ', adminToken)
 //------------------------------
 const configToken = {
     headers: {

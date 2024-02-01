@@ -2,6 +2,7 @@ import axios from '../util/axios'
 //---------------------------------
 
 const user = JSON.parse(localStorage.getItem('user-login'))
+const userToken = localStorage.getItem('user-Token')
 const userId = user?.id;
 
 //------------------------------
@@ -9,7 +10,7 @@ const userId = user?.id;
 const configToken = {
     headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + user?.token
+        Authorization: "Bearer " + userToken
     },
     withCredentials: true
 }
@@ -23,7 +24,7 @@ const config = {
 const configFormData = {
     headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: "Bearer " + user?.token
+        Authorization: "Bearer " + userToken
     }
 }
 //.....................................................................
@@ -46,6 +47,8 @@ export const userSignUpPostAPI = (body) => axios.post('/signup', body, config);
 export const userLoginPostAPI = (body) => axios.post('/login', body, config);
 export const userGoogleLoginAPI = (accessToken) => axios.post('/login', { googleAccessToken: accessToken });
 export const verifyOtpPostAPI = (body) => axios.post('/verifyUserOtp', body, config);
+export const resendOtpAPI = (email) => axios.post('/resend-otp', { email }, config);
+
 export const getFilteredNovelsAPI = (body) => axios.post('/filterNovels-user', body, configToken);
 export const RatingPostAPI = (body) => axios.post('/rateNovel', body, configToken);
 export const addNovelToLibraryAPI = (novelId) => axios.post('/add-To-library', { novelId, userId }, configToken);

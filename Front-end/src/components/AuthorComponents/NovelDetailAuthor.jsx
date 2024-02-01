@@ -218,7 +218,7 @@ export default function NovelDetailAuthor() {
 
                                     {/* READ NOW AND ADD TO LIBRARY BUTTONS */}
                                     {
-                                        item.status !== "cancelled" ?
+                                        item.status !== "cancelled" && item.status !== "rejected" ?
                                             <div className='md:w-3/4 flex gap-1.5 mt-3 w-full'>
 
                                                 <button className='bg-blue-500 hover:bg-gray-500 poppins2 p-2
@@ -243,7 +243,7 @@ export default function NovelDetailAuthor() {
 
                                             </div> : <div className='md:w-3/4 flex gap-1.5 mt-3 w-full text-red-600 
                                             font-bold tracking-wider text-2xl'>
-                                                THIS NOVEL IS CANCELLED
+                                                {item.status === "cancelled" ? 'THIS NOVEL IS CANCELLED' : 'THIS NOVEL IS REJECTED'}
                                             </div>
                                     }
                                     {/* READ NOW AND ADD TO LIBRARY BUTTONS END*/}

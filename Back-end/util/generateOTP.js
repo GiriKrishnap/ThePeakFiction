@@ -21,14 +21,16 @@ const transporter = nodemailer.createTransport({
 const sendOtp = async (email) => {
     try {
 
-        const generatedOtp = Math.floor(1000 + Math.random() * 9000);
+        const deleteOtp = await OtpModel.deleteOne({ email: email });
 
+        const generatedOtp = Math.floor(1000 + Math.random() * 9000);
         await OtpModel.create({
             email: email,
             otp: generatedOtp,
             createdAt: new Date()
         })
 
+        //....................................................................................
 
 
         const mailOptions = {
@@ -53,6 +55,8 @@ const sendOtp = async (email) => {
         console.log("catch error on sendOtp - ", error.message);
     }
 }
+
+//....................................................................................
 
 const changePasswordEmail = async (email, link) => {
     try {

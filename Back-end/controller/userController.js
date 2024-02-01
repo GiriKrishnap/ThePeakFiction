@@ -5,8 +5,6 @@ const axios = require("axios")
 
 //-MODELS---------------------------------------------------
 const UserModel = require('../model/UserModel');
-const NovelModel = require('../model/novelModel');
-const GenreModel = require('../model/genreModel');
 const WalletModel = require('../model/walletModel');
 const OtpModel = require('../model/otpModel');
 //----------------------------------------------------------
@@ -115,7 +113,7 @@ module.exports = {
                             maxAge: 900000, // Set expiration time (in milliseconds)
                         });
 
-                        res.json({ status: true, message: 'Login successful', details });
+                        res.json({ status: true, message: 'Login successful', details, token });
                     }
 
                 })
@@ -164,7 +162,7 @@ module.exports = {
                             withCredentials: true
                         });
 
-                        res.json({ status: true, message: 'Login successful', details });
+                        res.json({ status: true, message: 'Login successful', details, token });
                     }
                 }
             }
@@ -326,6 +324,21 @@ module.exports = {
         } catch (error) {
             res.status(400).json({ status: false, message: 'server catch error :: editProfile' });
             console.log('catch error :: editProfile', error.message);
+        }
+    },
+
+    //....................................................................................
+
+    resendOtp: async (req, res) => {
+        try {
+
+            const { email } = req.body;
+            sendOtp(email);
+            res.json({ status: true, message: 'check your email' });
+
+        } catch (error) {
+            res.status(400).json({ status: false, message: 'server catch error :: resendOtp' });
+            console.log('catch error :: resendOtp', error.message);
         }
     }
 
