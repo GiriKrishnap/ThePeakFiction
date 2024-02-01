@@ -1,10 +1,6 @@
-// SocketContext.js (using React Context)
-// SocketContext.js
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import io from 'socket.io-client';
-import { Login } from './constants';
-import { useNavigate } from 'react-router-dom';
 //.............................................................................
 
 const SocketContext = createContext(null);

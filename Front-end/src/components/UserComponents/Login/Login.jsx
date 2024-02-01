@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import './Login.css'
 import { Link, useNavigate } from 'react-router-dom';
 import { Signup, VerifyOptPageUrl, readerHome } from '../../../util/constants';
-import { changePasswordRequestAPI, userGoogleLoginAPI, userLoginPostAPI } from '../../../APIs/userAPI';
 import toast from 'react-hot-toast';
+import axios from '../../../util/axios'
 //.........................................................................
 import { useGoogleLogin } from '@react-oauth/google';
 
@@ -15,7 +15,7 @@ export default function Login() {
     const handleGoogleLoginSuccess = async (tokenResponse) => {
 
         const accessToken = tokenResponse.access_token;
-        const response = await userGoogleLoginAPI(accessToken);
+        const response = await axios.post('/login', { googleAccessToken: accessToken });
 
         if (response.data.status) {
 
@@ -93,7 +93,8 @@ export default function Login() {
                         password
                     })
 
-                    const response = await userLoginPostAPI(body);
+                    const response = await axios.post('/login', body,
+                        { headers: { "Content-Type": "application/json" } });
 
                     if (response.data.status) {
 
@@ -160,7 +161,8 @@ export default function Login() {
                     email: email
                 }
 
-                const response = await changePasswordRequestAPI(body);
+                const response = await axios.post('/changePassword-request', body,
+                    { headers: { "Content-Type": "application/json" } });
                 if (response.data.status) {
 
                     toast.success('Check Your Mail', { icon: "😼✉" })

@@ -44,8 +44,8 @@ export const getCommunityAPI = (userId) => axios.get(`/get-community?userId=${us
 
 
 export const userSignUpPostAPI = (body) => axios.post('/signup', body, config);
-export const userLoginPostAPI = (body) => axios.post('/login', body, config);
-export const userGoogleLoginAPI = (accessToken) => axios.post('/login', { googleAccessToken: accessToken });
+// export const userLoginPostAPI = (body) => axios.post('/login', body, config);
+// export const userGoogleLoginAPI = (accessToken) =>
 export const verifyOtpPostAPI = (body) => axios.post('/verifyUserOtp', body, config);
 export const resendOtpAPI = (email) => axios.post('/resend-otp', { email }, config);
 

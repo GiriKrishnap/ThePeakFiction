@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { Login, authorHome, filter, getUpdatedUrl, myLibraryUrl, profileUrl, trendingUrl } from '../../../util/constants';
 import toast from 'react-hot-toast';
 import { useSocket } from '../../../util/NotifiSoketContext';
+
 //...........................................................................................
 
 const navigationObj = [
@@ -65,7 +66,6 @@ export default function Header({ name }) {
         } else {
             setIsAuthor(user.isAuthor);
         }
-
     }, [])
 
 

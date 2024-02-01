@@ -233,7 +233,7 @@ export default function NovelManagement() {
                                                     <p className="py-4 inline text-md font-medium
                                                      text-blue-400 poppins">
                                                         Status:</p> {novel.status} <br />
-                                                        
+
                                                     <p className='text-red-500 font-mono'>
                                                         {novel.status === 'reject' ? '' : novel.reason}
                                                     </p>
