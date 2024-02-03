@@ -94,8 +94,8 @@ module.exports = {
                         res.json({ status: false, message: 'Email Not Verified', need_verify: true });
 
                     } else {
-
-                        const token = generateToken(emailExist._id);
+                        const role = emailExist.is_Author ? 'author' : 'reader'
+                        const token = generateToken(emailExist._id, role);
 
                         const details = {
                             id: emailExist._id,
@@ -143,7 +143,8 @@ module.exports = {
 
                     } else {
 
-                        const token = generateToken(emailExist._id);
+                        const role = emailExist.is_Author ? 'author' : 'reader'
+                        const token = generateToken(emailExist._id, role);
 
                         const details = {
 
@@ -155,7 +156,7 @@ module.exports = {
                         }
 
 
-                        res.cookie('ACCESS_TOKEN', token, {
+                        res.cookie('access_token', token, {
                             httpOnly: false, // Prevent client-side JavaScript access
                             sameSite: 'None', // Mitigate CSRF attacks
                             maxAge: 7 * 24 * 60 * 60 * 1000, // Set expiration time (in milliseconds)

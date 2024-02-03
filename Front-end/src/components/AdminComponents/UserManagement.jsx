@@ -27,7 +27,6 @@ export default function UserManagement() {
 
                 setUsers(response.data.users);
             } else {
-
                 toast.error('res.status is false');
             }
 

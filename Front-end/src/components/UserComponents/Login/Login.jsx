@@ -20,7 +20,7 @@ export default function Login() {
         if (response.data.status) {
 
             localStorage.setItem('user-login', JSON.stringify(response.data.details));
-            localStorage.setItem('user-Token', response.data.token);
+            localStorage.setItem('token', response.data.token);
 
             toast.error(response.data.message, {
                 icon: '😼✔', style: {
@@ -100,7 +100,7 @@ export default function Login() {
                     if (response.data.status) {
 
                         localStorage.setItem('user-login', JSON.stringify(response.data.details));
-                        localStorage.setItem('user-Token', response.data.token);
+                        localStorage.setItem('token', response.data.token);
 
                         toast.error(response.data.message, {
                             icon: '😼✔', style: {

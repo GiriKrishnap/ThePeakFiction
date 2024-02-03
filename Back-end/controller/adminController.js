@@ -25,7 +25,7 @@ module.exports = {
 
             } else {
 
-                const adminToken = generateToken(email);
+                const adminToken = generateToken(email, 'admin');
 
                 res.json({ status: true, message: 'the login is completed', adminToken });
             }
@@ -300,6 +300,7 @@ module.exports = {
             if (users && authors && novels) {
                 res.json({ status: true, users, authors, novels });
             };
+
 
         } catch (error) {
             res.status(400).json({ status: false, message: 'admin catch error server side :: adminDashboard' });

@@ -1,11 +1,8 @@
 import axios from '../util/axios'
-//---------------------------------
-const adminToken = localStorage.getItem('adminToken')
 //------------------------------
 const configToken = {
     headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + adminToken
     }
 }
 

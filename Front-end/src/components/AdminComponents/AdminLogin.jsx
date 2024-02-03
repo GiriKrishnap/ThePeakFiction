@@ -24,8 +24,9 @@ export default function AdminLogin() {
         })
         let response = await axios.post(adminLoginPost, body, { headers: { "Content-Type": "application/json" } });
         if (response.data.adminToken) {
-            localStorage.setItem("adminToken", response.data.adminToken);
+            localStorage.setItem("token", response.data.adminToken);
             navigate(adminDashboard);
+
         } else {
             Swal.fire({
                 position: 'center',
@@ -42,7 +43,7 @@ export default function AdminLogin() {
 
     useEffect(() => {
         try {
-            const adminToken = localStorage.getItem('adminToken');
+            const adminToken = localStorage.getItem('token');
             if (adminToken) {
                 navigate(adminDashboard);
             }

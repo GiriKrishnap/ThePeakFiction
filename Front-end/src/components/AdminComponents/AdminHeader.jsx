@@ -43,7 +43,7 @@ export default function AdminHeader() {
     //.........................................................................
 
     useEffect(() => {
-        const adminToken = localStorage.getItem('adminToken');
+        const adminToken = localStorage.getItem('token');
 
         if (!adminToken) {
             navigate(adminLogin);
