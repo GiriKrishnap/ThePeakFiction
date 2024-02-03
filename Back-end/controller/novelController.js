@@ -220,17 +220,20 @@ module.exports = {
 
             const { userId, rate, novelId } = req.body;
 
-
-            const existingRating = await NovelModel.findOne({
-                _id: novelId,
-                "ratings.user_id": userId
-            });
+            const existingRating = await NovelModel.findOneAndUpdate(
+                { _id: novelId, "ratings.user_id": userId },
+                { $set: { "ratings.$.rate": rate } },
+                { new: true }
+            );
 
             if (existingRating) {
 
-                return res.json({ status: false, message: 'Already rated' });
-            };
+                const totalRatings = existingRating.ratings.reduce((acc, curr) => acc + curr.rate, 0);
+                const newAverageRating = totalRatings / existingRating.ratings.length;
+                await NovelModel.updateOne({ _id: novelId }, { $set: { rate: newAverageRating.toFixed(1) } });
 
+                return res.json({ status: true, message: 'Rating Updated successfully' });
+            };
 
             const updatedNovel = await NovelModel.findByIdAndUpdate(
                 { _id: novelId },
@@ -240,10 +243,9 @@ module.exports = {
 
             const totalRatings = updatedNovel.ratings.reduce((acc, curr) => acc + curr.rate, 0);
             const newAverageRating = totalRatings / updatedNovel.ratings.length;
-
             await NovelModel.updateOne({ _id: novelId }, { $set: { rate: newAverageRating.toFixed(1) } });
 
-            res.json({ status: true, message: 'Rating added successfully' });
+            return res.json({ status: true, message: 'Rating added successfully' });
 
         } catch (error) {
             res.status(400).json({ status: false, message: 'server catch error :: addRating' });

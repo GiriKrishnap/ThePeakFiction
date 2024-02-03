@@ -62,8 +62,7 @@ export default function Chat() {
                     <div className='w-full h-full mt-5 p-2'>
                         {community.length > 0 ||
                             <p className='text-2xl text-center text-gray-400 mt-10'>
-                               Didn't Joined any Community yet.</p>}
-
+                                Didn't Joined any Community yet.</p>}
 
                         {
                             community.map((item) => (
