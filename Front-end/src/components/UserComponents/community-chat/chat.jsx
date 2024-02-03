@@ -290,7 +290,14 @@ export default function Chat() {
                                             item.user_id?._id === user_id ?
 
                                                 < div className='RIGHT_Chat m-4 md:mr-10' key={item.user_id?._id}>
-                                                    {/* <p className='font-mono text-right m-1 mr-2'>{item.user_id?.userName}</p> */}
+                                                    <p className='font-mono text-right m-1 mr-2'>
+                                                        {new Date(item.date).toLocaleDateString("en-GB")} - {new Date(item.date)
+                                                            .toLocaleTimeString('en-GB', {
+                                                                hour: '2-digit',
+                                                                minute: '2-digit',
+                                                                hour12: true,
+                                                            })}
+                                                    </p>
 
 
                                                     <div className='bg-gray-600 max-w-96 p-6 rounded-l-3xl rounded-b-3xl
@@ -309,7 +316,13 @@ export default function Chat() {
 
 
 
-                                                    <p className='font-mono m-1 ml-2'> {item.user_id?.userName}</p>
+                                                    <p className='font-mono m-1 ml-2'>
+                                                        {item.user_id?.userName} - {new Date(item.date).toLocaleDateString("en-GB")} - {new Date(item.date).toLocaleTimeString('en-GB', {
+                                                            hour: '2-digit',
+                                                            minute: '2-digit',
+                                                            hour12: true
+                                                        })}
+                                                    </p>
                                                     <div className='bg-blue-600 max-w-96 p-6 rounded-r-3xl rounded-b-3xl
                                                     shadow-2xl shadow-black float-left'>
 

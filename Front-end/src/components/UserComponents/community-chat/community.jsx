@@ -60,6 +60,10 @@ export default function Chat() {
 
                     <p className='text-center font-mono mb-5 text-xl'>All Joined Community</p>
                     <div className='w-full h-full mt-5 p-2'>
+                        {community.length > 0 ||
+                            <p className='text-2xl text-center text-gray-400 mt-10'>
+                               Didn't Joined any Community yet.</p>}
+
 
                         {
                             community.map((item) => (

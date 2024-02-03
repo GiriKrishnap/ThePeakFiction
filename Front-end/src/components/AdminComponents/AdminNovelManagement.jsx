@@ -206,61 +206,98 @@ export default function NovelManagement() {
                                             {/* Open the modal using document.getElementById('ID').showModal() method */}
 
                                             <dialog id={`my_modal_${index}`} className="modal p-6 bg-slate-700 rounded-xl
-                                             text-white w-2/5 text-left">
-                                                <div className="modal-box ">
-                                                    <img src={`${CoverUrl}/${novel._id}`}
-                                                        alt="" className='h-52 rounded-lg m-2 drop-shadow-md' />
+                                             text-white text-left w-screen">
+                                                <div className="modal-box grid grid-cols-2">
 
-                                                    <h3 className="font-bold tracking-wide mb-2 poppins text-4xl">
-                                                        {novel.title}
-                                                    </h3>
-                                                    <p className="py-4 inline text-gray-200">{novel.description}</p> <br />
+                                                    <div>
+                                                        <img src={`${CoverUrl}/${novel._id}`}
+                                                            alt="" className='h-52 rounded-lg m-2 drop-shadow-md' />
 
-                                                    <hr className='m-2 border-blue-400' />
+                                                        <h3 className="font-bold tracking-wide mb-2 poppins text-4xl">
+                                                            {novel.title}
+                                                        </h3>
+                                                        <p className="py-4 inline text-gray-200">{novel.description}</p> <br />
 
-                                                    <p className="py-4 inline text-md font-medium
+                                                        <hr className='m-2 border-blue-400' />
+
+                                                        <p className="py-4 inline text-md font-medium
                                                      text-blue-400 poppins">
-                                                        Author:</p> {novel.author_id.userName} <br />
+                                                            Author:</p> {novel.author_id.userName} <br />
 
-                                                    <p className="py-4 inline text-md font-medium poppins                                                    
+                                                        <p className="py-4 inline text-md font-medium poppins                                                    
                                                      text-blue-400">Genres:</p>
-                                                    {
-                                                        novel.genre.map((genre) => (
-                                                            <p className="py-4 inline ml-1">{genre.name}</p>
-                                                        ))
-                                                    } <br />
+                                                        {
+                                                            novel.genre.map((genre) => (
+                                                                <p className="py-4 inline ml-1">{genre.name}</p>
+                                                            ))
+                                                        } <br />
 
-                                                    <p className="py-4 inline text-md font-medium
+                                                        <p className="py-4 inline text-md font-medium
                                                      text-blue-400 poppins">
-                                                        Status:</p> {novel.status} <br />
+                                                            Status:</p> {novel.status} <br />
 
-                                                    <p className='text-red-500 font-mono'>
-                                                        {novel.status === 'reject' ? '' : novel.reason}
-                                                    </p>
+                                                        <p className='text-red-500 font-mono'>
+                                                            {novel.status === 'reject' ? '' : novel.reason}
+                                                        </p>
 
-                                                    <p className="py-4 inline text-md font-medium
+                                                        <p className="py-4 inline text-md font-medium
                                                      text-blue-400 poppins">
-                                                        Publish Date:</p> {new Date(novel.publish_date).toLocaleDateString("en-GB")} <br />
+                                                            Publish Date:</p> {new Date(novel.publish_date).toLocaleDateString("en-GB")} <br />
 
-                                                    <p className="py-4 inline text-md font-medium
+                                                        <p className="py-4 inline text-md font-medium
                                                      text-blue-400 poppins">
-                                                        InLibrary:</p> {novel.in_library} <br />
+                                                            InLibrary:</p> {novel.in_library} <br />
 
-                                                    <p className="py-4 inline text-md font-medium
+                                                        <p className="py-4 inline text-md font-medium
                                                      text-blue-400 poppins">
-                                                        Views:</p> {novel.views} <br />
+                                                            Views:</p> {novel.views} <br />
 
-                                                    <p className="py-4 inline text-md font-medium
+                                                        <p className="py-4 inline text-md font-medium
                                                      text-blue-400 poppins">
-                                                        Rate:</p> {novel.rate} <br />
+                                                            Rate:</p> {novel.rate} <br />
 
-                                                    <div className="modal-action">
-                                                        <form method="dialog">
-                                                            <button className="btn bg-blue-500 p-2 w-full 
-                                                            rounded-md mt-4 hover:bg-blue-600">Close</button>
-                                                        </form>
+
                                                     </div>
+
+                                                    {/* <<<<<<<<<<<<<<<<<NOVEL CHAPTERS>>>>>>>>>>>>>>>>> */}
+                                                    <div className='h-96 overflow-x-scroll m-7 poppins2'>
+
+                                                        <p className='font-mono text-xl '>chapters:</p>
+
+                                                        {
+                                                            novel.chapters.map((chapter) => (
+
+                                                                <div className='bg-gray-500 rounded-xl gap-5
+                                                                p-3 flex mt-4 shadow-lg place-items-center'>
+                                                                    <p className='grow ml-2'>
+                                                                        chapter {chapter.number}: {chapter.title}
+                                                                    </p>
+                                                                    <button className='bg-red-500 p-2 poppins2
+                                                                    pr-6 pl-6 rounded-lg hover:bg-red-700'>
+                                                                        list
+                                                                    </button>
+                                                                </div>
+
+                                                            ))
+                                                        }
+
+                                                        {
+                                                            novel.chapters.length > 0 ||
+                                                            <p className='text-3xl text-center mt-10'>THERE IS NO CHAPTERS</p>
+                                                        }
+
+                                                    </div>
+                                                    {/* <<<<<<<<<<<<<<<<<NOVEL CHAPTERS END>>>>>>>>>>>>>>>>> */}
+
                                                 </div>
+
+                                                <div className="modal-action">
+                                                    <form method="dialog">
+                                                        <button className="btn bg-blue-500 p-3 w-full 
+                                                            rounded-md mt-4 hover:bg-blue-600">Close</button>
+                                                    </form>
+                                                </div>
+
                                             </dialog>
 
                                             {novel.status === 'pending' ?
