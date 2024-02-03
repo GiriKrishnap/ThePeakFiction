@@ -35,6 +35,11 @@ const Wallet = new mongoose.Schema({
             require: true
         },
         //----------------
+        novelName: {
+            type: String,
+            require: true
+        },
+        //----------------
         chapterNo: {
             type: Number,
             require: true

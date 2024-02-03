@@ -1,10 +1,9 @@
-import { Fragment, useEffect, useMemo, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { Login, authorHome, filter, getUpdatedUrl, myLibraryUrl, profileUrl, trendingUrl } from '../../../util/constants';
-import toast from 'react-hot-toast';
 import { useSocket } from '../../../util/NotifiSoketContext';
 
 //...........................................................................................

@@ -396,10 +396,12 @@ module.exports = {
                 } else {
 
                     const currentDate = moment().format('YYYY-MM-DD');
+                    const novelDetails = await NovelModel.findOne({ _id: novelId })
 
                     const history = {
                         amount: price,
                         novelId: novelId,
+                        novelName: novelDetails.title,
                         chapterNo: chapterNumber,
                         date: new Date(currentDate)
                     }
@@ -411,11 +413,10 @@ module.exports = {
 
                         });
 
-                    const authorId = await NovelModel.findOne({ _id: novelId }, { _id: 0, author_id: 1 }).toString();
 
-                    console.log('HERE AUTHOR ID --> ', authorId);
+                    console.log('HERE AUTHOR ID --> ', novelDetails.author_id.toString());
 
-                    // const authorWalletUpdate = await WalletModel.updateOne({ user_id: authorId },
+                    // const authorWalletUpdate = await WalletModel.updateOne({ user_id: novelDetails.author_id },
                     //     { $inc: { walletAmount: price } });
 
                     if (walletUpdate) {
