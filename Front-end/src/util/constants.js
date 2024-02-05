@@ -29,6 +29,7 @@ export const authorNovelDetailed = '/author/Novels/detail'
 export const AuthorNovelDetails = '/author/Novels/detail'
 export const AuthorAddChapter = '/author/Novels/addChapter'
 export const AuthorEditChapter = '/author/Novels/editChapter'
+export const AuthorEditNovel = '/author/Novels/editNovel'
 
 //ADMIN
 export const adminLogin = '/admin'

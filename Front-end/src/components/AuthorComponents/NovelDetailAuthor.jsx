@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AuthorAddChapter, AuthorEditChapter, CoverUrl } from '../../util/constants';
+import { AuthorAddChapter, AuthorEditChapter, AuthorEditNovel, CoverUrl } from '../../util/constants';
 import { cancelNovelAPI, deleteChapterAPI, getNovelDetailsWithIdAPI } from '../../APIs/userAPI';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
@@ -182,6 +182,25 @@ export default function NovelDetailAuthor() {
 
     //.........................................................................
 
+    const handleEditButton = (novelId) => {
+        Swal.fire({
+            title: 'Edit This Novel?',
+            text: "Do you want to Edit?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+
+                navigate(`${AuthorEditNovel}?novelId=${novelId}`);
+            }
+        })
+    }
+
+    //.........................................................................
+
     return (
 
         <>
@@ -222,20 +241,21 @@ export default function NovelDetailAuthor() {
                                             <div className='md:w-3/4 flex gap-1.5 mt-3 w-full'>
 
                                                 <button className='bg-blue-500 hover:bg-gray-500 poppins2 p-2
-                                          text-white rounded-md pr-2 font-sans drop-shadow-lg'
+                                                         text-white rounded-md pr-2 font-sans drop-shadow-lg'
                                                     onClick={() => handleAddChapter(item._id)}>
                                                     Add Chap
                                                     <i class="fa-solid fa-square-plus m-1.5"></i>
                                                 </button>
 
                                                 <button className='bg-blue-700 hover:bg-gray-500 poppins2 p-2
-                                        text-white rounded-md pr-2 font-sans drop-shadow-lg'>
+                                                      text-white rounded-md pr-2 font-sans drop-shadow-lg'
+                                                    onClick={() => handleEditButton(item._id)}>
                                                     Edit Novel
                                                     <i class="fa-solid fa-pen-to-square m-1.5"></i>
                                                 </button>
 
                                                 <button className='bg-gray-700 hover:bg-red-700 poppins2 p-2
-                                        text-white rounded-md pr-2 font-sans drop-shadow-lg'
+                                                       text-white rounded-md pr-2 font-sans drop-shadow-lg'
                                                     onClick={() => handleCancelButton(item._id)}>
                                                     Cancel Novel
                                                     <i class="fa-solid fa-trash-can-arrow-up m-1.5"></i>

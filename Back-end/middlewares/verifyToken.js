@@ -18,8 +18,8 @@ const roles = {
     '/hideNovel': ['admin'],
     '/block-user': ['admin'],
     '/list-genre': ['admin'],
-    '/edit-genre': ['admin']
-    ,
+    '/edit-genre': ['admin'],
+
 
     '/getAuthorNovels': ['author'],
     '/getGenres': ['author', 'reader'],
@@ -29,9 +29,10 @@ const roles = {
     '/payment-Eligible-Check': ['author'],
     '/cancel-novel': ['author'],
     '/delete-chapter': ['author'],
-    '/edit-chapter': ['author']
+    '/edit-chapter': ['author'],
+    '/getNovelDetailById': ['author'],
+    '/edit-novel': ['author'],
 
-    ,
 
     '/novelWithId': ['author', 'reader'],
     '/getAllNovels-user': ['author', 'reader'],

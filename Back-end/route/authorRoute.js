@@ -14,6 +14,7 @@ const novelController = require('../controller/novelController');
 router.get('/getAuthorNovels/:id', protect, authorController.getAllAuthorNovels);
 router.get('/getGenres', protect, authorController.getAllGenresAuthor);
 router.get('/edit-chapter-details', protect, authorController.chapterEditDetails);
+router.get('/getNovelDetailById', protect, authorController.getNovelDetailById);
 
 //POST METHODS..........................................................
 router.post('/create/:title', protect, novelExistChecker, multer.single('photo'), authorController.authorCreate);
@@ -22,6 +23,7 @@ router.post('/payment-Eligible-Check', protect, authorController.paymentEligible
 router.post('/cancel-novel', protect, authorController.cancelNovel);
 router.post('/delete-chapter', protect, authorController.deleteChapter);
 router.post('/edit-chapter', protect, authorController.chapterEditPost);
+router.post('/edit-novel/:id/:title', protect, novelExistChecker, multer.single('photo'), authorController.authorEditNovel);
 
 
 module.exports = router;

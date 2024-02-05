@@ -11,7 +11,7 @@ import {
   AuthorNovelDetails, Login, PayToReadPageUrl, PaymentSuccessURL, Signup, VerifyOptPageUrl, adminAuthorManagement,
   adminDashboard, adminGenreManagement, adminLogin, adminNovelManagement, adminUserManagement, AuthorAddChapter,
   authorCreate, authorHome, authorNovels, chatPageUrl, communityPageUrl, filter, getUpdatedUrl, trendingUrl,
-  myLibraryUrl, newPasswordUrl, novelDetailedView, profileUrl, readNovel, readerHome, AuthorEditChapter,
+  myLibraryUrl, newPasswordUrl, novelDetailedView, profileUrl, readNovel, readerHome, AuthorEditChapter, AuthorEditNovel,
 } from './util/constants';
 
 
@@ -41,6 +41,7 @@ const AuthorNovelPage = lazy(() => import('./pages/AuthorPages/AuthorNovels'))
 const AuthorNovelDetailPage = lazy(() => import('./pages/AuthorPages/AuthorNovelDetailsPage'))
 const AuthorAddChapterPage = lazy(() => import('./pages/AuthorPages/AuthorAddChapterPage'))
 const EditChapterPage = lazy(() => import('./pages/AuthorPages/EditChapterPage'))
+const EditNovelPage = lazy(() => import('./pages/AuthorPages/EditNovel'))
 
 //admin pages
 const AdminLoginPage = lazy(() => import('./pages/AdminPages/adminLoginPage'))
@@ -97,6 +98,7 @@ function App() {
             <Route exact path={AuthorNovelDetails} element={<AuthorNovelDetailPage />} />
             <Route exact path={AuthorAddChapter} element={<AuthorAddChapterPage />} />
             <Route exact path={AuthorEditChapter} element={<EditChapterPage />} />
+            <Route exact path={AuthorEditNovel} element={<EditNovelPage />} />
 
 
             {/* AdminPart */}

@@ -30,7 +30,8 @@ export const getMostViewedNovelsAPI = (url) => axios.get(url, config);
 export const gridePostAPI = (url) => axios.get(`${url}?userId=${userId}`, config);
 export const getWalletAPI = () => axios.get(`/getWallet?userId=${userId}`, config);
 export const checkGCoinSystemAPI = (novelId) => axios.get(`/check-GCoinSystem?NovelId=${novelId}`, config);
-export const checkPayToReadAPI = (novelId, chapterNo, userId) => axios.get(`/checkPayToRead?novelId=${novelId}&chapterNo=${chapterNo}&userId=${userId}`, config);
+export const checkPayToReadAPI = (novelId, chapterNo, userId) =>
+    axios.get(`/checkPayToRead?novelId=${novelId}&chapterNo=${chapterNo}&userId=${userId}`, config);
 export const getAllMessageAPI = (novelId) => axios.get(`/all-message?novelId=${novelId}`, config);
 export const getCommunityAPI = (userId) => axios.get(`/get-community?userId=${userId}`, config);
 
@@ -54,7 +55,9 @@ export const joinCommunityAPI = (body) => axios.post('/join-community', body, co
 //AUTHOR
 export const getAuthorNovelsAPI = () => axios.get(`/author/getAuthorNovels/${userId}`, config);
 export const authorGetGenresAPI = () => axios.get('/author/getGenres', config);
-export const getChapterEditDetailsAPI = (novelId, chapterId) => axios.get(`/author/edit-chapter-details?novelId=${novelId}&chapterId=${chapterId}`, config);
+export const getChapterEditDetailsAPI = (novelId, chapterId) =>
+    axios.get(`/author/edit-chapter-details?novelId=${novelId}&chapterId=${chapterId}`, config);
+export const getNovelDetailByIdAPI = (novelId) => axios.get(`/author/getNovelDetailById?novelId=${novelId}`, config);
 
 
 export const cancelNovelAPI = (novelId) => axios.post('/author/cancel-novel', { novelId }, config);
@@ -63,3 +66,4 @@ export const authorNovelCreateAPI = (title, formData) => axios.post(`/author/cre
 export const authorAddChapterAPI = (body) => axios.post('/author/addChapter', body, config);
 export const paymentEligibleCheckAPI = (body) => axios.post('/author/payment-Eligible-Check', body, config);
 export const PostEditChapterAPI = (body) => axios.post('/author/edit-chapter', body, config);
+export const authorNovelEditAPI = (id, title, formData) => axios.post(`/author/edit-novel/${id}/${title}`, formData, configFormData);

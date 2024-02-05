@@ -158,17 +158,31 @@ export default function WalletComponent() {
                         <div className='flex flex-col gap-3 duration-700 overflow-y-scroll
                          bg-gray-700 rounded-b-3xl w-full max-h-96 min-h-24 drop-shadow-md p-5 poppins2'>
 
+                            {
+                                walletDetails.amountAdd.map((item) => (
 
-                            <div className='bg-gray-400 min-h-16 rounded-xl flex place-items-center
-                                             gap-5 pl-4 pr-4 poppins2'>
-                                <div className='grow text-left'>
-                                    <p className='text-5xl text-green-300'>+50</p>
-                                </div>
-                                <div className='text-right w-52'>
-                                    <p>Added to wallet</p>
-                                    <p className='text-gray-200 font-mono'>19/05/23 06:00PM</p>
-                                </div>
-                            </div>
+                                    <div className='bg-gray-400 min-h-16 rounded-xl flex place-items-center
+                                    gap-5 pl-4 pr-4 poppins2' key={item._id}>
+                                        <div className='grow text-left'>
+                                            <p className='text-5xl text-red-300'>-{item.amount}</p>
+                                        </div>
+                                        <div className='text-right w-52'>
+                                            <p>Added to wallet</p>
+                                            <p className='text-gray-200 font-mono'> {new Date(item.date).toLocaleDateString("en-GB")} - {new Date(item.date)
+                                                .toLocaleTimeString('en-GB', {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                    hour12: true,
+                                                })}</p>
+                                        </div>
+                                    </div>
+                                ))
+                            }
+
+                            {walletDetails.amountAdd.length > 0 ||
+                                <p className='mt-2 text-gray-400'>No History</p>}
+
+
                         </div>
                     </div>
                 }

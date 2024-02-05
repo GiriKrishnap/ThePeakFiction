@@ -5,13 +5,18 @@ const path = require('path');
 // Set up multer for handling file uploads
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'public/NovelCovers/');
+        console.log('multer cover - ', req.body.cover);
+        if (!req.body.cover) {
+            cb(null, 'public/NovelCovers/');
+        }
     },
     filename: function (req, file, cb) {
-        const NovelFileName = `${req.body.title}.jpeg`;
-        cb(null, NovelFileName);
+        if (!req.body.cover) {
+            const NovelFileName = `${req.body.title}.jpeg`;
+            cb(null, NovelFileName);
+        }
     },
-});
+})
 
 const upload = multer({ storage: storage });
 
