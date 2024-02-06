@@ -3,12 +3,15 @@ import { CoverUrl, Signup, authorNovelDetailed } from '../../util/constants';
 import { useNavigate } from 'react-router-dom'
 import { getAuthorNovelsAPI } from '../../APIs/userAPI';
 import toast from 'react-hot-toast';
+import { Pagination } from '@mui/material';
 
 export default function AuthorNovels() {
 
     const navigate = useNavigate();
 
     const [novels, setNovels] = useState([]);
+    const [currNovels, SetCurrNovels] = useState([]);
+    const [pageNumber, setPageNumber] = useState([]);
 
     //.........................................................................
 
@@ -40,6 +43,8 @@ export default function AuthorNovels() {
 
             if (response.data.status) {
                 setNovels(response.data.novels)
+                SetCurrNovels(response.data.novels.slice(0, 6))
+                setPageNumber(Math.ceil(response.data.novels.length / 6))
             }
 
         } catch (error) {
@@ -47,6 +52,17 @@ export default function AuthorNovels() {
             toast.error(error.message);
         }
     }
+
+    //.........................................................................
+
+    const [currPage, setCurrPage] = useState(1);
+
+    const handleChange = (event, value) => {
+
+        SetCurrNovels(novels.slice((value - 1) * 6, value * 6))
+        setCurrPage(value);
+
+    };
 
     //.........................................................................
 
@@ -64,7 +80,7 @@ export default function AuthorNovels() {
 
 
                 {/* THREE_____________ */}
-                {novels.length > 0 ? '' :
+                {currNovels.length > 0 ? '' :
                     < h1 className='font-mono text-5xl text-white text-center mt-20 mb-16'>
                         - There is No Novels <i className="fa-regular fa-face-sad-tear mt-1"></i> -
                     </h1>
@@ -72,7 +88,7 @@ export default function AuthorNovels() {
                 <div className='grid md:grid-cols-2 grid-cols-1 p-5 gap-2'>
 
                     {
-                        novels.map((item, index) => (
+                        currNovels.map((item, index) => (
 
                             <div key={item._id}>
                                 {/* -------------------NOVEL CARD---------------------------- */}
@@ -204,7 +220,17 @@ export default function AuthorNovels() {
 
                 </div>
 
+                <div className='bg-gray-800 justify-center flex p-3'>
+
+                    <Pagination count={pageNumber} page={currPage} siblingCount={2} color="primary" size='large'
+                        onChange={handleChange} />
+
+                </div>
+
             </div >
+
+
+
 
         </>
     )
