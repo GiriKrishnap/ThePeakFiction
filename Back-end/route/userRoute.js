@@ -10,8 +10,10 @@ const novelController = require('../controller/novelController');
 const communityController = require('../controller/communityController');
 
 
-//GET METHODS..........................................................
+//GET METHODS.......................................................... 
 router.get('/novelWithId/:novelId', protect, novelController.getNovelWithId);
+router.get('/getChapter', protect, novelController.getChapter);
+
 router.get('/getAllNovels-user', protect, novelController.getAllNovels);
 router.get('/get-library', protect, novelController.getLibraryNovels);
 router.get('/getMostViewed', protect, novelController.getMostViewed);

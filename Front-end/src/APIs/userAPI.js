@@ -25,7 +25,10 @@ const configFormData = {
 export const getRandomNovelAPI = () => axios.get('/getRandom', config);
 export const getAllNovelsForUsersAPI = () => axios.get('/getAllNovels-user', config);
 export const getAllGenresAPI = () => axios.get('/admin/getAllGenres', config);
+
 export const getNovelDetailsWithIdAPI = (id) => axios.get(`/novelWithId/${id}`, config);
+export const getChapterAPI = (id, number) => axios.get(`/getChapter?novelId=${id}&chapterNumber=${number}`, config);
+
 export const getMostViewedNovelsAPI = (url) => axios.get(url, config);
 export const gridePostAPI = (url) => axios.get(`${url}?userId=${userId}`, config);
 export const getWalletAPI = () => axios.get(`/getWallet?userId=${userId}`, config);

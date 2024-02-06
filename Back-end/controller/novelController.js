@@ -215,6 +215,36 @@ module.exports = {
 
     //---------------------------------------------------------
 
+    getChapter: async (req, res) => {
+        try {
+
+            const { novelId, chapterNumber } = req.query
+
+            if (novelId) {
+
+                const chapters = await NovelModel.findOne(
+                    { _id: novelId, "chapters.number": chapterNumber },
+                    { "chapters.$": 1 }
+                );
+
+                if (chapters) {
+                    res.json({ status: true, chapter: chapters.chapters[0] });
+                } else {
+                    res.json({ status: false, message: 'No Chapter' });
+                }
+
+            } else {
+                res.status(400);
+            }
+
+        } catch (error) {
+            res.status(400).json({ status: false, message: 'catch error ::getNovelWithId server-side' })
+            console.log('catch error ::getNovelWithId - ', error.message)
+        }
+    },
+
+    //---------------------------------------------------------
+
     addRating: async (req, res) => {
         try {
 
@@ -340,8 +370,6 @@ module.exports = {
 
             const { novelId, chapterNo, userId } = req.query
 
-            console.log('\n\ncheckPayToReadChapterNo - ', chapterNo, '\n');
-
             const walletData = await WalletModel.findOne({ user_id: userId });
 
             const alreadyPaid = walletData.amountUse.find(obj => obj.novelId === novelId);
@@ -357,8 +385,6 @@ module.exports = {
                     { _id: novelId, "chapters.number": chapterNo },
                     { "chapters.$": 1, author_id: 1 }
                 );
-
-
 
 
                 if (chapter) {

@@ -55,6 +55,7 @@ const roles = {
     '/edit-profile': ['author', 'reader'],
     '/PayToReadPost': ['author', 'reader'],
     '/join-community': ['author', 'reader'],
+    '/getChapter': ['author', 'reader'],
 
 };
 

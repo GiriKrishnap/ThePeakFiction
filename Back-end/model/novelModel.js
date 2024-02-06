@@ -112,3 +112,6 @@ const novelSchema = mongoose.Schema({
 })
 
 module.exports = mongoose.model('NovelsData', novelSchema);
+
+
+
