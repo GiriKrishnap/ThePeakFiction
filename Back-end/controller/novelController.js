@@ -340,6 +340,8 @@ module.exports = {
 
             const { novelId, chapterNo, userId } = req.query
 
+            console.log('\n\ncheckPayToReadChapterNo - ', chapterNo, '\n');
+
             const walletData = await WalletModel.findOne({ user_id: userId });
 
             const alreadyPaid = walletData.amountUse.find(obj => obj.novelId === novelId);

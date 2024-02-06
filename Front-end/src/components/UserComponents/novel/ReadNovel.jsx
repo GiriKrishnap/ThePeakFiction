@@ -19,6 +19,7 @@ export default function ReadNovel() {
     const [darkMode, setDarkMode] = useState(true);
     const [novel, setNovel] = useState([]);
     const [chapterNumber, setChapterNumber] = useState([]);
+    const [loading, setLoading] = useState(true)
 
     //.........................................................................
 
@@ -26,40 +27,15 @@ export default function ReadNovel() {
 
         const queryParams = new URLSearchParams(location.search);
         const NovelId = queryParams.get('NovelId');
-        const Number = queryParams.get('number');
-
 
         if (!NovelId) {
             navigate(-1)
         } else {
 
             getNovelWithId(NovelId);
-            checkDetails(NovelId, Number)
         }
 
     }, [chapterNumber])
-
-    //.........................................................................
-
-
-    const checkDetails = async (novelId, chapterNo) => {
-        try {
-            if (novel[0]?.gcoin > 0) {
-
-                const userId = JSON.parse(localStorage.getItem("user-login")).id;
-
-                const response = await checkPayToReadAPI(novelId, chapterNo, userId);
-
-                if (response.data.status) {
-                    if (!response.data.paid) {
-                        navigate(`/pay-to-read?NovelId=${novelId}&ChapterNo=${chapterNo}`);
-                    }
-                }
-            }
-        } catch (error) {
-            toast.error(error.message);
-        }
-    }
 
     //.........................................................................
 
@@ -71,11 +47,23 @@ export default function ReadNovel() {
             if (response.data.status) {
 
                 setNovel([response.data.novel]);
-            }
+                const queryParams = new URLSearchParams(location.search);
+                const Number = queryParams.get('number');
+                setChapterNumber(Number - 1)
 
-            const queryParams = new URLSearchParams(location.search);
-            const Number = queryParams.get('number');
-            setChapterNumber(Number - 1)
+                if (response.data.novel.chapters[Number - 1].gcoin > 0) { //check this chapter is paid or not
+
+                    const userId = JSON.parse(localStorage.getItem("user-login")).id;
+
+                    const responseData = await checkPayToReadAPI(novelId, Number, userId); //check user is paid or not
+
+                    if (responseData.data.status) {
+                        if (!responseData.data.paid) {
+                            navigate(`/pay-to-read?NovelId=${novelId}&ChapterNo=${Number}`);
+                        }
+                    }
+                }
+            }
 
         } catch (error) {
             console.log('catch error in ::getNovelWithId - ' + error.message)
@@ -178,7 +166,6 @@ export default function ReadNovel() {
                 </div>
                 {/* --------------------------BUTTONS END------------------------------ */}
 
-
             </div >
 
             <div className='bg-gray-700 p-5 mt-1 mb-1 text-white text-2xl font-mono'>
@@ -189,4 +176,4 @@ export default function ReadNovel() {
     )
 }
 
-//.........................................................................
+//.........................................................................................

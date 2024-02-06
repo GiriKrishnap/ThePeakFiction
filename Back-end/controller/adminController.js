@@ -341,10 +341,6 @@ module.exports = {
             const trendingNovel = trending[0];
             const topRatedNovel = topRated[0];
 
-
-
-
-
             if (users && authors && novels) {
                 res.json({
                     status: true, users, authors, novels,
