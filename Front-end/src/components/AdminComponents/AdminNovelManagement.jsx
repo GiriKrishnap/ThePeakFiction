@@ -272,10 +272,16 @@ export default function NovelManagement() {
                                                                     <p className='grow ml-2'>
                                                                         chapter {chapter.number}: {chapter.title}
                                                                     </p>
-                                                                    <button className='bg-red-500 p-2 poppins2
-                                                                    pr-6 pl-6 rounded-lg hover:bg-red-700'>
-                                                                        list
-                                                                    </button>
+
+                                                                    <p className='text-gray-200 font-mono mr-2'>
+                                                                        {new Date(chapter.publish_date).toLocaleDateString("en-GB")} - {new Date(chapter.publish_date)
+                                                                            .toLocaleTimeString('en-GB', {
+                                                                                hour: '2-digit',
+                                                                                minute: '2-digit',
+                                                                                hour12: true,
+                                                                            })}
+                                                                    </p>
+
                                                                 </div>
 
                                                             ))

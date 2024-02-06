@@ -22,7 +22,7 @@ export default function EditNovel() {
     const [coverPreview, setCoverPreview] = useState(null);
     const [allGenre, setAllGenre] = useState([]);
     const [selectedGenre, setSelectedGenre] = useState([]);
-    const [authorId, setAuthorId] = useState('');
+
 
     //.........................................................................
 
@@ -34,11 +34,13 @@ export default function EditNovel() {
 
         if (!user?.isAuthor) {
             navigate(Login);
+        } if (!novelId) {
+            navigate(-1)
         } else {
-            setAuthorId(user?.id)
+
+            getNovelData(novelId, user.id);
             setNovelId(novelId);
             getAllGenres();
-            getNovelData(novelId);
 
         }
 
@@ -46,12 +48,15 @@ export default function EditNovel() {
 
     //.........................................................................
 
-    const getNovelData = async (novelId) => {
+    const getNovelData = async (novelId, authorId) => {
         try {
 
             const response = await getNovelDetailByIdAPI(novelId)
             if (response.data.status) {
-                console.log('novelData is here => => ', response.data.novelData);
+                if (response.data.novelData.author_id !== authorId) {
+                    toast.error('Its Not Your Work')
+                    navigate(-1)
+                }
                 setTitle(response.data.novelData.title);
                 setDescription(response.data.novelData.description);
                 setSelectedGenre(response.data.novelData.genre);
@@ -60,6 +65,7 @@ export default function EditNovel() {
         } catch (error) {
             console.log(error);
             toast.error(error.message)
+            navigate(-1)
         }
     }
     //.........................................................................
@@ -120,7 +126,6 @@ export default function EditNovel() {
         formData.append('novelId', novelId);
 
         try {
-
 
             const response = await authorNovelEditAPI(novelId, title, formData);
 

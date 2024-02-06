@@ -2,12 +2,16 @@ import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { getDashboardDataAPI } from '../../APIs/adminAPI'
 import { PieChart } from '@mui/x-charts/PieChart';
+import { CoverUrl } from '../../util/constants';
 
 function Dashboard() {
 
     const [userNumber, setUserNumber] = useState(0);
     const [authorNumber, setAuthorNumber] = useState(0);
     const [novelsNumber, setNovelsNumber] = useState(0);
+    const [mostWatched, setMostWatched] = useState(0);
+    const [trending, setTrending] = useState(0);
+    const [topRated, setTopRated] = useState(0);
 
     useEffect(() => {
         getData();
@@ -21,6 +25,9 @@ function Dashboard() {
                 setUserNumber(response.data.users);
                 setAuthorNumber(response.data.authors);
                 setNovelsNumber(response.data.novels);
+                setMostWatched(response.data.mostWatchedNovel);
+                setTrending(response.data.trendingNovel);
+                setTopRated(response.data.topRatedNovel);
             }
 
         } catch (error) {
@@ -69,7 +76,59 @@ function Dashboard() {
 
                 </div>
 
-                <div className='mt-10 bg-gray-200 shadow-black shadow-xl'>
+
+                <div className='mt-10 pb-8 pt-5 m-3 rounded-xl bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500
+                 hover:to-blue-400 shadow-black shadow-xl grid grid-cols-3 gap-3 overflow-hidden'>
+
+                    <div className='flex flex-col justify-center place-items-center'>
+                        <p className='pb-1 font-mono text-xl'>Most Watched <i className="fa-regular fa-eye"></i></p>
+                        <div className='h-48 w-36 rounded-xl shadow-gray-900 hover:shadow-xl shadow-lg flex justify-center
+                         place-items-end pb-2 -rotate-3 hover:rotate-0 duration-500'
+                            style={mostWatched._id ? {
+                                backgroundImage: `url(${CoverUrl}/${mostWatched._id})`,
+                                backgroundSize: 'cover'
+                            } : {}}
+                        >
+                            <small className='bg-blue-700 bg-opacity-60 p-0.5 rounded'>{mostWatched.title}</small>
+                        </div>
+                    </div>
+
+
+                    <div className='flex flex-col justify-center place-items-center'>
+                        <p className='pb-1 font-mono text-xl'>Trending <i className="fa-solid fa-arrow-trend-up"></i></p>
+                        <div className='h-48 w-36 rounded-xl shadow-gray-900 hover:shadow-xl shadow-lg flex justify-center
+                         place-items-end pb-2 -rotate-3 hover:rotate-0 duration-500'
+                            style={trending._id ? {
+                                backgroundImage: `url(${CoverUrl}/${trending._id})`,
+                                backgroundSize: 'cover'
+                            } : {}}
+                        >
+                            <small className='bg-blue-700 bg-opacity-60 p-0.5 rounded'>{trending.title}</small>
+                        </div>
+                    </div>
+
+
+                    <div className='flex flex-col justify-center place-items-center'>
+                        <p className='pb-1 font-mono text-xl'>Top Rated <i className="fa-solid fa-star-half-stroke"></i> </p>
+                        <div className='h-48 w-36 rounded-xl shadow-gray-900 hover:shadow-xl shadow-lg flex justify-center
+                         place-items-end pb-2 -rotate-3 hover:rotate-0 duration-500'
+                            style={topRated._id ? {
+                                backgroundImage: `url(${CoverUrl}/${topRated._id})`,
+                                backgroundSize: 'cover'
+                            } : {}}
+                        >
+                            <small className='bg-blue-700 bg-opacity-60 p-0.5 rounded'>{topRated.title}</small>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+
+                {/* <<<<<<<<<<<<<<<<<<<<<<<CHART PART START>>>>>>>>>>>>>>>>>>>>>>> */}
+                <div className='mt-10 m-3 rounded-xl bg-gray-200 shadow-black shadow-xl'>
 
                     <PieChart
                         series={[

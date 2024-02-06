@@ -295,10 +295,61 @@ module.exports = {
 
             const users = await UserModel.countDocuments({ is_Author: false });
             const authors = await UserModel.countDocuments({ is_Author: true });
-            const novels = await NovelModel.countDocuments();
+
+            const aggregationPipeline = [
+                {
+                    $facet: {
+                        novelsCount: [
+                            {
+                                $count: "count"
+                            }
+                        ],
+                        mostWatched: [
+                            {
+                                $sort: { views: -1 }
+                            },
+                            {
+                                $limit: 1
+                            }
+                        ],
+                        trending: [
+                            {
+                                $sort: { in_library: -1 }
+                            },
+                            {
+                                $limit: 1
+                            }
+                        ],
+                        topRated: [
+                            {
+                                $sort: { rate: -1 }
+                            },
+                            {
+                                $limit: 1
+                            }
+                        ]
+                    }
+                }
+            ];
+
+            const result = await NovelModel.aggregate(aggregationPipeline);
+
+            const { novelsCount, mostWatched, trending, topRated } = result[0];
+
+            const novels = novelsCount[0] ? novelsCount[0].count : 0;
+            const mostWatchedNovel = mostWatched[0];
+            const trendingNovel = trending[0];
+            const topRatedNovel = topRated[0];
+
+
+
+
 
             if (users && authors && novels) {
-                res.json({ status: true, users, authors, novels });
+                res.json({
+                    status: true, users, authors, novels,
+                    mostWatchedNovel, trendingNovel, topRatedNovel
+                });
             };
 
 
@@ -331,8 +382,9 @@ module.exports = {
             res.status(400).json({ status: false, message: 'admin catch error server side :: adminEditGenre' });
             console.log('catch error at :: adminEditGenre adminController - ' + error.message)
         }
-    }
+    },
     ///---------------------------
+
 
 }
 
