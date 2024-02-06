@@ -81,7 +81,6 @@ module.exports = {
                 }).then(async (response) => {
 
                     const email = response.data.email;
-                    console.log("userData is here", response.data);
 
                     const emailExist = await UserModel.findOne({ email: email });
 

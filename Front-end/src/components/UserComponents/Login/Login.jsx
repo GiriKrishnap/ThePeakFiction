@@ -183,9 +183,9 @@ export default function Login() {
         <>
 
 
-            <div className='flex justify-center h-full place-items-center text-black select-none'>
+            <div className='flex justify-center place-items-center text-black select-none'>
 
-                <div className='md:w-1/2 w-full m-10 h-1/2 bg-white rounded-2xl drop-shadow-xl 
+                <div className='md:w-1/2 w-full md:m-9 m-5 md:h-1/2  bg-white rounded-2xl drop-shadow-xl 
                       flex flex-col justify-center place-items-center p-20 hover:shadow-2xl '>
 
                     <div className='flex'>
