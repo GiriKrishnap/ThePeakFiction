@@ -49,13 +49,13 @@ export default function ReadNovel() {
     const getChapterWithId = async (novelId, number) => {
         try {
 
-            const response = await getChapterAPI(novelId, number);
+            const userId = JSON.parse(localStorage.getItem("user-login")).id;
+            const response = await getChapterAPI(novelId, number, userId);
 
             if (response.data.status) {
 
                 if (response.data.chapter.gcoin > 0) {
 
-                    const userId = JSON.parse(localStorage.getItem("user-login")).id;
                     const responseData = await checkPayToReadAPI(novelId, number, userId);
 
                     if (responseData.data.status) {

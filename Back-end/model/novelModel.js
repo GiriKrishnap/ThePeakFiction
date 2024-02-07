@@ -71,6 +71,10 @@ const novelSchema = mongoose.Schema({
         default: 0
     },
     //..................................
+    view_data: [{
+        type: String
+    }],
+    //..................................
     is_hide: {
         type: Boolean,
         default: false

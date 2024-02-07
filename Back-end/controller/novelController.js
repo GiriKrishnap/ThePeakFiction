@@ -218,7 +218,7 @@ module.exports = {
     getChapter: async (req, res) => {
         try {
 
-            const { novelId, chapterNumber } = req.query
+            const { novelId, chapterNumber, userId } = req.query
 
             if (novelId) {
 
@@ -228,7 +228,22 @@ module.exports = {
                 );
 
                 if (chapters) {
+
+                    //update view count - - - 
+                    const exist = await NovelModel.findOne({ _id: novelId, view_data: { $in: [userId] } });
+
+                    if (!exist) {
+                        await NovelModel.updateOne(
+                            { _id: novelId }, // Match document by _id
+                            {
+                                $push: { view_data: userId }, // push userId into the view_data array
+                                $inc: { 'views': 1 } // increment the views field by 1
+                            }
+                        );
+                    }
+
                     res.json({ status: true, chapter: chapters.chapters[0] });
+
                 } else {
                     res.json({ status: false, message: 'No Chapter' });
                 }

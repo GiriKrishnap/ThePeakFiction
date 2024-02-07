@@ -27,7 +27,8 @@ export const getAllNovelsForUsersAPI = () => axios.get('/getAllNovels-user', con
 export const getAllGenresAPI = () => axios.get('/admin/getAllGenres', config);
 
 export const getNovelDetailsWithIdAPI = (id) => axios.get(`/novelWithId/${id}`, config);
-export const getChapterAPI = (id, number) => axios.get(`/getChapter?novelId=${id}&chapterNumber=${number}`, config);
+export const getChapterAPI = (id, number, userId) =>
+    axios.get(`/getChapter?novelId=${id}&chapterNumber=${number}&userId=${userId}`, config);
 
 export const getMostViewedNovelsAPI = (url) => axios.get(url, config);
 export const gridePostAPI = (url) => axios.get(`${url}?userId=${userId}`, config);
