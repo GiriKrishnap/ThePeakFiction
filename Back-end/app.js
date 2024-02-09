@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, 'novelCovers')));
 
 const userRoute = require('./route/userRoute');
 const adminRoute = require('./route/adminRoute');
-const authorRoute = require('./route/AuthorRoute');
+const authorRoute = require('./route/authorRoute');
 
 //Routes...........................................................
 
