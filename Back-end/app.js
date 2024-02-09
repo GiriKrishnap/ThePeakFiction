@@ -12,7 +12,12 @@ const http = require("http");
 dbConnect()
 //................................................................
 
-app.use(cors({ credentials: true, origin: 'https://thepeakfiction.vercel.app/' }));
+app.use(
+    cors({
+        origin: 'https://thepeakfiction.vercel.app',
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+        credentials: true,
+    }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
