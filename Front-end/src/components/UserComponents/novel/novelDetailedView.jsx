@@ -39,6 +39,7 @@ export default function NovelDetailedView() {
 
     const [novel, setNovel] = useState([]);
     const [rate, setRate] = useState(0);
+    const [inLibrary, setInLibrary] = useState(false);
 
     //.........................................................................
 
@@ -66,6 +67,8 @@ export default function NovelDetailedView() {
 
                 setNovel([response.data.novel]);
                 setRate([response.data.novel.rate]);
+                // setInLibrary(response.data.inLibrary)
+
             } else {
                 navigate(readerHome)
                 toast.error('not found');
@@ -136,6 +139,9 @@ export default function NovelDetailedView() {
                             borderRadius: '17px',
                         }
                     });
+
+                    setInLibrary(true)
+
                 } else {
                     toast(response.data.message, {
                         icon: '📤',
@@ -144,6 +150,8 @@ export default function NovelDetailedView() {
                             borderRadius: '17px',
                         }
                     });
+
+                    setInLibrary(false)
                 }
 
             } else {
@@ -212,8 +220,16 @@ export default function NovelDetailedView() {
                                     <button className='bg-gray-700 hover:bg-blue-700 poppins2 p-1.5
                                    text-white rounded-md pr-2 font-sans w-full drop-shadow-lg'
                                         onClick={() => addToLibrary(item._id)}>
-                                        Add To Library
-                                        <i className="fa-solid fa-circle-plus m-1.5"></i>
+                                        {!inLibrary ?
+                                            <p>
+                                                Add To Library<i className="fa-solid fa-circle-plus m-1.5"></i>
+                                            </p>
+                                            :
+                                            <p>
+                                                remove Library <i className="fa-solid fa-circle-minus m-1.5"></i>
+                                            </p>
+                                        }
+
                                     </button>
 
                                 </div>
