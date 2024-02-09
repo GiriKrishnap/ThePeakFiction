@@ -1,5 +1,5 @@
-export const baseUrl = "http://localhost:4000/";
-export const CoverUrl = "http://localhost:4000/admin/image";
+export const baseUrl = "https://pureglow.live/";
+export const CoverUrl = "https://pureglow.live/admin/image";
 
 
 export const Login = '/'
