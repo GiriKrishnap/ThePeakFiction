@@ -252,7 +252,7 @@ module.exports = {
                     })
 
                     if (token) {
-                        const link = `http://localhost:3000/new-password?token=${token}`;
+                        const link = `https://thepeakfiction.vercel.app/new-password?token=${token}`;
                         changePasswordEmail(email, link);
                         res.json({ status: true });
                     }

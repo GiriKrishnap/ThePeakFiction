@@ -52,7 +52,7 @@ export default function WalletComponent() {
         const headers = {
             "Content-Type": "application/json"
         }
-        const response = await fetch("http://https://thepeakfiction.vercel.app/create-payment-intent", {
+        const response = await fetch("https://pureglow.live/create-payment-intent", {
             method: "POST",
             headers: headers,
             body: JSON.stringify(body)

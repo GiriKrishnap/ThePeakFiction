@@ -11,8 +11,6 @@ const NovelModel = require('../model/novelModel');
 const WalletModel = require('../model/walletModel');
 ///---------------------------
 
-const YOUR_DOMAIN = 'http://localhost:3000/profile';
-
 
 module.exports = {
 
@@ -40,12 +38,12 @@ module.exports = {
                 ],
                 mode: 'payment',
 
-                success_url: `http://localhost:3000/profile/success?sessionId={CHECKOUT_SESSION_ID}`,
-                cancel_url: `http://localhost:3000/profile`,
+                success_url: `https://thepeakfiction.vercel.app/profile/success?sessionId={CHECKOUT_SESSION_ID}`,
+                cancel_url: `https://thepeakfiction.vercel.app/profile`,
 
             });
 
-            session.success_url = `http://localhost:3000/profile/success?sessionId=${session.id}`
+            session.success_url = `https://thepeakfiction.vercel.app/profile/success?sessionId=${session.id}`
             console.log(session);
 
             res.json({ id: session.id });

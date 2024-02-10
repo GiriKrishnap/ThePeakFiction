@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 
 const initializeSocket = () => {
-    const socket = io.connect("https://thepeakfiction.vercel.app");
+    const socket = io.connect("https://pureglow.live");
     return socket;
 };
 
