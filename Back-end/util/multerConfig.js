@@ -6,6 +6,7 @@ const path = require('path');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         console.log('multer cover - ', req?.body?.cover);
+        console.log(__dirname);
         if (!req.body.cover) {
             console.log("hello -------------------")
             cb(null, 'public/NovelCovers/');
