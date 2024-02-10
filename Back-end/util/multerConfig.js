@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
             console.log('No file received');
             return cb(new Error('No file received'));
         }
-        cb(null, 'public/NovelCovers/');
+        cb(null, path.join(__dirname, 'public', 'NovelCovers'));
     },
     filename: function (req, file, cb) {
         // Handle potential errors
