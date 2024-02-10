@@ -18,6 +18,7 @@ const storage = multer.diskStorage({
         }
         // Dynamically determine file extension based on MIME type
         const fileExtension = file.mimetype.split('/')[1];
+        console.log(fileExtension);
         const novelFileName = `${req.body.title}.${fileExtension}`;
         cb(null, novelFileName);
     }
