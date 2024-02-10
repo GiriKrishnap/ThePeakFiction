@@ -18,6 +18,7 @@ const novelExistChecker = async (req, res, next) => {
 
     } else {
 
+        console.log('....title in novelMiddleware - ', req.params.title);
         const checkExist = await NovelModel.findOne({ title: req.params.title });
 
         if (checkExist) {

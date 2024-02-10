@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
             console.log('No file received');
             return cb(new Error('No file received'));
         }
-        cb(null, '/Back-end/public/NovelCovers/');
+        cb(null, 'public/NovelCovers/');
     },
     filename: function (req, file, cb) {
         // Handle potential errors
@@ -22,6 +22,8 @@ const storage = multer.diskStorage({
         const fileExtension = file.mimetype.split('/')[1];
         console.log(fileExtension);
         const novelFileName = `${req.body.title}.${fileExtension}`;
+        console.log('file name is here - ', novelFileName);
+
         cb(null, novelFileName);
     }
 });
