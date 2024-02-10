@@ -52,8 +52,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
     pingTimeout: 60000,
     cors: {
-        origin: "https://thepeakfiction.vercel.app",
-        methods: ["GET", "POST"],
+        origin: "*"
     },
 });
 
