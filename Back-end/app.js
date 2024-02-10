@@ -14,7 +14,7 @@ dbConnect()
 
 app.use(
     cors({
-        origin: 'https://thepeakfiction.vercel.app',
+        origin: "https://thepeakfiction.vercel.app",
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
         credentials: true,
     }));
@@ -52,7 +52,8 @@ const server = http.createServer(app);
 const io = new Server(server, {
     pingTimeout: 60000,
     cors: {
-        origin: "*"
+        origin: "https://thepeakfiction.vercel.app",
+        methods: ["GET", "POST"],
     },
 });
 
