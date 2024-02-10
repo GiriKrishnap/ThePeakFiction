@@ -15,11 +15,15 @@ module.exports = {
     authorCreate: async (req, res) => {
         try {
 
+            console.log(' - here at authorCreate - ');
+
             const { title, description, authorId } = req.body;
 
             const CoverPath = req.file.path;
             const genre = req.body.genre.split(',')
             const currentDate = moment().format('YYYY-MM-DD');
+
+            console.log("CoverPath - ", CoverPath)
 
             const novelCreate = await NovelModel.create({
 
@@ -32,6 +36,7 @@ module.exports = {
                 author_id: authorId
 
             })
+            
             if (novelCreate) {
 
                 await CommunityModel.create({

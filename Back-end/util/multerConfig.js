@@ -7,6 +7,7 @@ const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         // Handle potential errors
         if (!file) {
+            console.log('No file received');
             return cb(new Error('No file received'));
         }
         cb(null, 'public/NovelCovers/');
@@ -14,6 +15,7 @@ const storage = multer.diskStorage({
     filename: function (req, file, cb) {
         // Handle potential errors
         if (!file || !req.body.title) {
+            console.log('Invalid file or missing title')
             return cb(new Error('Invalid file or missing title'));
         }
         // Dynamically determine file extension based on MIME type
