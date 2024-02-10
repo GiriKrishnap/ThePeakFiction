@@ -23,7 +23,7 @@ export const SocketProvider = ({ children }) => {
         const user = JSON.parse(localStorage.getItem('user-login'));
         if (user) {
             // Initialize socket connection
-            const newSocket = io('http://localhost:4000');
+            const newSocket = io('https://thepeakfiction.vercel.app');
 
             // Set socket instance in state
             setSocket(newSocket);

@@ -15,7 +15,7 @@ export default function PayToRead() {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const socket = useMemo(() => io('http://localhost:4000'), [])
+    const socket = useMemo(() => io('https://thepeakfiction.vercel.app'), [])
 
     //.........................................................................
 
