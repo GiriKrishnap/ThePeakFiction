@@ -264,7 +264,9 @@ module.exports = {
 
                 fs.rename(oldFilePath, newFilePath,
                     (err) => {
-                        if (err) throw err;
+                        if (err) {
+                            console.log("error on rename", err);
+                        }
                         console.log(' ------- Rename complete! --------- ');
                     });
 
