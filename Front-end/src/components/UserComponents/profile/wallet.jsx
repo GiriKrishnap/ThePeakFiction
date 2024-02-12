@@ -12,8 +12,6 @@ export default function WalletComponent() {
     const [isAddHistory, setIsAddHistory] = useState(false);
     const [isSpendHistory, setIsSpendHistory] = useState(false);
     const [walletDetails, setWalletDetails] = useState({});
-    const [AddHistory, setAddHistory] = useState([]);
-    const [spendHistory, setSpendHistory] = useState([]);
 
     //.........................................................................
 
@@ -23,10 +21,6 @@ export default function WalletComponent() {
             const response = await getWalletAPI();
             if (response.data.status) {
                 setWalletDetails(response.data.walletDetails);
-
-                setAddHistory(response.data.walletDetails?.amountAdd?.sort((a, b) => b - a));
-                setSpendHistory(response.data.walletDetails?.amountAdd?.sort((a, b) => b - a));
-
                 console.log(response.data.walletDetails)
             } else {
                 toast.error("status is false");
@@ -165,7 +159,7 @@ export default function WalletComponent() {
                          bg-gray-700 rounded-b-3xl w-full max-h-96 min-h-24 drop-shadow-md p-5 poppins2'>
 
                             {
-                                AddHistory.map((item) => (
+                                walletDetails.amountAdd.map((item) => (
 
                                     <div className='bg-gray-400 min-h-16 rounded-xl flex place-items-center
                                     gap-5 pl-4 pr-4 poppins2' key={item._id}>
@@ -185,7 +179,7 @@ export default function WalletComponent() {
                                 ))
                             }
 
-                            {AddHistory.length > 0 ||
+                            {walletDetails.amountAdd.length > 0 ||
                                 <p className='mt-2 text-gray-400'>No History</p>}
 
 
@@ -204,7 +198,7 @@ export default function WalletComponent() {
                          bg-gray-700 rounded-b-3xl w-full max-h-96 min-h-24 drop-shadow-md p-5 poppins2'>
 
                             {
-                                spendHistory.map((item) => (
+                                walletDetails.amountUse.map((item) => (
 
                                     <div className='bg-gray-400 min-h-16 rounded-xl flex place-items-center
                                     gap-5 pl-4 pr-4 poppins2' key={item._id}>
@@ -224,7 +218,7 @@ export default function WalletComponent() {
                                 ))
                             }
 
-                            {spendHistory.length > 0 ||
+                            {walletDetails.amountUse.length > 0 ||
                                 <p className='mt-2 text-gray-400'>No History</p>}
 
 
