@@ -146,7 +146,7 @@ module.exports = {
 
                 if (novel) {
 
-                    const imagePath = path.join(__dirname, '..', novel.cover);
+                    const imagePath = path.join(__dirname, novel.cover);
                     res.contentType('image/jpeg');
                     res.sendFile(imagePath);
 
