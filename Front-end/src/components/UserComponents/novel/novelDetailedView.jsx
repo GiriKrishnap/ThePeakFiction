@@ -182,7 +182,7 @@ export default function NovelDetailedView() {
 
 
                 < div className='bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))]
-            from-gray-600 via-gray-700 to-gray-800 m-1 p-2' key={item._id}>
+            from-gray-600 via-gray-700 to-gray-800 m-1 p-2 min-h-96' key={item._id}>
 
                     {/*--------------------- NOVEL DETAILS -----------------*/}
                     <div className='m-3 p-1 md:flex-row flex flex-col gap-5'>
