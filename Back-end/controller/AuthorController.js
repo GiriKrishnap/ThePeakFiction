@@ -1,7 +1,3 @@
-const jwt = require('jsonwebtoken');
-const multer = require('multer');
-const bcrypt = require('bcrypt');
-const moment = require('moment');
 const fs = require('fs');
 //-MODELS--------------------------------------------------
 const GenreModel = require('../model/genreModel');
@@ -21,7 +17,6 @@ module.exports = {
 
             const CoverPath = req.file.path;
             const genre = req.body.genre.split(',')
-            const currentDate = moment().format('YYYY-MM-DD');
 
             console.log("CoverPath - ", CoverPath)
 
@@ -31,8 +26,8 @@ module.exports = {
                 description: description,
                 cover: CoverPath,
                 genre: genre,
-                publish_date: new Date(currentDate),
-                updated_date: new Date(currentDate),
+                publish_date: new Date(),
+                updated_date: new Date(),
                 author_id: authorId
 
             })
@@ -258,7 +253,6 @@ module.exports = {
             let new_coverPath = null;
             const CoverPath = req.file?.path || null
             const genre = req.body.genre.split(',')
-            const currentDate = moment().format('YYYY-MM-DD');
 
             const oldData = await NovelModel.findOne({ _id: novelId }, { _id: 0, title: 1, cover: 1 });
 
@@ -290,7 +284,7 @@ module.exports = {
             const updatedFields = {
                 title: title,
                 description: description,
-                updated_date: new Date(currentDate),
+                updated_date: new Date(),
             };
 
             if (CoverPath) {
