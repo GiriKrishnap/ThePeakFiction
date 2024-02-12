@@ -74,15 +74,21 @@ module.exports = {
         try {
             const { NovelId, title, content, gcoin, chapterNumber } = req.body;
 
+            const currentDate = new Date();
+
             const obj = {
                 number: chapterNumber,
                 title,
                 content,
-                publish_date: new Date(),
+                publish_date: currentDate,
                 gcoin: gcoin || 0
             }
 
-            NovelModel.updateOne({ _id: NovelId }, { $push: { chapters: obj }, $inc: { chapter_count: 1 } }).then(() => {
+            NovelModel.updateOne({ _id: NovelId }, {
+                $push: { chapters: obj },
+                $inc: { chapter_count: 1 },
+                $set: { updated_date: currentDate }
+            }).then(() => {
                 res.json({ status: true, message: 'created' })
             })
 
