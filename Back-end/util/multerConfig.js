@@ -54,7 +54,7 @@ const storage = multer.diskStorage({
             cb(null, NovelFileName);
         }
     },
-})
+}, { mkdirs: true })
 
 const upload = multer({ storage: storage });
 
