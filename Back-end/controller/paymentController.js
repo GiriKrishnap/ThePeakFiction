@@ -54,23 +54,32 @@ module.exports = {
         }
     },
     ///---------------------------
-    confirmPayment: async (req, res) => { 
+    confirmPayment: async (req, res) => {
 
         try {
 
             const { sessionId, userId } = req.body;
 
             const session = await stripe.checkout.sessions.retrieve(sessionId);
-            console.log(session)
 
             if (session.payment_status === 'paid') {
 
                 console.log('the payment is successful ⭐⭐⭐⭐');
+
+                let history = {
+                    amountAdd: session.amount_total / 100,
+                    date: new Date()
+                };
+
                 await WalletModel.updateOne(
                     { user_id: userId },
-                    { $inc: { walletAmount: session.amount_total / 100 } },
+                    {
+                        $inc: { walletAmount: session.amount_total / 100 },
+                        $push: { amountAdd: history }
+                    },
                     { upsert: true }
                 );
+
                 res.json({ status: true, message: 'Wallet Updated' });
 
             } else {
