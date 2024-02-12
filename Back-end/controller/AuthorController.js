@@ -36,7 +36,7 @@ module.exports = {
                 author_id: authorId
 
             })
-            
+
             if (novelCreate) {
 
                 await CommunityModel.create({
@@ -264,8 +264,8 @@ module.exports = {
 
             if (!CoverPath && oldData.title !== title) {
 
-                const oldFilePath = path.join(__dirname, '..', 'public', 'NovelCovers', `${oldData.title}.jpeg`);
-                const newFilePath = path.join(__dirname, '..', 'public', 'NovelCovers', `${title}.jpeg`);
+                const oldFilePath = path.join(__dirname, '..', 'public', 'novelCovers', `${oldData.title}.jpeg`);
+                const newFilePath = path.join(__dirname, '..', 'public', 'novelCovers', `${title}.jpeg`);
 
                 fs.rename(oldFilePath, newFilePath,
                     (err) => {
@@ -275,11 +275,11 @@ module.exports = {
                         console.log(' ------- Rename complete! --------- ');
                     });
 
-                new_coverPath = `public/NovelCovers/${title}.jpeg`
+                new_coverPath = `public/novelCovers/${title}.jpeg`
 
             } else if (CoverPath && oldData.title !== title) {
 
-                const oldFilePath = path.join(__dirname, '..', 'public', 'NovelCovers', `${oldData.title}.jpeg`);
+                const oldFilePath = path.join(__dirname, '..', 'public', 'novelCovers', `${oldData.title}.jpeg`);
 
                 fs.unlink(oldFilePath, function (err) {
                     if (err) throw err;
