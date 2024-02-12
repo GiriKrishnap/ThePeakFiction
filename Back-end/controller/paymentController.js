@@ -67,7 +67,7 @@ module.exports = {
                 console.log('the payment is successful ⭐⭐⭐⭐');
 
                 let AddHistory = {
-                    amountAdd: session.amount_total / 100,
+                    amount: session.amount_total / 100,
                     date: new Date()
                 };
 
