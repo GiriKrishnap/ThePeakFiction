@@ -45,7 +45,7 @@ const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         console.log('multer cover - ', req.body.cover);
         if (!req.body.cover) {
-            cb(null, 'public/novelCovers/');
+            cb(null, 'public/NovelCovers/');
         }
     },
     filename: function (req, file, cb) {
