@@ -146,6 +146,7 @@ module.exports = {
 
                 if (novel) {
 
+                    console.log('novelCover is here - ' , novel.cover)
                     const imagePath = path.join(__dirname, '..', 'public', novel.cover)
                     console.log('THE IMAGE PATH IS HERE - ', imagePath);
                     res.contentType('image/jpeg');
