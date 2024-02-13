@@ -7,18 +7,6 @@ import io from 'socket.io-client';
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import axios from 'axios';
-import {Cloudinary} from "@cloudinary/url-gen";
-//.........................................................................
-
-const cloudName = 'dtksuxkqf';
-const uploadPreset = 'l2f4rwfe';
-
-Cloudinary.config({
-    cloud_name: cloudName,
-    upload_preset: uploadPreset
-});
-
-
 //.........................................................................
 
 export default function Chat() {
@@ -136,13 +124,15 @@ export default function Chat() {
 
                     const formData = new FormData();
                     formData.append('file', currentImage);
+                    formData.append('upload_preset', 'l2f4rwfe'); // Replace with your upload preset
 
-                    const response = await Cloudinary.uploader.upload(formData, {
-                        resource_type: 'auto',
-                        use_filename: true // Keep original filename
-                    });
+                    const response = await axios.post(
+                        'https://api.cloudinary.com/v1_1/dtksuxkqf/image/upload',
+                        formData
+                    );
 
-                    image_url = response.secure_url
+                    const data = await response.json();
+                    image_url = data.secure_url
                     setCurrentImage(false);
                     setCoverPreview(null);
                 }
