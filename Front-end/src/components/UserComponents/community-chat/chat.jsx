@@ -127,9 +127,9 @@ export default function Chat() {
                     formData.append('upload_preset', 'l2f4rwfe'); // Replace with your upload preset
 
                     const response = await axios.post('https://api.cloudinary.com/v1_1/dtksuxkqf/image/upload', {
-                        body: formData,
+                        formData,
                     });
-                    
+
                     image_url = response.secure_url
                     setCurrentImage(false);
                     setCoverPreview(null);
