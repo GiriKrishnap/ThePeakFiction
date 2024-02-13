@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import io from 'socket.io-client';
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
+import axios from 'axios';
 //.........................................................................
 
 export default function Chat() {
@@ -125,13 +126,11 @@ export default function Chat() {
                     formData.append('file', currentImage);
                     formData.append('upload_preset', 'l2f4rwfe'); // Replace with your upload preset
 
-                    const response = await fetch('https://api.cloudinary.com/v1_1/dtksuxkqf/image/upload', {
-                        method: 'POST',
+                    const response = await axios.post('https://api.cloudinary.com/v1_1/dtksuxkqf/image/upload', {
                         body: formData,
                     });
-
-                    const data = await response.json();
-                    image_url = data.secure_url
+                    
+                    image_url = response.secure_url
                     setCurrentImage(false);
                     setCoverPreview(null);
                 }

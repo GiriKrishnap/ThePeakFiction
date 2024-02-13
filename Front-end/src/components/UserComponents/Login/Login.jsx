@@ -211,7 +211,7 @@ export default function Login() {
                         forgot your Password?
                     </p>
 
-                    <button type='submit' className='w-full p-3 mt-3 mb-1 bg-blue-400 text-white
+                    <button type='submit' className='w-full p-3 mt-3 mb-2 bg-blue-400 text-white
                         rounded-xl hover:bg-blue-950 hover:shadow-xl'
                         onClick={handleSubmit}>Login Now</button>
 
