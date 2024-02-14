@@ -115,7 +115,7 @@ export default function Chat() {
     const handleSend = async () => {
         try {
 
-            if (currentMessage.length > 0) {
+            if (currentMessage.length > 0 || currentImage) {
 
 
                 let image_url = '';
