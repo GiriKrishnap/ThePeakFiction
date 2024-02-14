@@ -62,12 +62,14 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
     console.log('connect')
     socket.on("join_room", (room) => {
+        console.log('joined - ', room);
         socket.join(room);
     });
 
     // sending new message through socket io
     socket.on("send_message", (data) => {
         const { novelId } = data;
+        console.log("message received - ", data);
         socket.to(novelId).emit("Message_received", data);
 
     });

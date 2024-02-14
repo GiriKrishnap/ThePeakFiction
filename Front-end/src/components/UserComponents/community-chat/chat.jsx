@@ -15,7 +15,7 @@ export default function Chat() {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const socket = useMemo(() => io('https://thepeakfiction.vercel.app'), [])
+    const socket = useMemo(() => io('https://pureglow.live'), [])
 
     //.........................................................................
 
