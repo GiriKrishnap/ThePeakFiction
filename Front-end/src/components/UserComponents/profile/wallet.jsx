@@ -161,10 +161,10 @@ export default function WalletComponent() {
                             {
                                 walletDetails.amountAdd.map((item) => (
 
-                                    <div className='bg-gray-400 min-h-16 rounded-xl flex place-items-center
+                                    <div className='bg-gray-400 min-h-16 rounded-xl flex place-items-center flex-row-reverse
                                     gap-5 pl-4 pr-4 poppins2' key={item._id}>
                                         <div className='grow text-left'>
-                                            <p className='text-5xl text-red-300'>-{item.amount}</p>
+                                            <p className='text-5xl text-green-300'>+{item.amount}</p>
                                         </div>
                                         <div className='text-right w-52'>
                                             <p>Added to wallet</p>
@@ -200,7 +200,7 @@ export default function WalletComponent() {
                             {
                                 walletDetails.amountUse.map((item) => (
 
-                                    <div className='bg-gray-400 min-h-16 rounded-xl flex place-items-center
+                                    <div className='bg-gray-400 min-h-16 rounded-xl flex place-items-center flex-row-reverse
                                     gap-5 pl-4 pr-4 poppins2' key={item._id}>
                                         <div className='grow text-left'>
                                             <p className='text-5xl text-red-300'>-{item.amount}</p>
