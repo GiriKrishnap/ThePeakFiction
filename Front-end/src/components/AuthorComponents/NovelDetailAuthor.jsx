@@ -36,7 +36,6 @@ export default function NovelDetailAuthor() {
     //.........................................................................
 
     const [novel, setNovel] = useState([]);
-    const [rate, setRate] = useState(0);
     const [chapterNumber, setChapterNumber] = useState('');
 
     //.........................................................................
@@ -62,7 +61,6 @@ export default function NovelDetailAuthor() {
 
             if (response.data.status) {
                 setNovel([response.data.novel]);
-                setRate([response.data.novel.rate]);
                 setChapterNumber(response.data.novel.chapters.length + 1)
             }
 
@@ -322,37 +320,31 @@ export default function NovelDetailAuthor() {
                                         ))
                                     }</p>
 
-                              {/* RATING SYSTEM */}
-                              <div className="flex items-center ">
-                                        <div className='bg-gray-800 flex p-3 pl-6 pr-6 mt-3 rounded-lg'>
-                                            <p className="ms-1 text-md font-medium text-gray-500 dark:text-gray-400">{rate}</p>
-                                            <p className="ms-1 text-md font-medium text-gray-500 dark:text-gray-400">out of</p>
-                                            <p className="ms-1 text-md font-medium text-gray-500 dark:text-gray-400 mr-3">5</p>
+                                {/* RATING SYSTEM */}
+                                <div class="flex items-center  ">
+                                    <div className='bg-gray-800 flex p-3 pl-6 pr-6 mt-3 rounded-lg'>
+                                        <p class="ms-1 text-md font-medium text-gray-500 dark:text-gray-400">4.95</p>
+                                        <p class="ms-1 text-md font-medium text-gray-500 dark:text-gray-400">out of</p>
+                                        <p class="ms-1 text-md font-medium text-gray-500 dark:text-gray-400 mr-3">5</p>
 
-                                            <svg className="w-6 h-6 cursor-pointer text-yellow-300 me-1 hover:scale-105" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill={rate >= 1 ? "currentColor" : 'gray'} viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
-                                                     />
-                                            </svg>
-                                            <svg className="w-6 h-6 cursor-pointer text-yellow-300 me-1 hover:scale-105" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill={rate >= 2 ? "currentColor" : "gray"} viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
-                                                     />
-                                            </svg>
-                                            <svg className="w-6 h-6 cursor-pointer text-yellow-300 me-1 hover:scale-105" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill={rate >= 3 ? "currentColor" : "gray"} viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
-                                                     />
-                                            </svg>
-                                            <svg className="w-6 h-6 cursor-pointer text-yellow-300 me-1 hover:scale-105" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill={rate >= 4 ? "currentColor" : "gray"} viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
-                                                     />
-                                            </svg>
-                                            <svg className="w-6 h-6 cursor-pointer text-yellow-300 me-1 hover:scale-105 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill={rate >= 5 ? "currentColor" : "gray"} viewBox="0 0 22 20">
-                                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
-                                                     />
-                                            </svg>
-                                        </div>
+                                        <svg class="w-6 h-6 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                        </svg>
+                                        <svg class="w-6 h-6 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                        </svg>
+                                        <svg class="w-6 h-6 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                        </svg>
+                                        <svg class="w-6 h-6 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                        </svg>
+                                        <svg class="w-6 h-6 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                        </svg>
                                     </div>
-
-                                    {/* RATING SYSTEM END*/}
+                                </div>
+                                {/* RATING SYSTEM END*/}
 
                             </div>
                             {/* ------------ NOVEL REVIEW AND DETAILS END ------------- */}
@@ -365,38 +357,40 @@ export default function NovelDetailAuthor() {
                             {
                                 item.chapters?.length > 0 ?
                                     item.chapters.map((chapter) => (
-
                                         <div className={`hover:bg-gray-500 
                                         ${chapter.gcoin > 0 ? "bg-gray-900" : 'bg-gray-600'} w-full rounded-lg
-                                         p-2 pl-5 grid grid-cols-4 lg:grid-cols-5 font-medium poppins2
+                                         p-2 md:pl-5 md:pr-5 font-medium poppins2
                                           ${chapter.gcoin > 0 ? "text-white" : 'text-gray-400'}
-                                          hover:text-white gap-5 hover:font-mono select-none cursor-pointer`}>
+                                          hover:text-white hover:font-mono select-none cursor-pointer`}>
 
-                                            <p className='text-left text-sm lg:text-lg lg:col-span-2'>
-                                                chapter {chapter.number}: {chapter.title}
-                                            </p>
+                                            <div className={`grid grid-cols-3 lg:grid-cols-5`}>
 
-                                            {
-                                                <p className='text-center text-sm lg:text-lg'>{chapter.gcoin ?
-                                                    `${chapter.gcoin} Gcoin to unlock` : ''}</p>
-                                            }
+                                                <p className='text-left text-xs lg:text-lg lg:col-span-3'>
+                                                    chapter {chapter.number}: {chapter.title}
+                                                </p>
 
-                                            <p className='text-right text-sm lg:text-lg'>
-                                                {new Date(chapter.publish_date).toLocaleDateString("en-GB")}
-                                            </p>
+                                                {
+                                                    <p className='text-center text-xs lg:text-lg'>{chapter.gcoin ?
+                                                        `${chapter.gcoin} Gcoin to unlock` : ''}</p>
+                                                }
 
-                                            <div className='md:flex gap-5'>
-                                                <p className='hover:underline lg:text-xl text-gray-300'
+                                                <p className='text-right text-xs lg:text-lg md:pr-7'>
+                                                    {new Date(chapter.publish_date).toLocaleDateString("en-GB")}
+                                                </p>
+
+
+                                            </div>
+                                            <div className='mt-1 text-right'>
+                                                <p className='hover:underline text-sm lg:text-xl text-gray-300 inline'
                                                     onClick={() => handleEditChapter(item._id, chapter._id)}>Edit</p>
                                                 {
                                                     chapter.number === item.chapter_count ?
-                                                        < p className='hover:underline lg:text-xl text-red-600'
+                                                        < p className='hover:underline lg:text-xl text-red-600 inline ml-2'
                                                             onClick={() => handleDeleteChapter(item._id, chapter._id)}>Delete</p> : ''
                                                 }
                                             </div>
 
                                         </div>
-
                                     )) : <p className='text-white text-center bg-blue-500 p-2 
                                             rounded font-mono'>no chapters yet..</p>
                             }

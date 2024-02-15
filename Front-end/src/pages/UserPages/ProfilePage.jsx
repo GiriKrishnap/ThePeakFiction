@@ -26,7 +26,7 @@ function HomePage() {
             <HeaderComponents />
 
             <div className=' m-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))]
-                          from-gray-600 via-gray-700 to-gray-800 p-10 flex flex-col gap-2'>
+                          from-gray-600 via-gray-700 to-gray-800 md:p-10 pt-10 flex flex-col gap-2'>
 
                 <p className='text-center text-4xl poppins2 text-white select-none cursor-pointer'
                     onClick={() => setIsProfile(!isProfile)}>
@@ -44,7 +44,7 @@ function HomePage() {
                 </small>
 
                 {/* .........MAIN PROFILE AND WALLET PART...... */}
-                <div className='p-24  flex justify-center text-white'>
+                <div className='p-5 pb-10 md:pb-0 flex justify-center text-white'>
                     <Suspense
                         fallback={
                             <div className="flex items-center justify-center min-h-screen p-5 min-w-screen">
