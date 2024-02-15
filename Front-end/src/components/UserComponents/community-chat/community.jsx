@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { addNovelToLibraryAPI, getCommunityAPI, getRandomNovelAPI } from '../../../APIs/userAPI';
-import { CoverUrl, chatPageUrl, novelDetailedView } from '../../../util/constants';
+import { getCommunityAPI } from '../../../APIs/userAPI';
+import { CoverUrl, chatPageUrl } from '../../../util/constants';
 import toast from 'react-hot-toast';
 //.........................................................................
 
 
-export default function Chat() {
+export default function Community() {
 
     //.........................................................................
 
@@ -53,13 +53,14 @@ export default function Chat() {
         <>
 
             <div className='bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))]
-            from-gray-600 via-gray-700 to-gray-800 poppins2 p-10 m-1 rounded-lg text-white min-h-96'>
+            from-gray-600 via-gray-700 to-gray-800 poppins2 p-1 md:p-10 m-1 rounded-lg text-white min-h-96'>
 
 
-                <div className='max-h-screen m-10 pt-5 overflow-y-scroll'>
+                <p className='text-center font-mono mb-1 text-xl pt-5'>All Joined Community</p>
 
-                    <p className='text-center font-mono mb-5 text-xl'>All Joined Community</p>
-                    <div className='w-full h-full mt-5 p-2'>
+                <div className='max-h-96 md:m-10 pt-5 overflow-y-scroll'>
+
+                    <div className='w-full h-full pr-2 pl-2 '>
                         {community.length > 0 ||
                             <p className='text-2xl text-center text-gray-400 mt-10'>
                                 Didn't Joined any Community yet.</p>}
@@ -80,8 +81,8 @@ export default function Chat() {
                                         }} />
 
                                     <div className='flex flex-col place-content-center ml-2'>
-                                        <p className='text-2xl'>{item.name}</p>
-                                        <p className='font-mono text-gray-400 ml-1'>
+                                        <p className='text-sm md:text-2xl'>{item.name}</p>
+                                        <p className='text-xs md:text-sm font-mono text-gray-400 ml-1'>
                                             official Community
                                         </p>
                                     </div>

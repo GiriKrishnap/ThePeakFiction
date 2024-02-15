@@ -99,15 +99,17 @@ export default function Header({ name }) {
                                     )}
                                 </Disclosure.Button>
                             </div>
-                            <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
-                                <div className="flex flex-shrink-0 items-center">
+                            <div className="flex flex-1 items-center md:items-stretch justify-start md:ml-0 ml-14">
+
+                                <div className="flex flex-shrink-0 items-center place-items-start">
                                     <img
-                                        className="h-12 w-auto hover:animate-spin"
+                                        className="md:h-12 md:mt-0 mt-2 h-11 w-auto hover:animate-spin"
                                         src="/assets/logo/webLogo.png"
                                         alt="ThePeakFiction"
                                     />
-                                    <p className='text-white mx-3 font-medium'>ThePeakFiction</p>
+                                    <p className='text-white mx-1 md:mx-3 font-medium md-text-md text-lg'>ThePeakFiction</p>
                                 </div>
+
                                 <div className="hidden md:ml-6 md:block">
                                     <div className="flex space-x-5 mt-1">
                                         {navigationObj.map((item) => (
@@ -125,6 +127,7 @@ export default function Header({ name }) {
                                         ))}
                                     </div>
                                 </div>
+
                             </div>
 
 
@@ -133,8 +136,7 @@ export default function Header({ name }) {
 
                                 <Link to={filter}>
                                     <button className='text-white btn bg-blue-500 p-1 pl-2 pr-2 md:pl-4 md:pr-4
-                                     md:p-1 mr-3 rounded-lg
-                                hover:bg-blue-700'>
+                                     md:p-1 md:mr-3 rounded-lg hover:bg-blue-700'>
                                         <i className="fa-solid fa-circle-nodes"></i> Filter
                                     </button>
                                 </Link>

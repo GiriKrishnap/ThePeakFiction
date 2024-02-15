@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { CoverUrl, novelDetailedView } from '../../util/constants';
 import { gridePostAPI } from '../../APIs/userAPI';
 import toast from 'react-hot-toast';
-import { Pagination } from '@mui/material';
+import { Hidden, Pagination } from '@mui/material';
 //.........................................................................
 
 
@@ -76,7 +76,7 @@ export default function GridPost({ axiosUrl, title, home = false }) {
     return (
         <>
 
-            <div className='bg-gray-800 overflow-hidden flex flex-col pb-5 text-center pt-8'>
+            <div className='bg-gray-800 overflow-hidden flex flex-col pb-5 text-center pt-8 '>
 
                 {currNovels.length > 0 ? '' :
                     < h1 className='font-mono text-5xl text-white text-center mt-60 mb-4'>
@@ -84,7 +84,7 @@ export default function GridPost({ axiosUrl, title, home = false }) {
                     </h1>
                 }
                 {currNovels.length > 0 ? <p className='text-white poppins text-4xl text-left mb-1 ml-2'>{title}</p> : ''}
-                <div className='grid md:grid-cols-2 grid-cols-1 p-5 gap-2'>
+                <div className='grid grid-cols-2 p-5 gap-2'>
 
                     {
                         currNovels.map((item, index) => (
@@ -92,17 +92,19 @@ export default function GridPost({ axiosUrl, title, home = false }) {
                             <div key={item._id}>
                                 {/* -------------------NOVEL CARD---------------------------- */}
                                 <div
-                                    className='__CARD__  bg-gray-700 hover:bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))]
-                                 from-gray-600 via-gray-700 to-gray-800 lg:h-64 h-80 rounded-lg flex overflow-hidden'
+                                    className='__CARD__  bg-gray-700 
+                                    hover:bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-600
+                                     via-gray-700 to-gray-800 lg:h-64 min-h-full rounded-lg md:flex overflow-hidden
+                                     md:pb-0 pb-4'
                                     onClick={() => handleClick(item._id)}>
 
-                                    <div className='w-1/2 hover:scale-105 duration-500 BANNER_PHOTO'
+                                    <div className='md:w-1/2 h-32 md:h-full hover:scale-105 duration-500 BANNER_PHOTO'
                                         style={{
                                             backgroundImage: `url(${CoverUrl}/${item._id})`,
                                             backgroundSize: 'cover'
                                         }}></div>
 
-                                    <div className='w-full pl-3 pr-3'>
+                                    <div className='w-full pl-3 pr-3 overflow-hidden'>
 
                                         <div className='text-right'>
                                             <p className='text-white poppins text-right text-lg bg-red-500 
@@ -115,24 +117,24 @@ export default function GridPost({ axiosUrl, title, home = false }) {
                                         </div>
 
                                         {/* GENRES-------------------------------- */}
-                                        <div className='w-full grid lg:grid-flow-col gap-2 mt-2'>
+                                        <div className='md:grid grid-flow-col gap-2 mt-2 '>
 
                                             <small className='bg-blue-700 pr-2 pl-2 p-0.5 text-gray-200 
                                                     rounded-xl cursor-default font-mono'> Author: {item?.author_id.userName} </small>
 
                                             {
-                                                item.genre.map((genre) => (
+                                                item.genre.map((genre, index) => (
 
                                                     <small key={genre.name}
-                                                        className='bg-blue-500 pr-2 pl-2 p-0.5 text-gray-200 
-                                                    rounded-xl cursor-default'> {genre.name} </small>
+                                                        className={`bg-blue-500 pr-2 pl-2 p-0.5 text-gray-200 
+                                                    rounded-xl cursor-default ${index > 4 ? 'md:hidden' : ''}`}> {genre.name} </small>
                                                 ))
                                             }
 
                                         </div>
 
                                         {/* -------CHAPTERS----------------------- */}
-                                        <div className='w-full flex flex-col gap-2 mt-6'>
+                                        <div className='w-full hidden md:flex flex-col gap-2 mt-2 md:mt-6 '>
 
                                             {
                                                 item.chapters[item.chapters.length - 1]?.title ?
@@ -181,8 +183,8 @@ export default function GridPost({ axiosUrl, title, home = false }) {
 
                                             {
                                                 item.chapters[item.chapters.length - 4]?.title ?
-                                                    < div className='bg-gray-600 pr-3 pl-3 text-gray-300 
-                                                              rounded-full cursor-default grid grid-cols-2'>
+                                                    < div className='bg-gray-600 pr-3 pl-3 text-gray-300 hidden
+                                                              rounded-full cursor-default md:grid grid-cols-2'>
                                                         <p className='text-start'>
                                                             chapter {item.chapters[item.chapters.length - 4]?.number}
                                                         </p>
@@ -198,7 +200,7 @@ export default function GridPost({ axiosUrl, title, home = false }) {
                                         {
                                             item.chapters.length <= 0 ?
                                                 < div className='bg-gray-600 text-gray-300 
-                                                rounded-3xl cursor-default font-mono h-full p-10'>
+                                                rounded-3xl cursor-default font-mono h-full p-10 '>
                                                     <p className='text-center'>
                                                         no chapters yet..
                                                     </p>
