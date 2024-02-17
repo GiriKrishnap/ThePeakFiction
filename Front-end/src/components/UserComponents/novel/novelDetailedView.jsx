@@ -291,7 +291,7 @@ export default function NovelDetailedView() {
                             {/* RATING SYSTEM */}
                             <div className="flex items-center ">
                                 <div className='bg-gray-800 flex p-3 md:pl-6 md:pr-6 mt-3 rounded-lg'>
-                                    <p className="ms-1 text-md font-medium text-gray-500 dark:text-gray-400">
+                                    <p className="ms-1 mr-1.5 text-md font-medium text-gray-500 dark:text-gray-400">
                                         {rate} out of 5
                                     </p>
                                     <svg className="w-6 h-6 cursor-pointer text-yellow-300 me-1 hover:scale-105" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill={rate >= 1 ? "currentColor" : 'gray'} viewBox="0 0 22 20">
