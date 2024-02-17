@@ -278,7 +278,7 @@ export default function NovelDetailedView() {
                         </div>
 
                         {/* ------------ NOVEL REVIEW AND DETAILS ------------- */}
-                        <div className='md:w-2/6 flex flex-col pl-12 justify-center
+                        <div className='md:w-2/6 flex flex-col md:pl-12 justify-center
                                     text-white text-left font-mono'>
                             <p><b className='font-sans'>Author:</b> {item.author_id.userName}</p>
                             <p><b className='font-sans'>Publish Date:</b> {new Date(item.publish_date).toLocaleDateString("en-GB")}</p>

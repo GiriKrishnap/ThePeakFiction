@@ -303,7 +303,7 @@ export default function NovelDetailAuthor() {
                             </div>
 
                             {/* ------------ NOVEL REVIEW AND DETAILS ------------- */}
-                            <div className='sm:w-2/6 flex flex-col pl-12 justify-center
+                            <div className='sm:w-2/6 flex flex-col md:pl-12 justify-center
                                     text-white text-left font-mono'>
 
                                 <p>
