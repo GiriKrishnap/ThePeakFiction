@@ -24,7 +24,7 @@ export default function AdminLogin() {
         })
         let response = await axios.post(adminLoginPost, body, { headers: { "Content-Type": "application/json" } });
         if (response.data.adminToken) {
-            localStorage.setItem("token", response.data.adminToken);
+            localStorage.setItem("AdminToken", response.data.adminToken);
             navigate(adminDashboard);
 
         } else {
@@ -43,7 +43,7 @@ export default function AdminLogin() {
 
     useEffect(() => {
         try {
-            const adminToken = localStorage.getItem('token');
+            const adminToken = localStorage.getItem('AdminToken');
             if (adminToken) {
                 navigate(adminDashboard);
             }
