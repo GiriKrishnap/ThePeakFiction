@@ -36,6 +36,7 @@ export default function NovelDetailAuthor() {
     //.........................................................................
 
     const [novel, setNovel] = useState([]);
+    const [rate, setRate] = useState(0);
     const [chapterNumber, setChapterNumber] = useState('');
 
     //.........................................................................
@@ -61,6 +62,7 @@ export default function NovelDetailAuthor() {
 
             if (response.data.status) {
                 setNovel([response.data.novel]);
+                setRate([response.data.novel.rate]);
                 setChapterNumber(response.data.novel.chapters.length + 1)
             }
 
@@ -321,29 +323,34 @@ export default function NovelDetailAuthor() {
                                     }</p>
 
                                 {/* RATING SYSTEM */}
-                                <div class="flex items-center  ">
-                                    <div className='bg-gray-800 flex p-3 pl-6 pr-6 mt-3 rounded-lg'>
-                                        <p class="ms-1 text-md font-medium text-gray-500 dark:text-gray-400">4.95</p>
-                                        <p class="ms-1 text-md font-medium text-gray-500 dark:text-gray-400">out of</p>
-                                        <p class="ms-1 text-md font-medium text-gray-500 dark:text-gray-400 mr-3">5</p>
-
-                                        <svg class="w-6 h-6 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                <div className="flex items-center ">
+                                    <div className='bg-gray-800 flex p-3 md:pl-6 md:pr-6 mt-3 rounded-lg'>
+                                        <p className="ms-1 text-md font-medium text-gray-500 dark:text-gray-400">
+                                            {rate} out of 5
+                                        </p>
+                                        <svg className="w-6 h-6 cursor-pointer text-yellow-300 me-1 hover:scale-105" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill={rate >= 1 ? "currentColor" : 'gray'} viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
+                                            />
                                         </svg>
-                                        <svg class="w-6 h-6 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                        <svg className="w-6 h-6 cursor-pointer text-yellow-300 me-1 hover:scale-105" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill={rate >= 2 ? "currentColor" : "gray"} viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
+                                            />
                                         </svg>
-                                        <svg class="w-6 h-6 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                        <svg className="w-6 h-6 cursor-pointer text-yellow-300 me-1 hover:scale-105" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill={rate >= 3 ? "currentColor" : "gray"} viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
+                                            />
                                         </svg>
-                                        <svg class="w-6 h-6 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                        <svg className="w-6 h-6 cursor-pointer text-yellow-300 me-1 hover:scale-105" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill={rate >= 4 ? "currentColor" : "gray"} viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
+                                            />
                                         </svg>
-                                        <svg class="w-6 h-6 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                        <svg className="w-6 h-6 cursor-pointer text-yellow-300 me-1 hover:scale-105 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill={rate >= 5 ? "currentColor" : "gray"} viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
+                                            />
                                         </svg>
                                     </div>
                                 </div>
+
                                 {/* RATING SYSTEM END*/}
 
                             </div>
