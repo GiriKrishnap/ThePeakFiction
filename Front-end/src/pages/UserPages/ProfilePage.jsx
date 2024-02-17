@@ -44,7 +44,7 @@ function HomePage() {
                 </small>
 
                 {/* .........MAIN PROFILE AND WALLET PART...... */}
-                <div className='p-5 pb-10 md:pb-0 flex justify-center text-white'>
+                <div className='md:p-5 p-10 mb-32 md:mb-8 mt-14 md:mt-5 md:pb-0 flex justify-center text-white'>
                     <Suspense
                         fallback={
                             <div className="flex items-center justify-center min-h-screen p-5 min-w-screen">
