@@ -33,7 +33,7 @@ export default function AdminHeader() {
             confirmButtonText: 'Logout'
         }).then((result) => {
             if (result.isConfirmed) {
-                localStorage.removeItem('AdminToken');
+                localStorage.clear();
                 navigate(adminLogin);
             }
         })
