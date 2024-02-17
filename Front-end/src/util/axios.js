@@ -8,20 +8,17 @@ const instance = axios.create({
 instance.interceptors.request.use(
     (config) => {
 
-        let token = ''
+        let token = localStorage.getItem('token');
 
-        const userToken = localStorage.getItem('token');
-        const AdminToken = localStorage.getItem('AdminToken');
-
-        if (userToken) {
-            token = userToken
-        } else {
+        if (!token) {
+            const AdminToken = localStorage.getItem('AdminToken');
             token = AdminToken
         }
-
+        console.log("userToken - ", localStorage.getItem('token'), '\n Admin token - ', localStorage.getItem('AdminToken'))
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
+
         return config;
     },
     (error) => Promise.reject(error)
