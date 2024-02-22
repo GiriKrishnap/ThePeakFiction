@@ -50,6 +50,7 @@ export default function Header({ name }) {
         }).then((result) => {
             if (result.isConfirmed) {
                 localStorage.removeItem("user-login");
+                localStorage.clear();
                 socket.disconnect();
                 navigate('/');
             }
