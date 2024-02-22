@@ -14,9 +14,9 @@ root.render(
 
       <GoogleOAuthProvider clientId='914371032098-fiucf9n409fm0ka4gfpvnnt0kucs1itb.apps.googleusercontent.com' >
 
-        {/* <React.StrictMode> */}
+        <React.StrictMode>
         <App />
-        {/* </React.StrictMode> */}
+        </React.StrictMode>
 
       </GoogleOAuthProvider>
 
