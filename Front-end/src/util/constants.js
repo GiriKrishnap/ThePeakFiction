@@ -1,5 +1,5 @@
-export const baseUrl = "https://pureglow.live/";
-export const CoverUrl = "https://pureglow.live/admin/image";
+export const baseUrl = "https://thepeakfiction.onrender.com/";
+export const CoverUrl = "https://thepeakfiction.onrender.com/admin/image";
 
 
 export const Login = '/'
